@@ -1,0 +1,32 @@
+# Rust build artifacts
+rustlib/target/
+rustlib/Cargo.lock
+
+# Python venv and build artifacts
+python-backend/.venv/
+python-backend/__pyo3_build__/
+
+# Electron build and dependencies
+electron-ui/node_modules/
+electron-ui/dist/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Vim
+*.swp
+*.swo
+
+# Emacs
+*~
+\#*\#
+
+# VS Code
+.vscode/
