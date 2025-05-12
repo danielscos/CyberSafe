@@ -5,3 +5,5 @@ edition = "2024"
 
 [dependencies]
 pyo3 = { version = "0.19", features = ["extension-module"] }
+sha2 = "0.10.9"
+hex = "0.4.3"
