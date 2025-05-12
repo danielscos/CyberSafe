@@ -30,3 +30,8 @@ Desktop.ini
 
 # VS Code
 .vscode/
+
+
+# Added by cargo
+
+/target

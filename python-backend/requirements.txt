@@ -1,0 +1,14 @@
+annotated-types==0.7.0
+anyio==4.9.0
+click==8.2.0
+fastapi==0.115.12
+h11==0.16.0
+idna==3.10
+pydantic==2.11.4
+pydantic_core==2.33.2
+-e git+https://github.com/danielscos/CyberSafe.git@6ec56194c8f2a280ed186855612309986c4dd747#egg=rustlib
+sniffio==1.3.1
+starlette==0.46.2
+typing-inspection==0.4.0
+typing_extensions==4.13.2
+uvicorn==0.34.2
