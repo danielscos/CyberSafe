@@ -1,5 +1,14 @@
 from fastapi import FastAPI, File, UploadFile
-from rustlib import hash_sha256_str, hash_sha256_bytes # Updated import
+from rustlib import (
+    hash_sha256_str,
+    hash_sha256_bytes,
+    hash_md5_str,
+    hash_md5_bytes,
+    hash_sha1_str,
+    hash_sha1_bytes,
+    hash_sha512_str,
+    hash_sha512_bytes
+)
 
 app = FastAPI()
 
@@ -9,19 +18,17 @@ async def root():
 
 @app.get("/hello")
 async def hello():
-    # This could also call rustlib.hello() if you want to keep it consistent
-    return {"msg": "Hello from Rust!"} # Assuming rustlib.hello() is also available
+    return {"msg": "Hello from Rust!"}
 
 @app.get("/hash_sha256")
 async def hash_sha256_endpoint(text: str):
-    digest = hash_sha256_str(text) # Use the string-specific Rust function
+    digest = hash_sha256_str(text)
     return {"hash": digest}
 
 @app.post("/hash_file")
 async def hash_file_endpoint(file: UploadFile = File(...)):
-    contents = await file.read() # Reads file as bytes
+    contents = await file.read()
 
-    # Now call the Rust function that handles bytes
     digest = hash_sha256_bytes(contents)
 
     return {"filename": file.filename, "hash_type": "sha256", "hash": digest}
