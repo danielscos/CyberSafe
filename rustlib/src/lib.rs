@@ -1,6 +1,6 @@
 use pyo3::prelude::*;
 use sha2::{Digest, Sha256, Sha512};
-use ::md5::Md5;
+use md5;
 use sha1::Sha1;
 use hex;
 
@@ -80,7 +80,7 @@ fn hash_md5_bytes(bytes: &[u8]) -> PyResult<String> {
 
 
 #[pymodule]
-fn rustlib(_py: Python, m: &PyModule) -> PyResult<()> {
+fn rustlib(m: Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(hash_sha256_str, m)?)?;
     m.add_function(wrap_pyfunction!(hash_sha256_bytes, m)?)?;
     m.add_function(wrap_pyfunction!(hash_sha512_str, m)?)?;
