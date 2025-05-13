@@ -16,10 +16,6 @@ app = FastAPI()
 async def root():
     return {"status": "up"}
 
-@app.get("/hello")
-async def hello():
-    return {"msg": "Hello from Rust!"}
-
 @app.get("/hash_sha256")
 async def hash_sha256_endpoint(text: str):
     digest = hash_sha256_str(text)
