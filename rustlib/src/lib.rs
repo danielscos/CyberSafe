@@ -73,8 +73,6 @@ fn hash_md5_bytes(bytes: &[u8]) -> PyResult<String> {
     Ok(hex::encode(digest.0))
 }
 
-
-
 #[pymodule]
 fn rustlib(m: Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(hash_sha256_str, &m)?)?;
