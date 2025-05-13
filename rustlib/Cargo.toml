@@ -4,10 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-pyo3 = { version = "0.24", features = ["extension-module"] }
-sha2 = "0.10.9"
+# pyo3 = { version = "0.24", features = ["extension-module"] }
+# sha2 = "0.10.9"
 hex = "0.4.3"
 md5 = "0.7.0"
-sha1 = "0.10.6"
+# sha1 = "0.10.6"
 
 
