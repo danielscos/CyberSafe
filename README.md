@@ -5,9 +5,10 @@
 CyberSafe is a versatile, all-in-one safety platform tool designed for cybersecurity professionals and enthusiasts. It aims to provide a comprehensive suite of tools to assist with various digital security tasks.
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactjs.org/)
-[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Electron](https://img.shields.io/badge/Electron-47848F?style=for-the-badge&logo=electron&logoColor=white)](https://www.electronjs.org/)
+[![Python Version](https://img.shields.io/pypi/pyversions/fastapi?logo=python&style=flat-square)](https://pypi.org/project/fastapi/)
+[![React Version](https://img.shields.io/npm/v/react?logo=react&style=flat-square)](https://www.npmjs.com/package/react)
+[![Electron Version](https://img.shields.io/npm/v/electron?logo=electron&style=flat-square)](https://www.npmjs.com/package/electron)
+
 ## ✨ Features
 
 CyberSafe plans to include the following features:
