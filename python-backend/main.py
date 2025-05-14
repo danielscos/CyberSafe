@@ -45,7 +45,7 @@ async def hash_file_endpoint(file: UploadFile = File(...)):
 
     digest = hash_sha512_bytes(contents)
 
-    return {"filename": file.filename, "hash_type": "sha256", "hash": digest}
+    return {"filename": file.filename, "hash_type": "sha512", "hash": digest}
 
 
 
