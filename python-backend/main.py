@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile # type: ignore
+import magic
 from rustlib import (
     hash_sha256_str,
     hash_sha256_bytes,
@@ -11,6 +12,8 @@ from rustlib import (
 )
 
 app = FastAPI()
+
+
 
 @app.get("/")
 async def root():
@@ -66,7 +69,7 @@ async def hash_file_endpoint(file: UploadFile = File(...)):
 
 
 @app.get("/hash_md5")
-async def hash_sha1_endpoint(text: str):
+async def hash_md5_endpoint(text: str):
     digest = hash_md5_str(text)
     return {"hash": digest, "hash_type": "md5"}
 
@@ -78,3 +81,13 @@ async def hash_file_endpoint(file: UploadFile = File(...)):
     digest = hash_md5_bytes(contents)
 
     return {"filename": file.filename, "hash_type": "md5", "hash": digest}
+
+
+
+@app.post("/filetype")
+async def detect_filetype(file: UploadFile = File(...)):
+    contents = await file.read()
+    mime = magic.from_buffer(contents, mime=True)
+    return {"filename": file.filename, "mime_type": mime}
+
+
