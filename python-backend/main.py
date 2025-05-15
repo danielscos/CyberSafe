@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from hashing import router as hashing_router
-from features import router as features_router
+from filetype import router as features_router
 
 app = FastAPI()
 
