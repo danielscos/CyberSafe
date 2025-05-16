@@ -4,10 +4,10 @@ import mimetypes
 import os
 from google import genai
 import time
-
+from gemini_api_key import gemini_api_key
 router = APIRouter()
 
-client = genai.Client(api_key="AIzaSyD-F371swtwEJYYGsJ2lv0-n4_TWdtcSrU")
+client = genai.Client(api_key=gemini_api_key)
 
 @router.post("/filetype")
 async def detect_filetype(file: UploadFile = File(...)):
