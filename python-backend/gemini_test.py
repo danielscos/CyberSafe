@@ -4,6 +4,7 @@ import time
 import matplotlib.pyplot as plt
 
 
+
 client_gemini = genai.Client(api_key=gemini_api_key)
 models = [
     ("gemini-2.0-flash-lite", "2.0 flash lite"),
