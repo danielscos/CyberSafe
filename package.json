@@ -11,5 +11,7 @@
   "devDependencies": {
     "concurrently": "^7.0.0",
     "electron": "^36.2.1"
+  },
+  "dependencies": {
   }
 }

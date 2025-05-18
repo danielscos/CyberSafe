@@ -1,25 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #00aeff; /* A vibrant blue */
+  --primary-hover-color: #0095e0;
+  --background-color: #121212; /* Very dark grey, almost black */
+  --surface-color: #1e1e1e; /* Card background */
+  --text-color: #e0e0e0;
+  --text-secondary-color: #b0b0b0;
+  --border-color: #333333;
+  --error-color: #ff4d4f;
+  --error-background: #2a1212;
+  --success-color: #52c41a;
+  --success-background: #122a12;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --border-radius: 8px;
+  --input-height: 40px;
+}
+
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .content {
-    text-align: center;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .footer {
-    /* Styles for the footer */
-    text-align: center;
-    padding: 10px;
-    background-color: #f0f0f0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centers content vertically if it's shorter than viewport */
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  padding: 20px; /* Add padding for smaller screens */
+  box-sizing: border-box;
+}
+
+.content {
+  background-color: var(--surface-color);
+  padding: 30px 40px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border-color);
+  width: 100%;
+  max-width: 700px;
+  text-align: left;
+  margin: 20px 0; /* Ensures some margin even if content is tall */
+}
+
+.header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0 0 10px 0;
+  letter-spacing: -0.5px;
+}
+
+.status {
+  font-size: 0.9rem;
+  color: var(--text-secondary-color);
+}
+
+.toolSection {
+  margin-bottom: 30px;
+}
+
+.toolSection h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.toolSection h2 svg {
+  color: var(--primary-color);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary-color);
+}
+
+.formGroup input[type="text"],
+.formGroup input[type="file"],
+.formGroup select {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 0 15px;
+  height: var(--input-height);
+  font-size: 1rem;
+  font-family: var(--font-family);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formGroup input[type="file"] {
+  padding: 10px; /* Specific padding for file input */
+}
+
+.formGroup input[type="text"]::placeholder {
+  color: var(--text-secondary-color);
+  opacity: 0.7;
+}
+
+.formGroup input[type="text"]:focus,
+.formGroup input[type="file"]:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color), 0.3);
+}
+
+.button {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0 20px;
+  height: var(--input-height);
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  background-color: var(--border-color);
+  color: var(--text-secondary-color);
+  cursor: not-allowed;
+}
+
+.result,
+.error {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+}
+
+.result {
+  background-color: var(--success-background);
+  border: 1px solid var(--success-color);
+  color: var(--text-color);
+}
+
+.result strong, .result h3 {
+  color: var(--success-color);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.fileInfoResult p {
+  margin: 5px 0;
+  line-height: 1.6;
+}
+
+.hashOutput {
+  word-break: break-all;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--background-color);
+  padding: 10px;
+  border-radius: calc(var(--border-radius) - 4px);
+  margin-top: 8px;
+}
+
+.error {
+  background-color: var(--error-background);
+  border: 1px solid var(--error-color);
+  color: var(--error-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 40px 0;
+}
+
+/* Remove default footer styles if they existed */
+.footer {
+  display: none;
+}
