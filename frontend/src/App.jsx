@@ -3,13 +3,13 @@ import styles from "./App.module.css"; // Import CSS module
 
 function App() {
   const [backendStatus, setBackendStatus] = useState("");
-  // Text Hashing State
+  // Text hashing state
   const [textToHash, setTextToHash] = useState("");
   const [hashedText, setHashedText] = useState("");
   const [hashError, setHashError] = useState("");
   const [selectedHashType, setSelectedHashType] = useState("sha256");
 
-  // Filetype Feature State
+  // Filetype feature state
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileInfo, setFileInfo] = useState(null); // To store { filename, mime_type, file_type, description }
   const [fileTypeError, setFileTypeError] = useState("");
@@ -84,14 +84,12 @@ function App() {
     }
 
     const formData = new FormData();
-    formData.append("file", selectedFile); // "file" is the key expected by your FastAPI backend
+    formData.append("file", selectedFile); // file is the key expected by the backend
 
     try {
       const response = await fetch("http://localhost:8000/filetype", {
         method: "POST",
         body: formData,
-        // Note: 'Content-Type' header is automatically set to 'multipart/form-data' by the browser
-        // when using FormData with fetch, so you don't usually need to set it manually.
       });
 
       if (!response.ok) {
