@@ -1,5 +1,8 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const { spawn } = require('child_process');
+
+let backendProcess;
 
 const isDev = !app.isPackaged;
 
@@ -24,8 +27,26 @@ function createWindow () {
   }
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  let backendPath;
+  if (isDev) {
+    backendPath = path.join(__dirname, 'backend', 'CyberSafeBackend');
+  } else {
+    // Use the unpacked path in production
+    backendPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'backend', 'CyberSafeBackend');
+  }
+
+  backendProcess = spawn(backendPath, [], { stdio: 'inherit' });
+
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
+});
+
+app.on('quit', () => {
+  if (backendProcess) {
+    backendProcess.kill();
+  }
 });
