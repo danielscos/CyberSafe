@@ -3,11 +3,11 @@ rustlib/target/
 rustlib/Cargo.lock
 
 # Python venv and build artifacts
-python-backend/.venv/
-python-backend/__pyo3_build__/
-python-backend/gemini_api_key.py
-python-backend/__pycache__/
-python-backend/*.pyc
+backend/.venv/
+backend/__pyo3_build__/
+backend/gemini_api_key.py
+backend/__pycache__/
+backend/*.pyc
 
 # Electron build and dependencies
 electron-ui/node_modules/
