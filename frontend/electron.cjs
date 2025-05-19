@@ -18,26 +18,19 @@ function createWindow () {
   });
 
   if (isDev) {
-    // Development: load Vite dev server
     win.loadURL('http://localhost:5173');
     win.webContents.openDevTools();
   } else {
-    // Production: load built React app
     win.loadFile(path.join(__dirname, 'dist', 'index.html'));
   }
 }
 
 app.whenReady().then(() => {
-  let backendPath;
-  if (isDev) {
-    backendPath = path.join(__dirname, 'backend', 'CyberSafeBackend');
-  } else {
-    // Use the unpacked path in production
-    backendPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'backend', 'CyberSafeBackend');
+  if (!isDev) {
+    // Only spawn backend in production
+    const backendPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'backend', 'CyberSafeBackend');
+    backendProcess = spawn(backendPath, [], { stdio: 'inherit' });
   }
-
-  backendProcess = spawn(backendPath, [], { stdio: 'inherit' });
-
   createWindow();
 });
 
