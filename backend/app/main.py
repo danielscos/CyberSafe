@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from hashing import router as hashing_router
-from filetype import router as features_router
+from api.hashing import router as hashing_router
+from api.filetype import router as features_router
 
 app = FastAPI()
 
