@@ -24,7 +24,7 @@ CyberSafe plans to include the following features:
 
 ## 💻 Tech Stack
 
-*   **🖥️ Frontend:** Electron & React
+*   **🖥️ Frontend:** Electron & React (using Vite)
 *   **🐍 Backend Logic:** Python
 *   **⚙️ Performance-Critical Components:** Rust
 
