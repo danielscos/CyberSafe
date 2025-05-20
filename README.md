@@ -2,6 +2,8 @@
 
 ![hackatime stats](https://github-readme-stats.hackclub.dev/api/wakatime?username=2324&api_domain=hackatime.hackclub.com&theme=darcula&custom_title=Hackatime+Stats&layout=compact&cache_seconds=0&langs_count=8)
 
+{{ wakatimeDoubleCategoryBar "💾 Languages:" wakatimeData.Languages "💼 Projects:" wakatimeData.Projects 5 }}
+
 CyberSafe is a versatile, all-in-one safety platform tool designed for cybersecurity professionals and enthusiasts. It aims to provide a comprehensive suite of tools to assist with various digital security tasks.
 It's heavily inspired by the popular tool CyberChef, but with a focus on the cybersecurity community.
 
