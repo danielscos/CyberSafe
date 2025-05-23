@@ -16,36 +16,41 @@ router = APIRouter()
 
 client = genai.Client(api_key=gemini_api_key)
 
-def interpret_entropy(entropy):
+def interpret_entropy(entropy, filesize):
+    if filesize < 1024:
+        return {
+            "label": "Unreliable",
+            "explanation": "Entropy is not reliable for files smaller than 1 KB."
+        }
     if entropy < 2.0:
         return {
             "label": "Very Low",
-            "explanation": "Very low entropy. Almost certainly plain text, source code, or highly structured data."
+            "explanation": "Very low entropy. Almost certainly plain text or highly repetitive data."
         }
     elif entropy < 4.0:
         return {
             "label": "Low",
-            "explanation": "Low entropy. Likely plain text, configuration files, or uncompressed data."
+            "explanation": "Low entropy. Likely text, config, or uncompressed data."
         }
     elif entropy < 5.5:
         return {
             "label": "Moderate",
-            "explanation": "Moderate entropy. May be a mix of text and binary data, or lightly compressed."
+            "explanation": "Moderate entropy. Some randomness, possibly mixed or lightly compressed."
         }
-    elif entropy < 7.0:
+    elif entropy < 6.8:
         return {
             "label": "High",
-            "explanation": "High entropy. Likely compressed, packed, or obfuscated data."
+            "explanation": "High entropy. Likely compressed image (e.g., PNG, JPEG), executable, or binary data."
         }
-    elif entropy < 7.8:
+    elif entropy < 7.6:
         return {
             "label": "Very High",
-            "explanation": "Very high entropy. Most likely encrypted, compressed, or random data."
+            "explanation": "Very high entropy. Likely compressed archive (ZIP, 7z), compressed image, AppImage, or partially encrypted data."
         }
     else:
         return {
             "label": "Maximal",
-            "explanation": "Maximal entropy. Almost certainly encrypted or purely random data."
+            "explanation": "Maximal entropy. Typical for encrypted, random, or well-compressed files (e.g., ZIP, 7z, AppImage, PNG, JPEG)."
         }
 
 @router.post("/filetype")
@@ -82,7 +87,7 @@ async def detect_filetype(file: UploadFile = File(...)):
 
     filesize = len(contents)
     entropy_value = float(entropy)
-    entropy_info = interpret_entropy(entropy_value)
+    entropy_info = interpret_entropy(entropy_value, filesize)
 
     return {
         "filesize": filesize,
