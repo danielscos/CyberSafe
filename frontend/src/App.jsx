@@ -179,6 +179,20 @@ function App() {
                     <Alert severity="success" className="cybersafe-alert">
                       <div><strong>File:</strong> {fileTypeResult.filename}</div>
                       <div><strong>Type:</strong> {fileTypeResult.file_type} ({fileTypeResult.mime_type})</div>
+                      <div>
+                        <strong>Size:</strong> {(fileTypeResult.filesize / (1024 * 1024)).toFixed(2)} MB
+                      </div>
+                      <div>
+                        <strong>Entropy:</strong> {fileTypeResult.entropy} 
+                        <span style={{ marginLeft: 8, fontWeight: 600 }}>
+                          {fileTypeResult.entropy_label && `(${fileTypeResult.entropy_label})`}
+                        </span>
+                      </div>
+                      {fileTypeResult.entropy_explanation && (
+                        <div style={{ color: "#b2dfdb", marginBottom: 6, marginLeft: 2 }}>
+                          {fileTypeResult.entropy_explanation}
+                        </div>
+                      )}
                       <div style={{ marginTop: 8 }}>
                         <strong>Description:</strong> {fileTypeResult.description}
                       </div>
