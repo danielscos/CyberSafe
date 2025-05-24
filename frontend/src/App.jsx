@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button, TextField, Typography, Paper, Alert, MenuItem, Select, FormControl, InputLabel, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { Button, TextField, Typography, Paper, Alert, MenuItem, Select, FormControl, InputLabel, CssBaseline, ThemeProvider, createTheme, LinearProgress } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import './App.css'
 
 const theme = createTheme();
@@ -13,21 +14,40 @@ const HASH_TYPES = [
   { label: 'SHA-512', value: 'sha512' },
 ];
 
+const ModernLinearProgress = styled(LinearProgress)(({ theme }) => ({
+  height: 12,
+  borderRadius: 8,
+  backgroundColor: theme.palette.mode === 'light' ? '#e0e0e0' : '#23232b',
+  boxShadow: '0 6px 24px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.10)',
+  overflow: 'hidden',
+  '& .MuiLinearProgress-bar': {
+    borderRadius: 8,
+    background: 'linear-gradient(90deg, #00c6fb 0%, #005bea 100%)',
+    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.22), 0 1.5px 6px 0 rgba(0,0,0,0.10)',
+  },
+}));
+
 function App() {
   const [hashInput, setHashInput] = useState('');
   const [hashType, setHashType] = useState('md5');
   const [hashResult, setHashResult] = useState(null);
   const [file, setFile] = useState(null);
   const [fileTypeResult, setFileTypeResult] = useState(null);
+  const [hashLoading, setHashLoading] = useState(false);
+  const [fileLoading, setFileLoading] = useState(false);
 
   const handleHash = async () => {
+    setHashLoading(true);
     try {
       const response = await axios.get(
         `http://127.0.0.1:8000/hash_${hashType}?text=${encodeURIComponent(hashInput)}`
       );
+      await new Promise(res => setTimeout(res, 2000));
       setHashResult(response.data);
     } catch (error) {
       setHashResult({ error: error.message });
+    } finally {
+      setHashLoading(false);
     }
   };
 
@@ -38,16 +58,19 @@ function App() {
 
   const handleFileType = async () => {
     if (!file) return;
+    setFileLoading(true);
     const formData = new FormData();
     formData.append('file', file);
     try {
       const response = await axios.post('http://127.0.0.1:8000/filetype', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
+      await new Promise(res => setTimeout(res, 1000)); // <-- Add this line for demo
       setFileTypeResult(response.data);
     } catch (error) {
       setFileTypeResult({ error: error.message });
     }
+    setFileLoading(false);
   };
 
   return (
@@ -95,15 +118,16 @@ function App() {
                 autoFocus
               />
               <Button
-                variant="contained"
-                color="success"
+                variant="outlined"
+                className={`cybersafe-btn${hashLoading ? ' cybersafe-btn--wide' : ''}`}
                 onClick={handleHash}
-                className="cybersafe-btn"
+                disabled={hashLoading || !hashInput.trim()}
               >
-                Hash
+                {hashLoading ? 'Hashing...' : 'Hash'}
               </Button>
             </div>
             <div className="cybersafe-result">
+              {hashLoading && <ModernLinearProgress style={{ marginBottom: 12, width: '100%' }} />}
               <AnimatePresence>
                 {hashResult && !hashResult.error && (
                   <motion.div
@@ -143,7 +167,6 @@ function App() {
               <Button
                 variant="outlined"
                 component="label"
-                color="primary"
                 className="cybersafe-btn"
               >
                 Select File
@@ -157,16 +180,16 @@ function App() {
                 {file ? file.name : 'No file selected'}
               </Typography>
               <Button
-                variant="contained"
-                color="success"
-                onClick={handleFileType}
-                disabled={!file}
+                variant="outlined"
                 className="cybersafe-btn"
+                onClick={handleFileType}
+                disabled={!file || fileLoading}
               >
-                Detect
+                {fileLoading ? 'Detecting...' : 'Detect'}
               </Button>
             </div>
             <div className="cybersafe-result">
+              {fileLoading && <ModernLinearProgress style={{ marginBottom: 12, width: '100%' }} />}
               <AnimatePresence>
                 {fileTypeResult && !fileTypeResult.error && (
                   <motion.div
@@ -183,7 +206,13 @@ function App() {
                         <strong>Size:</strong> {(fileTypeResult.filesize / (1024 * 1024)).toFixed(2)} MB
                       </div>
                       <div>
-                        <strong>Entropy:</strong> {fileTypeResult.entropy} 
+                        <strong>SHA-256:</strong> <code>{fileTypeResult.sha256}</code>
+                      </div>
+                      <div>
+                        <strong>MD5:</strong> <code>{fileTypeResult.md5}</code>
+                      </div>
+                      <div>
+                        <strong>Entropy:</strong> {fileTypeResult.entropy}
                         <span style={{ marginLeft: 8, fontWeight: 600 }}>
                           {fileTypeResult.entropy_label && `(${fileTypeResult.entropy_label})`}
                         </span>

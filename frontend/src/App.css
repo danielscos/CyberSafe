@@ -38,7 +38,7 @@
 .cybersafe-card {
   border-radius: 18px !important;
   background: rgba(30, 34, 44, 0.92) !important;
-  box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.10) !important;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(0,0,0,0.12) !important;
   padding: 28px 18px !important;
   margin-bottom: 0 !important;
 }
@@ -61,21 +61,50 @@
 }
 
 .cybersafe-btn {
-  background: #16c784 !important;
+  background: linear-gradient(90deg, #00c6fb 0%, #16c784 100%);
   color: #fff !important;
-  font-weight: 700 !important;
-  border-radius: 12px !important;
-  box-shadow: 0 2px 8px rgba(22,199,132,0.10);
-  transition: background 0.18s cubic-bezier(.4,0,.2,1), transform 0.18s cubic-bezier(.4,0,.2,1);
+  font-weight: 600;
+  border-radius: 14px !important;
+  min-width: 0;
+  min-height: 40px;
+  box-shadow: 0 4px 16px 0 rgba(0,198,251,0.13), 0 1.5px 6px 0 rgba(0,0,0,0.10);
+  border: none !important;
+  transition: 
+    background 0.18s cubic-bezier(.4,0,.2,1),
+    box-shadow 0.18s cubic-bezier(.4,0,.2,1),
+    transform 0.18s cubic-bezier(.4,0,.2,1),
+    min-width 0.18s cubic-bezier(.4,0,.2,1);
+  font-size: 1.08em;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.cybersafe-btn:hover, .cybersafe-btn:focus-visible {
+  background: linear-gradient(90deg, #11996c 0%, #005bea 100%);
+  box-shadow: 0 8px 32px 0 rgba(0,198,251,0.22), 0 2px 8px 0 rgba(0,0,0,0.12);
+  transform: translateY(-2px) scale(1.03);
 }
 
 .cybersafe-btn:active {
-  transform: scale(0.97);
+  background: linear-gradient(90deg, #00c6fb 0%, #16c784 100%);
+  box-shadow: 0 2px 8px 0 rgba(0,198,251,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.10);
+  transform: scale(0.98);
 }
 
-.cybersafe-btn:hover {
-  background: #11996c !important;
-  transform: translateY(-2px) scale(1.03);
+.cybersafe-btn[disabled], .cybersafe-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  background: #444 !important;
+}
+
+.cybersafe-btn--wide {
+  min-width: 120px;
 }
 
 .cybersafe-filename {
@@ -95,6 +124,13 @@
   flex-direction: column;
   align-items: center;
   margin-top: 0;
+}
+
+.cybersafe-result .MuiLinearProgress-root {
+  width: 100%;
+  min-width: 180px;
+  margin-bottom: 12px;
+  align-self: stretch;
 }
 
 .cybersafe-alert {
