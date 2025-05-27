@@ -2,7 +2,9 @@ use pyo3::prelude::*;
 use sha2::{Digest, Sha256, Sha512};
 use md5;
 use sha1::Sha1;
+use blake3;
 use hex;
+
 
 // sha256 functions (str, bytes)
 
@@ -74,6 +76,20 @@ fn hash_md5_bytes(bytes: &[u8]) -> PyResult<String> {
 }
 
 
+// blake3 functions (str, bytes)
+
+#[pyfunction]
+fn hash_blake3_str(text: &str) -> PyResult<String> {
+    let hash = blake3::hash(text.as_bytes());
+    Ok(hash.to_hex().to_string())
+}
+
+#[pyfunction]
+fn hash_blake3_bytes(bytes: &[u8]) -> PyResult<String> {
+    let hash = blake3::hash(bytes);
+    Ok(hash.to_hex().to_string())
+}
+
 // entropy calc
 #[pyfunction]
 fn entropy_bytes(bytes: &[u8]) -> PyResult<f64> {
@@ -105,6 +121,8 @@ fn rustlib(m: Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(hash_sha1_bytes, &m)?)?; 
     m.add_function(wrap_pyfunction!(hash_md5_str, &m)?)?;
     m.add_function(wrap_pyfunction!(hash_md5_bytes, &m)?)?;
+    m.add_function(wrap_pyfunction!(hash_blake3_bytes, &m)?)?;
+    m.add_function(wrap_pyfunction!(hash_blake3_str, &m)?)?;
     m.add_function(wrap_pyfunction!(entropy_bytes, &m)?)?;
     Ok(())
 }

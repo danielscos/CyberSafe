@@ -11,7 +11,6 @@ from rustlib import (
     entropy_bytes
 )
 
-
 router = APIRouter()
 
 client = genai.Client(api_key=gemini_api_key)

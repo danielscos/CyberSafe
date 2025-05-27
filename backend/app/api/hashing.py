@@ -7,7 +7,9 @@ from rustlib import (
     hash_sha1_str,
     hash_sha1_bytes,
     hash_sha512_str,
-    hash_sha512_bytes
+    hash_sha512_bytes,
+    hash_blake3_str,
+    hash_blake3_bytes
 )
 
 router = APIRouter()
@@ -55,3 +57,14 @@ async def hash_file_md5(file: UploadFile = File(...)):
     contents = await file.read()
     digest = hash_md5_bytes(contents)
     return {"filename": file.filename, "hash_type": "md5", "hash": digest}
+
+@router.get("/hash_blake3")
+async def hash_blake3_endpoint(text: str):
+    digest = hash_blake3_str(text)
+    return {"hash": digest, "hash_type": "blake3"}
+
+@router.post("/hash_file_blake3")
+async def hash_file_blake3(file: UploadFile = File(...)):
+    contents = await file.read()
+    digest = hash_blake3_bytes(contents)
+    return {"filename": file.filename, "hash_type": "blake3", "hash": digest}
