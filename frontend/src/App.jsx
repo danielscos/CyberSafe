@@ -12,6 +12,7 @@ const HASH_TYPES = [
   { label: 'SHA-1', value: 'sha1' },
   { label: 'SHA-256', value: 'sha256' },
   { label: 'SHA-512', value: 'sha512' },
+  { label: 'BLAKE3', value: 'blake3' },
 ];
 
 const ModernLinearProgress = styled(LinearProgress)(({ theme }) => ({
