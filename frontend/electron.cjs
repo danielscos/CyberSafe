@@ -14,8 +14,9 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-    }
+    },
   });
+  win.setTitle('CyberSafe');
 
   if (isDev) {
     win.loadURL('http://localhost:5173');

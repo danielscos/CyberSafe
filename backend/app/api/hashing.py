@@ -44,7 +44,7 @@ async def hash_sha1_endpoint(text: str):
 @router.post("/hash_file_sha1")
 async def hash_file_sha1(file: UploadFile = File(...)):
     contents = await file.read()
-    digest = hash_sha1_bytes(contents)
+    digest = hash_sha1_bytes(contents)  
     return {"filename": file.filename, "hash_type": "sha1", "hash": digest}
 
 @router.get("/hash_md5")

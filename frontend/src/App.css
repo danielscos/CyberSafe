@@ -1,3 +1,143 @@
+body, html, #root {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+}
+
+.main-bg {
+  min-height: 100vh;
+  width: 100vw; /* Add this line */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboard-container {
+  width: 100%;
+  display: flex;
+  gap: 40px;
+  padding: 40px 0;
+  height: 100%;           /* Add this line */
+  align-items: stretch;   /* Add this line */
+}
+
+.sidebar-glass {
+  background: rgba(24, 54, 61, 0.82);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(0,0,0,0.12);
+  border-radius: 24px;
+  padding: 36px 28px;
+  min-width: 270px;
+  color: #e6f5f7;
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  margin-left: 40px;
+}
+
+.brand-title {
+  font-size: 2.2em;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.sidebar-section h2 {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+
+  color: #7fffd4;
+  letter-spacing: 1px;
+}
+
+.sidebar-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-btn {
+  margin: 10px 0;
+  font-size: 1.08em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.95;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 8px 16px;
+  transition: 
+    background 0.18s cubic-bezier(.4,0,.2,1),
+    color 0.15s,
+    box-shadow 0.18s cubic-bezier(.4,0,.2,1);
+}
+
+.sidebar-btn:hover, .sidebar-btn.active {
+  background: linear-gradient(90deg, #00c6fb 0%, #16c784 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px 0 rgba(0,198,251,0.13), 0 1.5px 6px 0 rgba(0,0,0,0.10);
+}
+
+.icon {
+  font-size: 1.2em;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  width: 1200px;   /* Add this line */
+  width: 100%;          /* Add this line */
+  margin-right: 40px;   /* Optional: adds space on the right */
+}
+
+.dashboard-row {
+  display: flex;
+  gap: 36px;
+}
+
+.dashboard-card {
+  background: rgba(24, 54, 61, 0.82);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(0,0,0,0.12);
+  padding: 28px 38px;
+  min-width: 220px;
+  color: #e6f5f7;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.card-label {
+  font-size: 1.1em;
+  color: #7fffd4;
+  margin-bottom: 8px;
+}
+
+.card-value {
+  font-size: 1.35em;
+  font-weight: 600;
+}
+
+.dashboard-news {
+  background: rgba(24, 54, 61, 0.75);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.22), 0 2px 8px 0 rgba(0,0,0,0.12);
+  padding: 28px 38px;
+  color: #e6f5f7;
+  height: 600px;
+}
+
+.news-placeholder {
+  min-height: 80px;
+  opacity: 0.7;
+  font-style: italic;
+}
+
 .cybersafe-bg {
   min-height: 100vh;
   width: 100vw;
