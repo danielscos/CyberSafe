@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "electron": "electron .",
-    "backend": "python3 /home/kali/CyberSafe/backend/app/serve.py",
+    "backend": "python3 /home/arch/CyberSafe/backend/app/serve.py",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
