@@ -50,6 +50,7 @@ function App() {
   const [hashLoading, setHashLoading] = useState(false);
   const [fileLoading, setFileLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard"); // Start from home page
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const handleHash = async () => {
     setHashLoading(true);
@@ -62,6 +63,16 @@ function App() {
       setHashResult({ error: error.message });
     } finally {
       setHashLoading(false);
+    }
+  };
+
+  const handleCopyHash = async () => {
+    try {
+      await navigator.clipboard.writeText(hashResult.hash);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
+    } catch (err) {
+      console.error("Failed to copy: ", err);
     }
   };
 
@@ -303,12 +314,95 @@ function App() {
                       {hashResult.error ? (
                         <Alert severity="error">{hashResult.error}</Alert>
                       ) : (
-                        <Typography
-                          variant="body1"
-                          sx={{ color: "#fff", fontWeight: "bold" }}
-                        >
-                          <b>Result:</b> {hashResult.hash}
-                        </Typography>
+                        <div>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "flex-start",
+                              marginBottom: 12,
+                            }}
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                color: "#fff",
+                                fontWeight: "bold",
+                                fontSize: 14,
+                              }}
+                            >
+                              <b>
+                                Result ({hashResult.hash_type?.toUpperCase()}):
+                              </b>
+                            </Typography>
+                            <Button
+                              variant="outlined"
+                              size="small"
+                              onClick={handleCopyHash}
+                              sx={{
+                                minWidth: 100,
+                                height: 32,
+                                fontWeight: "bold",
+                                fontSize: 12,
+                                color: copySuccess ? "#4caf50" : "#00c6fb",
+                                borderColor: copySuccess
+                                  ? "#4caf50"
+                                  : "#00c6fb",
+                                backgroundColor: copySuccess
+                                  ? "rgba(76, 175, 80, 0.1)"
+                                  : "rgba(0, 198, 251, 0.1)",
+                                transition: "all 0.3s ease",
+                                "&:hover": {
+                                  backgroundColor: copySuccess
+                                    ? "rgba(76, 175, 80, 0.2)"
+                                    : "rgba(0, 198, 251, 0.2)",
+                                  borderColor: copySuccess
+                                    ? "#66bb6a"
+                                    : "#005bea",
+                                },
+                              }}
+                              startIcon={
+                                copySuccess ? (
+                                  <span style={{ fontSize: 14 }}>✓</span>
+                                ) : (
+                                  <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                )
+                              }
+                            >
+                              {copySuccess ? "Copied!" : "Copy"}
+                            </Button>
+                          </div>
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              color: "#fff",
+                              fontWeight: "bold",
+                              wordBreak: "break-all",
+                              overflowWrap: "break-word",
+                              whiteSpace: "pre-wrap",
+                              backgroundColor: "rgba(0, 0, 0, 0.3)",
+                              padding: "12px",
+                              borderRadius: "8px",
+                              border: "1px solid rgba(255, 255, 255, 0.1)",
+                              fontFamily: "monospace",
+                              fontSize: 14,
+                              lineHeight: 1.5,
+                            }}
+                          >
+                            {hashResult.hash}
+                          </Typography>
+                        </div>
                       )}
                     </Paper>
                   )}
