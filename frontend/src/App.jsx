@@ -1,50 +1,62 @@
-import React, { useState } from 'react'
-import axios from 'axios';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button, TextField, Typography, Paper, Alert, MenuItem, Select, FormControl, InputLabel, CssBaseline, ThemeProvider, createTheme, LinearProgress } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import './App.css'
+import React, { useState } from "react";
+import axios from "axios";
+import {
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  Alert,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+  LinearProgress,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import "./App.css";
 
 const theme = createTheme();
 
 const HASH_TYPES = [
-  { label: 'MD5', value: 'md5' },
-  { label: 'SHA-1', value: 'sha1' },
-  { label: 'SHA-256', value: 'sha256' },
-  { label: 'SHA-512', value: 'sha512' },
-  { label: 'BLAKE3', value: 'blake3' },
+  { label: "MD5", value: "md5" },
+  { label: "SHA-1", value: "sha1" },
+  { label: "SHA-256", value: "sha256" },
+  { label: "SHA-512", value: "sha512" },
+  { label: "BLAKE3", value: "blake3" },
 ];
 
 const ModernLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 12,
   borderRadius: 8,
-  backgroundColor: theme.palette.mode === 'light' ? '#e0e0e0' : '#23232b',
-  boxShadow: '0 6px 24px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.10)',
-  overflow: 'hidden',
-  '& .MuiLinearProgress-bar': {
+  backgroundColor: theme.palette.mode === "light" ? "#e0e0e0" : "#23232b",
+  boxShadow: "0 6px 24px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.10)",
+  overflow: "hidden",
+  "& .MuiLinearProgress-bar": {
     borderRadius: 8,
-    background: 'linear-gradient(90deg, #00c6fb 0%, #005bea 100%)',
-    boxShadow: '0 2px 8px 0 rgba(0,0,0,0.22), 0 1.5px 6px 0 rgba(0,0,0,0.10)',
+    background: "linear-gradient(90deg, #00c6fb 0%, #005bea 100%)",
+    boxShadow: "0 2px 8px 0 rgba(0,0,0,0.22), 0 1.5px 6px 0 rgba(0,0,0,0.10)",
   },
 }));
 
 function App() {
-  const [hashInput, setHashInput] = useState('');
-  const [hashType, setHashType] = useState('md5');
+  const [hashInput, setHashInput] = useState("");
+  const [hashType, setHashType] = useState("md5");
   const [hashResult, setHashResult] = useState(null);
   const [file, setFile] = useState(null);
   const [fileTypeResult, setFileTypeResult] = useState(null);
   const [hashLoading, setHashLoading] = useState(false);
   const [fileLoading, setFileLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('dashboard'); // Start from home page
+  const [activeTab, setActiveTab] = useState("dashboard"); // Start from home page
 
   const handleHash = async () => {
     setHashLoading(true);
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/hash_${hashType}?text=${encodeURIComponent(hashInput)}`
+        `http://127.0.0.1:8000/hash_${hashType}?text=${encodeURIComponent(hashInput)}`,
       );
-      await new Promise(res => setTimeout(res, 2000));
       setHashResult(response.data);
     } catch (error) {
       setHashResult({ error: error.message });
@@ -62,12 +74,15 @@ function App() {
     if (!file) return;
     setFileLoading(true);
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
     try {
-      const response = await axios.post('http://127.0.0.1:8000/filetype', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-      await new Promise(res => setTimeout(res, 1000)); // <-- Add this line for demo
+      const response = await axios.post(
+        "http://127.0.0.1:8000/filetype",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+      );
       setFileTypeResult(response.data);
     } catch (error) {
       setFileTypeResult({ error: error.message });
@@ -85,69 +100,198 @@ function App() {
             <div className="sidebar-section">
               <h2>TOOLS</h2>
               <ul>
-                <li className={`sidebar-btn${activeTab === 'dashboard' ? ' active' : ''}`} onClick={() => setActiveTab('dashboard')}><span className="icon">🏠</span> Home</li>
-                <li className={`sidebar-btn${activeTab === 'hashing' ? ' active' : ''}`} onClick={() => setActiveTab('hashing')}><span className="icon">#</span> Hashing</li>
-                <li className={`sidebar-btn${activeTab === 'filescan' ? ' active' : ''}`} onClick={() => setActiveTab('filescan')}><span className="icon">📁</span> File Scan</li>
-                <li className={`sidebar-btn${activeTab === 'yara' ? ' active' : ''}`} onClick={() => setActiveTab('yara')}><span className="icon">🧬</span> YARA Scan</li>
+                <li
+                  className={`sidebar-btn${activeTab === "dashboard" ? " active" : ""}`}
+                  onClick={() => setActiveTab("dashboard")}
+                >
+                  <span className="icon">🏠</span> Home
+                </li>
+                <li
+                  className={`sidebar-btn${activeTab === "hashing" ? " active" : ""}`}
+                  onClick={() => setActiveTab("hashing")}
+                >
+                  <span className="icon">#</span> Hashing
+                </li>
+                <li
+                  className={`sidebar-btn${activeTab === "filescan" ? " active" : ""}`}
+                  onClick={() => setActiveTab("filescan")}
+                >
+                  <span className="icon">📁</span> File Scan
+                </li>
+                <li
+                  className={`sidebar-btn${activeTab === "yara" ? " active" : ""}`}
+                  onClick={() => setActiveTab("yara")}
+                >
+                  <span className="icon">🧬</span> YARA Scan
+                </li>
               </ul>
             </div>
             <div className="sidebar-section">
               <h2>RESOURCES</h2>
               <ul>
-                <li className="sidebar-btn"><span className="icon">🌐</span> VirusTotal</li>
-                <li className="sidebar-btn"><span className="icon">🔗</span> Hybrid Analysis</li>
-                <li className="sidebar-btn"><span className="icon">🖥️</span> ANY.RUN</li>
-                <li className="sidebar-btn"><span className="icon">💾</span> MalwareBazaar</li>
-                <li className="sidebar-btn"><span className="icon">📚</span> Exploit Database</li>
+                <li className="sidebar-btn">
+                  <span className="icon">🌐</span> VirusTotal
+                </li>
+                <li className="sidebar-btn">
+                  <span className="icon">🔗</span> Hybrid Analysis
+                </li>
+                <li className="sidebar-btn">
+                  <span className="icon">🖥️</span> ANY.RUN
+                </li>
+                <li className="sidebar-btn">
+                  <span className="icon">💾</span> MalwareBazaar
+                </li>
+                <li className="sidebar-btn">
+                  <span className="icon">📚</span> Exploit Database
+                </li>
               </ul>
             </div>
           </aside>
           <main className="main-content">
-            {activeTab === 'hashing' && (
-              <div className="tool-content" style={{ maxWidth: 600, margin: '0 auto', paddingTop: 24, minHeight: 420, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-                <Typography variant="h5" gutterBottom sx={{ color: '#fff', fontWeight: 'bold' }}>Hashing Tool</Typography>
+            {activeTab === "hashing" && (
+              <div
+                className="tool-content"
+                style={{
+                  maxWidth: 600,
+                  margin: "0 auto",
+                  paddingTop: 24,
+                  minHeight: 420,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  sx={{ color: "#fff", fontWeight: "bold" }}
+                >
+                  Hashing Tool
+                </Typography>
                 <TextField
-                  label={<span style={{ color: '#fff', fontWeight: 'bold' }}>Text to Hash</span>}
+                  label={
+                    <span style={{ color: "#fff", fontWeight: "bold" }}>
+                      Text to Hash
+                    </span>
+                  }
                   value={hashInput}
-                  onChange={e => setHashInput(e.target.value)}
+                  onChange={(e) => setHashInput(e.target.value)}
                   fullWidth
                   margin="normal"
-                  InputLabelProps={{ style: { color: '#fff', fontWeight: 'bold' } }}
-                  InputProps={{ style: { color: '#fff', fontWeight: 'bold' } }}
-                  sx={{ mb: 2, background: '#23232b', borderRadius: 1 }}
+                  InputLabelProps={{
+                    style: { color: "#fff", fontWeight: "bold" },
+                  }}
+                  InputProps={{ style: { color: "#fff", fontWeight: "bold" } }}
+                  sx={{ mb: 2, background: "#23232b", borderRadius: 1 }}
                 />
                 <FormControl fullWidth margin="normal" sx={{ mb: 2 }}>
-                  <InputLabel sx={{ color: '#fff', fontWeight: 'bold' }}>Hash Type</InputLabel>
+                  <InputLabel sx={{ color: "#fff", fontWeight: "bold" }}>
+                    Hash Type
+                  </InputLabel>
                   <Select
                     value={hashType}
                     label="Hash Type"
-                    onChange={e => setHashType(e.target.value)}
-                    sx={{ color: '#fff', fontWeight: 'bold', background: '#23232b', borderRadius: 1 }}
-                    MenuProps={{ PaperProps: { sx: { background: '#23232b', color: '#fff' } } }}
+                    onChange={(e) => setHashType(e.target.value)}
+                    sx={{
+                      color: "#fff",
+                      fontWeight: "bold",
+                      background: "#23232b",
+                      borderRadius: 1,
+                    }}
+                    MenuProps={{
+                      PaperProps: {
+                        sx: { background: "#23232b", color: "#fff" },
+                      },
+                    }}
                   >
-                    {HASH_TYPES.map(type => (
-                      <MenuItem key={type.value} value={type.value} sx={{ color: '#fff', fontWeight: 'bold' }}>{type.label}</MenuItem>
+                    {HASH_TYPES.map((type) => (
+                      <MenuItem
+                        key={type.value}
+                        value={type.value}
+                        sx={{ color: "#fff", fontWeight: "bold" }}
+                      >
+                        {type.label}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 16,
+                  }}
+                >
                   <Button
                     variant="contained"
                     color="primary"
                     onClick={handleHash}
                     disabled={hashLoading || !hashInput}
-                    sx={{ flex: 1, fontWeight: 'bold', fontSize: 16, borderRadius: 2, boxShadow: '0 6px 24px 0 rgba(0,198,251,0.18), 0 1.5px 6px 0 rgba(0,91,234,0.10)' }}
+                    sx={{
+                      flex: 1,
+                      fontWeight: "bold",
+                      fontSize: 16,
+                      borderRadius: 2,
+                      boxShadow:
+                        "0 6px 24px 0 rgba(0,198,251,0.18), 0 1.5px 6px 0 rgba(0,91,234,0.10)",
+                    }}
                   >
                     Generate Hash
                   </Button>
                   <Button
                     variant="text"
                     color="secondary"
-                    onClick={() => { setHashInput(''); setHashResult(null); }}
-                    sx={{ ml: 2, px: 3, py: 1.5, fontWeight: 'bold', fontSize: 15, color: '#00c6fb', borderRadius: 2, background: 'rgba(0,198,251,0.08)', transition: 'all 0.2s', '&:hover': { background: 'rgba(0,91,234,0.18)', color: '#fff' } }}
+                    onClick={() => {
+                      setHashInput("");
+                      setHashResult(null);
+                    }}
+                    sx={{
+                      ml: 2,
+                      px: 3,
+                      py: 1.5,
+                      fontWeight: "bold",
+                      fontSize: 15,
+                      color: "#00c6fb",
+                      borderRadius: 2,
+                      background: "rgba(0,198,251,0.08)",
+                      transition: "all 0.2s",
+                      "&:hover": {
+                        background: "rgba(0,91,234,0.18)",
+                        color: "#fff",
+                      },
+                    }}
                   >
-                    <span style={{ fontWeight: 700, letterSpacing: 1, display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="9" stroke="#00c6fb" strokeWidth="2"/><path d="M7 7L13 13M13 7L7 13" stroke="#00c6fb" strokeWidth="2" strokeLinecap="round"/></svg>
+                    <span
+                      style={{
+                        fontWeight: 700,
+                        letterSpacing: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 6,
+                      }}
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="10"
+                          cy="10"
+                          r="9"
+                          stroke="#00c6fb"
+                          strokeWidth="2"
+                        />
+                        <path
+                          d="M7 7L13 13M13 7L7 13"
+                          stroke="#00c6fb"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
                       Deselect
                     </span>
                   </Button>
@@ -155,42 +299,94 @@ function App() {
                 {hashLoading && <ModernLinearProgress sx={{ mt: 2 }} />}
                 <div style={{ minHeight: 120 }}>
                   {hashResult && (
-                    <Paper sx={{ mt: 2, p: 2, background: '#23232b' }}>
+                    <Paper sx={{ mt: 2, p: 2, background: "#23232b" }}>
                       {hashResult.error ? (
                         <Alert severity="error">{hashResult.error}</Alert>
                       ) : (
-                        <Typography variant="body1" sx={{ color: '#fff', fontWeight: 'bold' }}><b>Result:</b> {hashResult.hash}</Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{ color: "#fff", fontWeight: "bold" }}
+                        >
+                          <b>Result:</b> {hashResult.hash}
+                        </Typography>
                       )}
                     </Paper>
                   )}
                 </div>
               </div>
             )}
-            {activeTab === 'filescan' && (
-              <div className="tool-content" style={{ maxWidth: 600, margin: '0 auto', paddingTop: 24, minHeight: 520, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-                <Typography variant="h5" gutterBottom sx={{ color: '#fff', fontWeight: 'bold' }}>File Type Scanner</Typography>
+            {activeTab === "filescan" && (
+              <div
+                className="tool-content"
+                style={{
+                  maxWidth: 600,
+                  margin: "0 auto",
+                  paddingTop: 24,
+                  minHeight: 520,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  sx={{ color: "#fff", fontWeight: "bold" }}
+                >
+                  File Type Scanner
+                </Typography>
                 <Button
                   variant="contained"
                   component="label"
-                  sx={{ mt: 2, width: '100%', fontWeight: 'bold', fontSize: 16 }}
+                  sx={{
+                    mt: 2,
+                    width: "100%",
+                    fontWeight: "bold",
+                    fontSize: 16,
+                  }}
                 >
                   Upload File
-                  <input
-                    type="file"
-                    hidden
-                    onChange={handleFileChange}
-                  />
+                  <input type="file" hidden onChange={handleFileChange} />
                 </Button>
                 {file && (
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <Typography sx={{ mt: 1, color: '#fff', fontWeight: 'bold' }}>Selected: {file.name}</Typography>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "100%",
+                    }}
+                  >
+                    <Typography
+                      sx={{ mt: 1, color: "#fff", fontWeight: "bold" }}
+                    >
+                      Selected: {file.name}
+                    </Typography>
                     <Button
                       variant="outlined"
                       color="secondary"
-                      onClick={() => { setFile(null); setFileTypeResult(null); }}
-                      sx={{ mt: 1, fontWeight: 'bold', color: '#00c6fb', borderColor: '#00c6fb', ml: 2, width: 140, transition: 'all 0.2s', '&:hover': { background: '#003a5e', borderColor: '#005bea', color: '#fff' } }}
+                      onClick={() => {
+                        setFile(null);
+                        setFileTypeResult(null);
+                      }}
+                      sx={{
+                        mt: 1,
+                        fontWeight: "bold",
+                        color: "#00c6fb",
+                        borderColor: "#00c6fb",
+                        ml: 2,
+                        width: 140,
+                        transition: "all 0.2s",
+                        "&:hover": {
+                          background: "#003a5e",
+                          borderColor: "#005bea",
+                          color: "#fff",
+                        },
+                      }}
                     >
-                      <span style={{ fontWeight: 700, letterSpacing: 1 }}>✖ Deselect</span>
+                      <span style={{ fontWeight: 700, letterSpacing: 1 }}>
+                        ✖ Deselect
+                      </span>
                     </Button>
                   </div>
                 )}
@@ -199,27 +395,78 @@ function App() {
                   color="primary"
                   onClick={handleFileType}
                   disabled={fileLoading || !file}
-                  sx={{ mt: 2, width: '100%', fontWeight: 'bold', fontSize: 16 }}
+                  sx={{
+                    mt: 2,
+                    width: "100%",
+                    fontWeight: "bold",
+                    fontSize: 16,
+                  }}
                 >
                   Detect File Type
                 </Button>
                 {fileLoading && <ModernLinearProgress sx={{ mt: 2 }} />}
                 <div style={{ minHeight: 220 }}>
                   {fileTypeResult && (
-                    <Paper sx={{ mt: 2, p: 2, background: '#23232b' }}>
+                    <Paper sx={{ mt: 2, p: 2, background: "#23232b" }}>
                       {fileTypeResult.error ? (
                         <Alert severity="error">{fileTypeResult.error}</Alert>
                       ) : (
                         <>
-                          <Typography variant="body1" sx={{ color: '#fff', fontWeight: 'bold' }}><b>Filename:</b> {fileTypeResult.filename}</Typography>
-                          <Typography variant="body1" sx={{ color: '#fff', fontWeight: 'bold' }}><b>Type:</b> {fileTypeResult.file_type}</Typography>
-                          <Typography variant="body1" sx={{ color: '#fff', fontWeight: 'bold' }}><b>MIME Type:</b> {fileTypeResult.mime_type}</Typography>
-                          <Typography variant="body1" sx={{ color: '#fff', fontWeight: 'bold' }}><b>Size:</b> {fileTypeResult.filesize} bytes</Typography>
-                          <Typography variant="body1" sx={{ color: '#fff', fontWeight: 'bold' }}><b>SHA-256:</b> {fileTypeResult.sha256}</Typography>
-                          <Typography variant="body1" sx={{ color: '#fff', fontWeight: 'bold' }}><b>MD5:</b> {fileTypeResult.md5}</Typography>
-                          <Typography variant="body1" sx={{ color: '#fff', fontWeight: 'bold' }}><b>Entropy:</b> {fileTypeResult.entropy} ({fileTypeResult.entropy_label})</Typography>
-                          <Typography variant="body2" sx={{ color: '#aaa', fontStyle: 'italic', mb: 1 }}>{fileTypeResult.entropy_explanation}</Typography>
-                          <Typography variant="body1" sx={{ color: '#fff', fontWeight: 'bold', mt: 2 }}><b>Description:</b> {fileTypeResult.description}</Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#fff", fontWeight: "bold" }}
+                          >
+                            <b>Filename:</b> {fileTypeResult.filename}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#fff", fontWeight: "bold" }}
+                          >
+                            <b>Type:</b> {fileTypeResult.file_type}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#fff", fontWeight: "bold" }}
+                          >
+                            <b>MIME Type:</b> {fileTypeResult.mime_type}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#fff", fontWeight: "bold" }}
+                          >
+                            <b>Size:</b> {fileTypeResult.filesize} bytes
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#fff", fontWeight: "bold" }}
+                          >
+                            <b>SHA-256:</b> {fileTypeResult.sha256}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#fff", fontWeight: "bold" }}
+                          >
+                            <b>MD5:</b> {fileTypeResult.md5}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#fff", fontWeight: "bold" }}
+                          >
+                            <b>Entropy:</b> {fileTypeResult.entropy} (
+                            {fileTypeResult.entropy_label})
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            sx={{ color: "#aaa", fontStyle: "italic", mb: 1 }}
+                          >
+                            {fileTypeResult.entropy_explanation}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{ color: "#fff", fontWeight: "bold", mt: 2 }}
+                          >
+                            <b>Description:</b> {fileTypeResult.description}
+                          </Typography>
                         </>
                       )}
                     </Paper>
@@ -227,14 +474,19 @@ function App() {
                 </div>
               </div>
             )}
-            {activeTab === 'yara' && (
+            {activeTab === "yara" && (
               <div className="tool-content">
-                <Typography variant="h5" gutterBottom>YARA Scan (Coming Soon)</Typography>
-                <Alert severity="info">YARA scanning functionality will be available in a future update.</Alert>
+                <Typography variant="h5" gutterBottom>
+                  YARA Scan (Coming Soon)
+                </Typography>
+                <Alert severity="info">
+                  YARA scanning functionality will be available in a future
+                  update.
+                </Alert>
               </div>
             )}
             {/* You can keep the dashboard/news below or move it to a separate tab if desired */}
-            {activeTab === 'dashboard' && (
+            {activeTab === "dashboard" && (
               <div className="dashboard-home">
                 <div className="dashboard-row" style={{ marginBottom: 32 }}>
                   <div className="dashboard-card">
@@ -246,7 +498,15 @@ function App() {
                     <div className="card-value">16 GB</div>
                   </div>
                 </div>
-                <div className="dashboard-news" style={{ minHeight: 180, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                <div
+                  className="dashboard-news"
+                  style={{
+                    minHeight: 180,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                  }}
+                >
                   <h2 style={{ marginTop: 0 }}>Cybersecurity News</h2>
                   <div className="news-placeholder" style={{ flex: 1 }}>
                     {/* News content here */}
@@ -258,7 +518,7 @@ function App() {
         </div>
       </div>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;

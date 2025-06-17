@@ -2,7 +2,7 @@ from fastapi import APIRouter, File, UploadFile
 import magic
 import mimetypes
 import os
-from google import genai
+import google.generativeai as genai
 import time
 from .gemini_api_key import gemini_api_key
 from rustlib import (
@@ -13,7 +13,7 @@ from rustlib import (
 
 router = APIRouter()
 
-client = genai.Client(api_key=gemini_api_key)
+genai.configure(api_key=gemini_api_key)
 
 def interpret_entropy(entropy, filesize):
     if filesize < 1024:
@@ -63,19 +63,18 @@ async def detect_filetype(file: UploadFile = File(...)):
     if ext:
         ext = ext.lstrip('.')
     else:
-        ext = os.path.splitext(file.filename)[1].lstrip('.')
+        filename = file.filename if file.filename else ''
+        ext = os.path.splitext(filename)[1].lstrip('.')
         if not ext:
             ext = mime.split('/')[1] if '/' in mime else 'unknown'
 
     prompt = f"Give a brief, one sentence explanation of what a {ext} file type is and what it is commonly used for. Keep it simple and easy to understand for non-technical users."
     description = "Could not fetch explanation."
-    
+
     for _ in range(3): # try up to 3 times
         try:
-            gemini_response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=prompt
-            )
+            model = genai.GenerativeModel("gemini-2.0-flash")
+            gemini_response = model.generate_content(prompt)
             description = gemini_response.candidates[0].content.parts[0].text.strip()
             break
         except Exception as e:
