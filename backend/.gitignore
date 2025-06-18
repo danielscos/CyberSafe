@@ -1,3 +1,4 @@
+__init__.py
 gemini_api_key.py
 rustlib_binding.py
 __pycache__/
@@ -5,3 +6,4 @@ dist
 build
 CyberSafeBackend.spec
 *.egg-info
+rustlib.so
