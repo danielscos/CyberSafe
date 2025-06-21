@@ -266,7 +266,7 @@ If you discover a security vulnerability, please send an email to [security@cybe
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## ❤️ Support the Project
+## Support the Project
 
 If you find CyberSafe useful, please consider supporting its development:
 
