@@ -214,7 +214,9 @@ npm run dist         # Create distributable package
 
 ## 🤝 Contributing
 
-We welcome contributions from the cybersecurity community!
+We welcome contributions from the cybersecurity community! 
+
+📖 **For detailed contribution guidelines, please read our [CONTRIBUTING.md](CONTRIBUTING.md) file.**
 
 ### How to Contribute
 1. Fork the repository
