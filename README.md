@@ -33,7 +33,7 @@ Calculate and verify file integrity using multiple cryptographic algorithms incl
 
 ### Encoding/Decoding Tools
 Comprehensive support for various encoding formats:
-- Base64, Base32, Base16
+- Base64
 - URL encoding/decoding
 - HTML entity encoding
 - Hexadecimal conversion
