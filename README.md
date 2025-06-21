@@ -21,7 +21,7 @@ CyberSafe is a versatile, all-in-one desktop platform for cybersecurity professi
 - [Security](#security)
 - [Tech Stack](#tech-stack)
 - [License](#-license)
-- [Support](#-support-the-project)
+- [Support](#support-the-project)
 - [Owner](#owner)
 
 ## Features
