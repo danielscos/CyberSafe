@@ -9,7 +9,7 @@ import { useLocalStorage } from "./hooks/useApi";
 import { NAVIGATION_TABS, MESSAGES } from "./constants";
 import "./App.css";
 
-// Create Material-UI theme
+// create Material-UI theme
 const theme = createTheme({
   palette: {
     mode: "dark",
@@ -22,7 +22,7 @@ const theme = createTheme({
   },
 });
 
-// YARA Tool placeholder component
+// YARA tool plaeholder component
 const YaraTool = () => (
   <ToolContainer>
     <WhiteTypography variant="h5" gutterBottom>
@@ -32,7 +32,7 @@ const YaraTool = () => (
   </ToolContainer>
 );
 
-// Error Boundary Component
+// error boundary component
 const ErrorFallback = ({ error, resetError }) => (
   <ToolContainer>
     <Alert severity="error" sx={{ mb: 2 }}>
@@ -59,23 +59,23 @@ const ErrorFallback = ({ error, resetError }) => (
 
 // Main App Component
 function App() {
-  // Use localStorage to persist the active tab
+  // use localStorage to persist the active tab
   const [activeTab, setActiveTab] = useLocalStorage(
     "cyberSafeActiveTab",
     NAVIGATION_TABS.DASHBOARD,
   );
   const [error, setError] = useState(null);
 
-  // Error boundary functionality
+  // error boundary functionality
   const resetError = () => setError(null);
 
   // Handle tab changes
   const handleTabChange = (newTab) => {
     setActiveTab(newTab);
-    setError(null); // Clear any existing errors when switching tabs
+    setError(null); // clear any existing errors when switching tabs
   };
 
-  // Render the appropriate tool component based on active tab
+  // render the appropriate tool component based on active tab
   const renderActiveComponent = () => {
     if (error) {
       return <ErrorFallback error={error} resetError={resetError} />;
