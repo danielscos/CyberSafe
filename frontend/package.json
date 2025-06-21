@@ -1,16 +1,31 @@
 {
-  "name": "frontend",
+  "name": "cybersafe",
   "private": true,
-  "version": "0.0.0",
-  "description": "Your app description here",
-  "author": "Your Name <your@email.com>",
+  "version": "0.1.0",
+  "description": "CyberSafe - Your Cyber Security Swiss Knife. A versatile desktop platform for cybersecurity professionals with tools for file analysis, malware detection, and security research.",
+  "author": "danielscos <danielscos@github.com>",
+  "homepage": "https://github.com/danielscos/CyberSafe",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielscos/CyberSafe.git"
+  },
+  "keywords": [
+    "cybersecurity",
+    "malware-analysis",
+    "file-hashing",
+    "yara",
+    "electron",
+    "security-tools"
+  ],
   "type": "module",
   "main": "electron.cjs",
   "scripts": {
     "dev": "vite",
     "electron": "electron .",
-    "backend": "python3 /home/arch/CyberSafe/backend/app/serve.py",
-    "build": "vite build",
+    "backend": "python3 ../backend/app/serve.py",
+    "build:frontend": "vite build",
+    "build:backend": "cd ../backend && python build.py",
+    "build": "npm run build:backend && npm run build:frontend",
     "lint": "eslint .",
     "preview": "vite preview",
     "dev:electron": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
@@ -42,8 +57,10 @@
     "wait-on": "^8.0.3"
   },
   "build": {
-    "appId": "com.yourname.yourapp",
-    "productName": "YourAppName",
+    "appId": "com.danielscos.cybersafe",
+    "productName": "CyberSafe",
+    "description": "Your Cyber Security Swiss Knife",
+    "copyright": "Copyright © 2024 danielscos",
     "files": [
       "dist",
       "electron.cjs",
