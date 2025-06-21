@@ -19,7 +19,7 @@ CyberSafe plans to include the following features:
 *   **🔄 Encoding/Decoding:** Easily encode and decode data in various formats like Base64, Hex, and others.
 *   **📜 YARA Rule Scanner:** Scan files and processes against YARA rules to identify malware or suspicious patterns.
 *   **📊 Entropy Calculator:** Analyze the randomness of data, useful for identifying encrypted or packed content.
-*   **String Extractor:** Extract human-readable strings from binary files.
+*   **String Extractor:** Extract human-readablestrings from binary files.
 *   **Live Hash Checker:** Monitor files or directories for changes by continuously checking their hashes.
 *   *(And more to come! 🚀)*
 
@@ -49,4 +49,3 @@ If you find CyberSafe useful or interesting, please consider supporting its deve
 ---
 
 We are excited to build a powerful and user-friendly tool for the cybersecurity world. Stay tuned for updates! 📢
-
