@@ -1,6 +1,6 @@
 # CyberSafe - Your Cyber Security Swiss Knife
 
-![hackatime stats](https://github-readme-stats.hackclub.dev/api/wakatime?username=2324&api_domain=hackatime.hackclub.com&theme=darcula&custom_title=Hackatime+Stats&layout=compact&cache_seconds=0&langs_count=8)
+![hackatime stats](https://github-readme-stats.hackclub.dev/api/wakatime?username=2324&api_domain=hackatime.hackclub.com&theme=omni&custom_title=Hackatime+Stats&layout=compact&cache_seconds=0&langs_count=8)
 
 CyberSafe is a versatile, all-in-one desktop platform for cybersecurity professionals, malware analysts, and security enthusiasts. Built with modern technologies, it provides essential tools for file analysis, malware detection, and security research in an intuitive interface.
 
@@ -214,7 +214,7 @@ npm run dist         # Create distributable package
 
 ## 🤝 Contributing
 
-We welcome contributions from the cybersecurity community! 
+We welcome contributions from the cybersecurity community!
 
 📖 **For detailed contribution guidelines, please read our [CONTRIBUTING.md](CONTRIBUTING.md) file.**
 
