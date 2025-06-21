@@ -12,19 +12,17 @@ CyberSafe is a versatile, all-in-one desktop platform for cybersecurity professi
 
 ## 📋 Table of Contents
 
-- [Features](#-features)
-- [Screenshots](#-screenshots)
+- [Features](#features)
 - [Installation](#-installation)
-- [Development Setup](#-development-setup)
+- [Development Setup](#development-setup)
 - [Usage](#-usage)
-- [System Requirements](#-system-requirements)
-- [Project Status](#-project-status)
+- [Project Status](#project-status)
 - [Contributing](#-contributing)
-- [Security](#-security)
-- [Tech Stack](#-tech-stack)
+- [Security](#security)
+- [Tech Stack](#tech-stack)
 - [License](#-license)
 - [Support](#-support-the-project)
-- [Owner](#-owner)
+- [Owner](#owner)
 
 ## Features
 
@@ -263,7 +261,6 @@ If you discover a security vulnerability, please send an email to [security@cybe
 ### Future Integrations
 - **Rust** - Performance-critical components
 - **YARA** - Pattern matching engine
-- **SQLite** - Local data storage
 
 ## 📄 License
 
