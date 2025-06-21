@@ -284,7 +284,7 @@ This project is developed and maintained by **danielscos**.
 
 - 🌐 **Website:** [danielscos.github.io/about_me](https://danielscos.github.io/about_me)
 - 🐙 **GitHub:** [github.com/danielscos](https://github.com/danielscos)
-- 💼 **LinkedIn:** [Connect with me](https://linkedin.com/in/danielscos)
+- 💼 **LinkedIn:** [Connect with me](https://www.linkedin.com/in/daniel-grosso-0473922b6/)
 
 ---
 
