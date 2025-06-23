@@ -3,11 +3,11 @@ import { CssBaseline, ThemeProvider, Alert } from "@mui/material";
 import {
   CozyTypography,
   CozyToolContainer,
-} from "./components/CozyStyledComponents";
+} from "./components/StyledComponents";
 import { cozyTheme } from "./theme/cozyTheme";
-import CozyHashingTool from "./components/CozyHashingTool";
+import HashingTool from "./components/HashingTool";
 import FileScanTool from "./components/FileScanTool";
-import CozyDashboard from "./components/CozyDashboard";
+import Dashboard from "./components/Dashboard";
 import Sidebar from "./components/Sidebar";
 import FloatingParticles from "./components/FloatingParticles";
 import { useLocalStorage } from "./hooks/useApi";
@@ -78,14 +78,14 @@ function App() {
     try {
       switch (activeTab) {
         case NAVIGATION_TABS.HASHING:
-          return <CozyHashingTool />;
+          return <HashingTool />;
         case NAVIGATION_TABS.FILESCAN:
           return <FileScanTool />;
         case NAVIGATION_TABS.YARA:
           return <YaraTool />;
         case NAVIGATION_TABS.DASHBOARD:
         default:
-          return <CozyDashboard />;
+          return <Dashboard />;
       }
     } catch (err) {
       setError(err);

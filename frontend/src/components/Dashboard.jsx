@@ -1,204 +1,415 @@
-import { Alert } from "@mui/material";
+import { useState, useEffect } from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  WhiteTypography,
-  SecondaryTypography,
-  GlassPaper,
-  ToolContainer,
-  FlexRow,
-  FlexColumn,
+  CozyToolContainer,
+  CozyCard,
+  CozyTypography,
+  CozySecondaryTypography,
+  CozyFlexRow,
+  CozyFlexColumn,
+  CozyPrimaryButton,
+  CozyAccent,
 } from "./StyledComponents";
-import { COLORS } from "../constants";
+import { CardContent, Box, Chip } from "@mui/material";
 
-const DashboardCard = ({ label, value, icon }) => (
-  <GlassPaper
-    sx={{
-      minWidth: 200,
-      textAlign: "center",
-      padding: 3,
-      background: `linear-gradient(135deg, ${COLORS.background.primary}aa, ${COLORS.background.secondary}aa)`,
-      backdropFilter: "blur(10px)",
-      border: `1px solid ${COLORS.border.primary}`,
-      borderRadius: 3,
-      transition: "transform 0.2s ease",
-      "&:hover": {
-        transform: "translateY(-2px)",
-      },
-    }}
-  >
-    {icon && <div style={{ fontSize: "2rem", marginBottom: 8 }}>{icon}</div>}
-    <SecondaryTypography variant="body2" sx={{ fontSize: "0.875rem", mb: 1 }}>
-      {label}
-    </SecondaryTypography>
-    <WhiteTypography variant="h6" sx={{ fontSize: "1.25rem" }}>
-      {value}
-    </WhiteTypography>
-  </GlassPaper>
-);
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
 
-const NewsPlaceholder = () => (
-  <GlassPaper
-    sx={{
-      minHeight: 180,
-      padding: 3,
-      background: `linear-gradient(135deg, ${COLORS.background.primary}aa, ${COLORS.background.secondary}aa)`,
-      backdropFilter: "blur(10px)",
-      border: `1px solid ${COLORS.border.primary}`,
-      borderRadius: 3,
-    }}
-  >
-    <WhiteTypography variant="h5" sx={{ mb: 2, fontSize: "1.5rem" }}>
-      Cybersecurity News
-    </WhiteTypography>
-    <FlexColumn>
-      <Alert severity="info" sx={{ mb: 2 }}>
-        News feed integration coming soon. Stay tuned for the latest
-        cybersecurity updates!
-      </Alert>
-      <SecondaryTypography variant="body2">
-        This section will feature:
-      </SecondaryTypography>
-      <ul
-        style={{
-          color: COLORS.text.secondary,
-          paddingLeft: 20,
-          margin: "8px 0",
-        }}
-      >
-        <li>Latest security vulnerabilities</li>
-        <li>Threat intelligence updates</li>
-        <li>Industry news and insights</li>
-        <li>Security tool releases</li>
-      </ul>
-    </FlexColumn>
-  </GlassPaper>
-);
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+  hover: {
+    y: -8,
+    scale: 1.02,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const statVariants = {
+  hidden: { scale: 0, opacity: 0 },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 20,
+      delay: 0.5,
+    },
+  },
+};
 
 const Dashboard = () => {
-  // In a real application, this data would come from system APIs or monitoring services
+  const [stats, _setStats] = useState({
+    totalScans: 1247,
+    threatsDetected: 23,
+    filesProcessed: 8934,
+    systemHealth: "Excellent",
+  });
 
-  const systemInfo = [
-    {
-      label: "Operating System",
-      value: (() => {
-        if (navigator.userAgentData?.platform) {
-          return navigator.userAgentData.platform;
-        }
-        const ua = navigator.userAgent.toLowerCase();
-        if (ua.includes("win")) return "Windows";
-        if (ua.includes("mac")) return "macOS";
-        if (ua.includes("linux")) return "Linux";
-        if (ua.includes("android")) return "Android";
-        if (ua.includes("iphone") || ua.includes("ipad")) return "iOS";
-        return "Unknown";
-      })(),
-      icon: "💻",
-    },
-    {
-      label: "Browser",
-      value: navigator.userAgent.split(" ")[0] || "Unknown",
-      icon: "🌐",
-    },
-    {
-      label: "Screen Resolution",
-      value: `${screen.width}x${screen.height}`,
-      icon: "📺",
-    },
-    { label: "Language", value: navigator.language || "Unknown", icon: "🌍" },
-    {
-      label: "Online Status",
-      value: navigator.onLine ? "Connected" : "Offline",
-      icon: navigator.onLine ? "🟢" : "🔴",
-    },
-    {
-      label: "Current Time",
-      value: new Date().toLocaleTimeString(),
-      icon: "🕐",
-    },
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  };
+
+  const formatDate = (date) => {
+    return date.toLocaleDateString([], {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const securityTips = [
+    "Keep your antivirus software updated",
+    "Use strong, unique passwords for each account",
+    "Enable two-factor authentication when available",
+    "Regularly backup your important data",
+    "Be cautious with email attachments and links",
+  ];
+
+  const recentActivity = [
+    { type: "Scan", file: "document.pdf", status: "Clean", time: "2 min ago" },
+    { type: "Hash", file: "image.jpg", status: "Verified", time: "5 min ago" },
+    { type: "Scan", file: "archive.zip", status: "Threat", time: "12 min ago" },
+    { type: "Hash", file: "video.mp4", status: "Clean", time: "18 min ago" },
   ];
 
   return (
-    <ToolContainer>
-      <WhiteTypography
-        variant="h4"
-        gutterBottom
-        sx={{ mb: 4, textAlign: "center" }}
+    <CozyToolContainer maxWidth={1200} minHeight={600}>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
       >
-        CyberSafe Dashboard
-      </WhiteTypography>
+        {/* Header Section */}
+        <motion.div variants={cardVariants}>
+          <Box mb={4}>
+            <CozyTypography variant="h3" component="h1" gutterBottom>
+              🏡 Welcome to CyberSafe
+            </CozyTypography>
+            <CozyAccent />
+            <CozySecondaryTypography variant="h6">
+              {formatDate(currentTime)} • {formatTime(currentTime)}
+            </CozySecondaryTypography>
+          </Box>
+        </motion.div>
 
-      <FlexColumn sx={{ gap: 4 }}>
-        {/* System Information Cards */}
-        <div>
-          <WhiteTypography variant="h6" sx={{ mb: 2 }}>
-            System Information
-          </WhiteTypography>
-          <FlexRow
-            sx={{
-              flexWrap: "wrap",
-              gap: 2,
-              justifyContent: "center",
-              "@media (max-width: 768px)": {
-                flexDirection: "column",
-                alignItems: "center",
-              },
-            }}
+        {/* Stats Cards Row */}
+        <CozyFlexRow mb={4} sx={{ gap: 3, flexWrap: "wrap" }}>
+          <motion.div variants={cardVariants} whileHover="hover">
+            <CozyCard sx={{ minWidth: 220, flex: 1 }}>
+              <CardContent>
+                <CozyFlexColumn>
+                  <CozySecondaryTypography variant="body2" gutterBottom>
+                    Total Scans
+                  </CozySecondaryTypography>
+                  <motion.div variants={statVariants}>
+                    <CozyTypography variant="h4" component="div">
+                      {stats.totalScans.toLocaleString()}
+                    </CozyTypography>
+                  </motion.div>
+                  <Chip
+                    label="↗ +12% this week"
+                    size="small"
+                    sx={{
+                      backgroundColor: "#E8F5E8",
+                      color: "#2E7D32",
+                      fontSize: "0.75rem",
+                      alignSelf: "flex-start",
+                      mt: 1,
+                    }}
+                  />
+                </CozyFlexColumn>
+              </CardContent>
+            </CozyCard>
+          </motion.div>
+
+          <motion.div variants={cardVariants} whileHover="hover">
+            <CozyCard sx={{ minWidth: 220, flex: 1 }}>
+              <CardContent>
+                <CozyFlexColumn>
+                  <CozySecondaryTypography variant="body2" gutterBottom>
+                    Threats Detected
+                  </CozySecondaryTypography>
+                  <motion.div variants={statVariants}>
+                    <CozyTypography variant="h4" component="div">
+                      {stats.threatsDetected}
+                    </CozyTypography>
+                  </motion.div>
+                  <Chip
+                    label="🛡️ All resolved"
+                    size="small"
+                    sx={{
+                      backgroundColor: "#FFF3E0",
+                      color: "#E65100",
+                      fontSize: "0.75rem",
+                      alignSelf: "flex-start",
+                      mt: 1,
+                    }}
+                  />
+                </CozyFlexColumn>
+              </CardContent>
+            </CozyCard>
+          </motion.div>
+
+          <motion.div variants={cardVariants} whileHover="hover">
+            <CozyCard sx={{ minWidth: 220, flex: 1 }}>
+              <CardContent>
+                <CozyFlexColumn>
+                  <CozySecondaryTypography variant="body2" gutterBottom>
+                    Files Processed
+                  </CozySecondaryTypography>
+                  <motion.div variants={statVariants}>
+                    <CozyTypography variant="h4" component="div">
+                      {stats.filesProcessed.toLocaleString()}
+                    </CozyTypography>
+                  </motion.div>
+                  <Chip
+                    label="🔄 Processing"
+                    size="small"
+                    sx={{
+                      backgroundColor: "#E3F2FD",
+                      color: "#0D47A1",
+                      fontSize: "0.75rem",
+                      alignSelf: "flex-start",
+                      mt: 1,
+                    }}
+                  />
+                </CozyFlexColumn>
+              </CardContent>
+            </CozyCard>
+          </motion.div>
+
+          <motion.div variants={cardVariants} whileHover="hover">
+            <CozyCard sx={{ minWidth: 220, flex: 1 }}>
+              <CardContent>
+                <CozyFlexColumn>
+                  <CozySecondaryTypography variant="body2" gutterBottom>
+                    System Health
+                  </CozySecondaryTypography>
+                  <motion.div variants={statVariants}>
+                    <CozyTypography variant="h4" component="div">
+                      {stats.systemHealth}
+                    </CozyTypography>
+                  </motion.div>
+                  <Chip
+                    label="✅ All systems operational"
+                    size="small"
+                    sx={{
+                      backgroundColor: "#E8F5E8",
+                      color: "#2E7D32",
+                      fontSize: "0.75rem",
+                      alignSelf: "flex-start",
+                      mt: 1,
+                    }}
+                  />
+                </CozyFlexColumn>
+              </CardContent>
+            </CozyCard>
+          </motion.div>
+        </CozyFlexRow>
+
+        {/* Main Content Row */}
+        <CozyFlexRow sx={{ gap: 3, alignItems: "flex-start" }}>
+          {/* Recent Activity */}
+          <motion.div
+            variants={cardVariants}
+            whileHover="hover"
+            style={{ flex: 1 }}
           >
-            {systemInfo.map((info, index) => (
-              <DashboardCard
-                key={index}
-                label={info.label}
-                value={info.value}
-                icon={info.icon}
-              />
-            ))}
-          </FlexRow>
-        </div>
+            <CozyCard sx={{ height: 400 }}>
+              <CardContent>
+                <CozyTypography variant="h5" gutterBottom>
+                  📊 Recent Activity
+                </CozyTypography>
+                <CozyAccent />
+                <CozyFlexColumn sx={{ gap: 2 }}>
+                  <AnimatePresence>
+                    {recentActivity.map((activity, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <Box
+                          sx={{
+                            p: 2,
+                            backgroundColor: "#FFF8DC",
+                            borderRadius: 2,
+                            border: "1px solid #DEB887",
+                            transition: "all 0.2s ease",
+                            "&:hover": {
+                              backgroundColor: "#F5DEB3",
+                              transform: "translateX(4px)",
+                            },
+                          }}
+                        >
+                          <CozyFlexRow sx={{ alignItems: "center" }}>
+                            <Box sx={{ flex: 1 }}>
+                              <CozyTypography
+                                variant="body2"
+                                sx={{ fontWeight: 600 }}
+                              >
+                                {activity.type}: {activity.file}
+                              </CozyTypography>
+                              <CozySecondaryTypography variant="caption">
+                                {activity.time}
+                              </CozySecondaryTypography>
+                            </Box>
+                            <Chip
+                              label={activity.status}
+                              size="small"
+                              sx={{
+                                backgroundColor:
+                                  activity.status === "Clean"
+                                    ? "#E8F5E8"
+                                    : activity.status === "Threat"
+                                      ? "#FFEBEE"
+                                      : "#E3F2FD",
+                                color:
+                                  activity.status === "Clean"
+                                    ? "#2E7D32"
+                                    : activity.status === "Threat"
+                                      ? "#C62828"
+                                      : "#0D47A1",
+                                fontSize: "0.75rem",
+                              }}
+                            />
+                          </CozyFlexRow>
+                        </Box>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </CozyFlexColumn>
+              </CardContent>
+            </CozyCard>
+          </motion.div>
 
-        {/* Quick Stats */}
-        <div>
-          <WhiteTypography variant="h6" sx={{ mb: 2 }}>
-            Quick Stats
-          </WhiteTypography>
-          <FlexRow
-            sx={{
-              flexWrap: "wrap",
-              gap: 2,
-              justifyContent: "center",
-              "@media (max-width: 768px)": {
-                flexDirection: "column",
-                alignItems: "center",
-              },
-            }}
+          {/* tips */}
+          <motion.div
+            variants={cardVariants}
+            whileHover="hover"
+            style={{ flex: 1 }}
           >
-            <DashboardCard label="Hashes Generated" value="0" icon="🔐" />
-            <DashboardCard label="Files Scanned" value="0" icon="📄" />
-            <DashboardCard label="Threats Detected" value="0" icon="🛡️" />
-          </FlexRow>
-        </div>
+            <CozyCard sx={{ height: 400 }}>
+              <CardContent>
+                <CozyTypography variant="h5" gutterBottom>
+                  🛡️ Security Tips
+                </CozyTypography>
+                <CozyAccent />
+                <CozyFlexColumn sx={{ gap: 2 }}>
+                  {securityTips.map((tip, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 + 0.5 }}
+                    >
+                      <Box
+                        sx={{
+                          p: 2,
+                          backgroundColor: "#FFF8DC",
+                          borderRadius: 2,
+                          border: "1px solid #DEB887",
+                          transition: "all 0.2s ease",
+                          "&:hover": {
+                            backgroundColor: "#F5DEB3",
+                            transform: "translateY(-2px)",
+                            boxShadow: "0 4px 12px rgba(139, 69, 19, 0.1)",
+                          },
+                        }}
+                      >
+                        <CozyTypography variant="body2">• {tip}</CozyTypography>
+                      </Box>
+                    </motion.div>
+                  ))}
+                </CozyFlexColumn>
+              </CardContent>
+            </CozyCard>
+          </motion.div>
+        </CozyFlexRow>
 
-        {/* News Section */}
-        <div>
-          <NewsPlaceholder />
-        </div>
-
-        {/* Welcome Message */}
-        <GlassPaper
-          sx={{
-            textAlign: "center",
-            padding: 3,
-            background: `linear-gradient(135deg, ${COLORS.primary.main}22, ${COLORS.primary.dark}22)`,
-          }}
-        >
-          <WhiteTypography variant="h6" sx={{ mb: 2 }}>
-            Welcome to CyberSafe
-          </WhiteTypography>
-          <SecondaryTypography variant="body1">
-            Your comprehensive cybersecurity analysis toolkit. Use the sidebar
-            to navigate between different tools and resources.
-          </SecondaryTypography>
-        </GlassPaper>
-      </FlexColumn>
-    </ToolContainer>
+        {/* quick act */}
+        <motion.div variants={cardVariants} style={{ marginTop: 24 }}>
+          <CozyCard>
+            <CardContent>
+              <CozyTypography variant="h5" gutterBottom>
+                🚀 Quick Actions
+              </CozyTypography>
+              <CozyAccent />
+              <CozyFlexRow sx={{ gap: 2, flexWrap: "wrap", mt: 2 }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <CozyPrimaryButton>Start Full System Scan</CozyPrimaryButton>
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <CozyPrimaryButton>
+                    Update Virus Definitions
+                  </CozyPrimaryButton>
+                </motion.div>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <CozyPrimaryButton>
+                    Generate Security Report
+                  </CozyPrimaryButton>
+                </motion.div>
+              </CozyFlexRow>
+            </CardContent>
+          </CozyCard>
+        </motion.div>
+      </motion.div>
+    </CozyToolContainer>
   );
 };
 

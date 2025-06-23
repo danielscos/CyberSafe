@@ -2,7 +2,7 @@ import {
   CozyBrandTitle,
   CozySidebarSectionTitle,
   CozySidebarButton,
-} from "./CozyStyledComponents";
+} from "./StyledComponents";
 import { SIDEBAR_TOOLS, SIDEBAR_RESOURCES } from "../constants";
 
 const Sidebar = ({ activeTab, onTabChange }) => {
