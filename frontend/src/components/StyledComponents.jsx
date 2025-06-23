@@ -11,20 +11,20 @@ import {
   Box,
 } from "@mui/material";
 
-// Dark Cozy color palette
+// Dark Cyan color palette
 const cozyColors = {
-  warmCream: "#1A1A1A",
-  antiqueWhite: "#2D2A26",
-  wheat: "#3D3731",
-  cornsilk: "#4A453E",
-  saddleBrown: "#DEB887",
-  sienna: "#F5DEB3",
-  darkBrown: "#CD853F",
-  chocolate: "#DAA520",
-  burlywood: "#FFD700",
-  textPrimary: "#F5DEB3",
-  textSecondary: "#DEB887",
-  textDisabled: "#8D7B6B",
+  warmCream: "#0D1117",
+  antiqueWhite: "#161B22",
+  wheat: "#21262D",
+  cornsilk: "#30363D",
+  saddleBrown: "#00BCD4",
+  sienna: "#4DD0E1",
+  darkBrown: "#00838F",
+  chocolate: "#26C6DA",
+  burlywood: "#80DEEA",
+  textPrimary: "#F0F6FC",
+  textSecondary: "#8B949E",
+  textDisabled: "#484F58",
 };
 
 // Animation constants
@@ -39,13 +39,13 @@ export const CozyLinearProgress = styled(LinearProgress)(() => ({
   height: 12,
   borderRadius: 12,
   backgroundColor: cozyColors.wheat,
-  boxShadow: "inset 0 2px 4px rgba(139, 69, 19, 0.1)",
+  boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.2)",
   overflow: "hidden",
-  border: `1px solid ${cozyColors.burlywood}`,
+  border: `1px solid ${cozyColors.saddleBrown}`,
   "& .MuiLinearProgress-bar": {
     borderRadius: 12,
     background: `linear-gradient(90deg, ${cozyColors.saddleBrown} 0%, ${cozyColors.chocolate} 50%, ${cozyColors.sienna} 100%)`,
-    boxShadow: "0 1px 3px rgba(222, 184, 135, 0.3)",
+    boxShadow: "0 1px 3px rgba(0, 188, 212, 0.3)",
     position: "relative",
     "&::after": {
       content: '""',
@@ -61,39 +61,33 @@ export const CozyLinearProgress = styled(LinearProgress)(() => ({
   },
 }));
 
-// Primary Cozy Button
+// Modern Primary Button
 export const CozyPrimaryButton = styled(Button)({
-  background: `linear-gradient(135deg, ${cozyColors.saddleBrown} 0%, ${cozyColors.chocolate} 100%)`,
+  fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
+  background: cozyColors.saddleBrown,
   color: "#FFFFFF",
   fontWeight: 600,
-  borderRadius: 12,
-  padding: "12px 32px",
+  borderRadius: 8,
+  padding: "12px 24px",
   textTransform: "none",
-  fontSize: "1rem",
-  boxShadow: "0 4px 12px rgba(222, 184, 135, 0.3)",
+  fontSize: "0.95rem",
+  boxShadow: "none",
   border: "none",
-  transition: `all ${animations.normal} cubic-bezier(0.4, 0, 0.2, 1)`,
+  transition: `all 0.2s cubic-bezier(0.4, 0, 0.2, 1)`,
   position: "relative",
   overflow: "hidden",
+  letterSpacing: "0.02em",
   "&::before": {
-    content: '""',
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: "50%",
-    background:
-      "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%)",
-    borderRadius: "12px 12px 0 0",
+    display: "none",
   },
   "&:hover": {
-    background: `linear-gradient(135deg, ${cozyColors.sienna} 0%, ${cozyColors.saddleBrown} 100%)`,
-    boxShadow: "0 6px 20px rgba(245, 222, 179, 0.4)",
-    transform: "translateY(-2px)",
+    background: cozyColors.sienna,
+    boxShadow: "0 2px 8px rgba(0, 188, 212, 0.2)",
+    transform: "translateY(-1px)",
   },
   "&:active": {
     transform: "translateY(0px)",
-    boxShadow: "0 2px 8px rgba(222, 184, 135, 0.3)",
+    boxShadow: "none",
   },
   "&:disabled": {
     background: cozyColors.textDisabled,
@@ -104,28 +98,30 @@ export const CozyPrimaryButton = styled(Button)({
   },
 });
 
-// Secondary Cozy Button
+// Modern Secondary Button
 export const CozySecondaryButton = styled(Button)({
+  fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
   background: "transparent",
   color: cozyColors.saddleBrown,
-  fontWeight: 600,
-  borderRadius: 12,
-  padding: "12px 24px",
+  fontWeight: 500,
+  borderRadius: 8,
+  padding: "10px 20px",
   textTransform: "none",
-  fontSize: "1rem",
-  border: `2px solid ${cozyColors.saddleBrown}`,
-  transition: `all ${animations.normal} cubic-bezier(0.4, 0, 0.2, 1)`,
+  fontSize: "0.9rem",
+  border: `1px solid rgba(0, 188, 212, 0.3)`,
+  transition: `all 0.2s cubic-bezier(0.4, 0, 0.2, 1)`,
   display: "flex",
   alignItems: "center",
-  gap: 8,
+  gap: 6,
+  letterSpacing: "0.02em",
   "&:hover": {
-    background: cozyColors.saddleBrown,
-    color: "#FFFFFF",
-    boxShadow: "0 4px 12px rgba(222, 184, 135, 0.2)",
-    transform: "translateY(-1px)",
+    background: "rgba(0, 188, 212, 0.08)",
+    color: cozyColors.sienna,
+    borderColor: "rgba(0, 188, 212, 0.5)",
+    transform: "none",
   },
   "&:active": {
-    transform: "translateY(0px)",
+    transform: "none",
   },
 });
 
@@ -157,13 +153,13 @@ export const CozyCopyButton = styled(Button)(({ copySuccess }) => ({
   fontWeight: 500,
   fontSize: "0.875rem",
   borderRadius: 8,
-  color: copySuccess ? "#2E7D32" : cozyColors.saddleBrown,
+  color: copySuccess ? "#81C784" : cozyColors.saddleBrown,
   borderColor: copySuccess ? "#4CAF50" : cozyColors.saddleBrown,
-  backgroundColor: copySuccess ? "#E8F5E8" : cozyColors.cornsilk,
+  backgroundColor: copySuccess ? "#0A1F0A" : cozyColors.cornsilk,
   border: `1px solid`,
   transition: `all ${animations.normal} ease`,
   "&:hover": {
-    backgroundColor: copySuccess ? "#2E5D32" : cozyColors.wheat,
+    backgroundColor: copySuccess ? "#1B2A1B" : cozyColors.wheat,
     borderColor: copySuccess ? "#4CAF50" : cozyColors.sienna,
     transform: "translateY(-1px)",
     boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
@@ -191,17 +187,18 @@ export const CozyGlassPaper = styled(Paper)({
   },
 });
 
-// Result Display Paper
+// Modern Result Paper
 export const CozyResultPaper = styled(Paper)({
   backgroundColor: cozyColors.cornsilk,
-  border: `1px solid ${cozyColors.saddleBrown}`,
-  borderRadius: 12,
+  border: `1px solid rgba(48, 54, 61, 0.3)`,
+  borderRadius: 10,
   padding: 20,
   marginTop: 16,
-  boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
-  transition: `all ${animations.normal}`,
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+  transition: `all 0.2s ease`,
   "&:hover": {
-    boxShadow: "0 6px 24px rgba(0, 0, 0, 0.3)",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+    borderColor: "rgba(0, 188, 212, 0.2)",
   },
 });
 
@@ -277,6 +274,7 @@ export const CozyFormControl = styled(FormControl)({
 
 // Warm Typography
 export const CozyTypography = styled(Typography)({
+  fontFamily: '"Inter", "SF Pro Display", "Segoe UI", sans-serif',
   color: cozyColors.textPrimary,
   fontWeight: 500,
   lineHeight: 1.6,
@@ -284,6 +282,7 @@ export const CozyTypography = styled(Typography)({
 
 // Secondary Text Typography
 export const CozySecondaryTypography = styled(Typography)({
+  fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
   color: cozyColors.textSecondary,
   fontStyle: "normal",
   marginBottom: 8,
@@ -292,16 +291,19 @@ export const CozySecondaryTypography = styled(Typography)({
 
 // Code Block Typography
 export const CozyCodeTypography = styled(Typography)({
-  fontFamily: '"Monaco", "Menlo", "Ubuntu Mono", monospace',
+  fontFamily:
+    '"JetBrains Mono", "SF Mono", "Monaco", "Cascadia Code", "Roboto Mono", monospace',
   backgroundColor: cozyColors.wheat,
   color: cozyColors.textPrimary,
   padding: "12px 16px",
   borderRadius: 8,
   border: `1px solid ${cozyColors.saddleBrown}`,
   fontSize: "0.875rem",
+  fontWeight: 500,
   lineHeight: 1.5,
   wordBreak: "break-all",
   boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.2)",
+  letterSpacing: "0.01em",
 });
 
 // Tool Container with cozy styling
@@ -317,27 +319,22 @@ export const CozyToolContainer = styled(Box)(
   }),
 );
 
-// Cozy Card Component
+// Modern Card Component
 export const CozyCard = styled(Card)({
   backgroundColor: cozyColors.antiqueWhite,
-  border: `1px solid ${cozyColors.saddleBrown}`,
-  borderRadius: 20,
-  boxShadow: "0 8px 24px rgba(0, 0, 0, 0.3)",
-  transition: `all ${animations.normal} cubic-bezier(0.4, 0, 0.2, 1)`,
+  border: `1px solid rgba(48, 54, 61, 0.3)`,
+  borderRadius: 12,
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+  transition: `all 0.2s cubic-bezier(0.4, 0, 0.2, 1)`,
   overflow: "hidden",
   position: "relative",
   "&::before": {
-    content: '""',
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 2,
-    background: `linear-gradient(90deg, ${cozyColors.saddleBrown} 0%, ${cozyColors.chocolate} 50%, ${cozyColors.saddleBrown} 100%)`,
+    display: "none",
   },
   "&:hover": {
-    boxShadow: "0 12px 32px rgba(0, 0, 0, 0.4)",
-    transform: "translateY(-4px)",
+    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.15)",
+    transform: "translateY(-2px)",
+    borderColor: "rgba(0, 188, 212, 0.2)",
   },
 });
 
@@ -390,44 +387,50 @@ export const CozyResultHeader = styled(Box)({
   borderBottom: `2px solid ${cozyColors.saddleBrown}`,
 });
 
-// Upload Button
+// Modern Upload Button
 export const CozyUploadButton = styled(Button)({
-  background: `linear-gradient(135deg, ${cozyColors.burlywood} 0%, ${cozyColors.wheat} 100%)`,
+  fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
+  background: cozyColors.wheat,
   color: cozyColors.textPrimary,
   fontWeight: 600,
-  borderRadius: 12,
-  padding: "16px 32px",
+  borderRadius: 10,
+  padding: "16px 24px",
   width: "100%",
   marginTop: 16,
   textTransform: "none",
-  fontSize: "1rem",
-  border: `2px dashed ${cozyColors.chocolate}`,
-  transition: `all ${animations.normal}`,
+  fontSize: "0.95rem",
+  border: `2px dashed rgba(0, 188, 212, 0.4)`,
+  transition: `all 0.2s ease`,
+  letterSpacing: "0.02em",
   "&:hover": {
-    background: `linear-gradient(135deg, ${cozyColors.wheat} 0%, ${cozyColors.cornsilk} 100%)`,
+    background: cozyColors.cornsilk,
     borderColor: cozyColors.saddleBrown,
     borderStyle: "solid",
-    transform: "translateY(-2px)",
-    boxShadow: "0 4px 16px rgba(222, 184, 135, 0.2)",
+    transform: "translateY(-1px)",
+    boxShadow: "0 2px 8px rgba(0, 188, 212, 0.1)",
   },
 });
 
 // Sidebar Brand Title
 export const CozyBrandTitle = styled(Typography)({
+  fontFamily:
+    '"JetBrains Mono", "SF Mono", "Monaco", "Cascadia Code", "Roboto Mono", monospace',
   color: cozyColors.saddleBrown,
   fontWeight: 700,
   fontSize: "1.75rem",
   marginBottom: 32,
   textAlign: "center",
   textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
+  letterSpacing: "-0.02em",
 });
 
 // Sidebar Section Title
 export const CozySidebarSectionTitle = styled(Typography)({
-  color: cozyColors.textSecondary,
+  fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
+  color: cozyColors.chocolate,
   fontSize: "0.75rem",
   fontWeight: 600,
-  letterSpacing: 1.5,
+  letterSpacing: "0.08em",
   marginBottom: 16,
   marginTop: 24,
   textTransform: "uppercase",
@@ -440,50 +443,41 @@ export const CozySidebarButton = styled(Box, {
 })(({ active }) => ({
   display: "flex",
   alignItems: "center",
-  gap: 12,
-  padding: "14px 20px",
-  borderRadius: 12,
+  gap: 14,
+  padding: "12px 16px",
+  borderRadius: 10,
   cursor: "pointer",
-  transition: `all ${animations.normal} cubic-bezier(0.4, 0, 0.2, 1)`,
-  color: active ? "#FFFFFF" : cozyColors.saddleBrown,
-  backgroundColor: active
-    ? `linear-gradient(135deg, ${cozyColors.saddleBrown} 0%, ${cozyColors.chocolate} 100%)`
-    : "transparent",
+  transition: `all 0.2s cubic-bezier(0.4, 0, 0.2, 1)`,
+  color: active ? cozyColors.saddleBrown : cozyColors.textSecondary,
+  backgroundColor: active ? "rgba(0, 188, 212, 0.15)" : "transparent",
   fontWeight: active ? 600 : 500,
   fontSize: "0.95rem",
-  margin: "2px 8px",
+  margin: "4px 0",
   position: "relative",
   overflow: "hidden",
-  "&::before": active
-    ? {
-        content: '""',
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        height: "50%",
-        background:
-          "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%)",
-        borderRadius: "12px 12px 0 0",
-      }
-    : {},
+  borderLeft: active
+    ? `3px solid ${cozyColors.saddleBrown}`
+    : "3px solid transparent",
+  paddingLeft: active ? "13px" : "16px",
+  letterSpacing: "0.025em",
+  "&::before": {
+    display: "none",
+  },
   "&:hover": {
     backgroundColor: active
-      ? `linear-gradient(135deg, ${cozyColors.sienna} 0%, ${cozyColors.saddleBrown} 100%)`
-      : cozyColors.wheat,
-    color: active ? "#1A1A1A" : cozyColors.sienna,
-    transform: "translateX(4px)",
-    boxShadow: active
-      ? "0 4px 12px rgba(222, 184, 135, 0.3)"
-      : "0 2px 8px rgba(222, 184, 135, 0.1)",
+      ? "rgba(0, 188, 212, 0.2)"
+      : "rgba(0, 188, 212, 0.08)",
+    color: active ? cozyColors.sienna : cozyColors.saddleBrown,
+    transform: "none",
   },
 }));
 
 // Decorative accent for headers
 export const CozyAccent = styled(Box)({
-  width: 60,
-  height: 3,
-  background: `linear-gradient(90deg, ${cozyColors.saddleBrown} 0%, ${cozyColors.chocolate} 100%)`,
-  borderRadius: 2,
-  margin: "8px 0 16px 0",
+  width: 40,
+  height: 2,
+  background: cozyColors.saddleBrown,
+  borderRadius: 1,
+  margin: "8px 0 20px 0",
+  opacity: 0.6,
 });

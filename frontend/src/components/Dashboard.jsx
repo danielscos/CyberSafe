@@ -126,11 +126,22 @@ const Dashboard = () => {
         {/* Header Section */}
         <motion.div variants={cardVariants}>
           <Box mb={4}>
-            <CozyTypography variant="h3" component="h1" gutterBottom>
+            <CozyTypography
+              variant="h2"
+              component="h1"
+              gutterBottom
+              sx={{ fontWeight: 700 }}
+            >
               🏡 Welcome to CyberSafe
             </CozyTypography>
             <CozyAccent />
-            <CozySecondaryTypography variant="h6">
+            <CozySecondaryTypography
+              variant="body1"
+              sx={{
+                fontFamily: '"JetBrains Mono", monospace',
+                fontSize: "0.95rem",
+              }}
+            >
               {formatDate(currentTime)} • {formatTime(currentTime)}
             </CozySecondaryTypography>
           </Box>
@@ -142,7 +153,7 @@ const Dashboard = () => {
             <CozyCard sx={{ minWidth: 220, flex: 1 }}>
               <CardContent>
                 <CozyFlexColumn>
-                  <CozySecondaryTypography variant="body2" gutterBottom>
+                  <CozySecondaryTypography variant="overline" gutterBottom>
                     Total Scans
                   </CozySecondaryTypography>
                   <motion.div variants={statVariants}>
@@ -153,12 +164,16 @@ const Dashboard = () => {
                   <Chip
                     label="↗ +12% this week"
                     size="small"
+                    variant="outlined"
                     sx={{
-                      backgroundColor: "#E8F5E8",
-                      color: "#2E7D32",
+                      backgroundColor: "rgba(129, 199, 132, 0.1)",
+                      color: "#81C784",
+                      borderColor: "rgba(129, 199, 132, 0.3)",
                       fontSize: "0.75rem",
+                      fontWeight: 500,
                       alignSelf: "flex-start",
                       mt: 1,
+                      height: 24,
                     }}
                   />
                 </CozyFlexColumn>
@@ -170,7 +185,7 @@ const Dashboard = () => {
             <CozyCard sx={{ minWidth: 220, flex: 1 }}>
               <CardContent>
                 <CozyFlexColumn>
-                  <CozySecondaryTypography variant="body2" gutterBottom>
+                  <CozySecondaryTypography variant="overline" gutterBottom>
                     Threats Detected
                   </CozySecondaryTypography>
                   <motion.div variants={statVariants}>
@@ -181,12 +196,16 @@ const Dashboard = () => {
                   <Chip
                     label="🛡️ All resolved"
                     size="small"
+                    variant="outlined"
                     sx={{
-                      backgroundColor: "#FFF3E0",
-                      color: "#E65100",
+                      backgroundColor: "rgba(255, 183, 77, 0.1)",
+                      color: "#FFB74D",
+                      borderColor: "rgba(255, 183, 77, 0.3)",
                       fontSize: "0.75rem",
+                      fontWeight: 500,
                       alignSelf: "flex-start",
                       mt: 1,
+                      height: 24,
                     }}
                   />
                 </CozyFlexColumn>
@@ -198,7 +217,7 @@ const Dashboard = () => {
             <CozyCard sx={{ minWidth: 220, flex: 1 }}>
               <CardContent>
                 <CozyFlexColumn>
-                  <CozySecondaryTypography variant="body2" gutterBottom>
+                  <CozySecondaryTypography variant="overline" gutterBottom>
                     Files Processed
                   </CozySecondaryTypography>
                   <motion.div variants={statVariants}>
@@ -209,12 +228,16 @@ const Dashboard = () => {
                   <Chip
                     label="🔄 Processing"
                     size="small"
+                    variant="outlined"
                     sx={{
-                      backgroundColor: "#E3F2FD",
-                      color: "#0D47A1",
+                      backgroundColor: "rgba(77, 208, 225, 0.1)",
+                      color: "#4DD0E1",
+                      borderColor: "rgba(77, 208, 225, 0.3)",
                       fontSize: "0.75rem",
+                      fontWeight: 500,
                       alignSelf: "flex-start",
                       mt: 1,
+                      height: 24,
                     }}
                   />
                 </CozyFlexColumn>
@@ -226,7 +249,7 @@ const Dashboard = () => {
             <CozyCard sx={{ minWidth: 220, flex: 1 }}>
               <CardContent>
                 <CozyFlexColumn>
-                  <CozySecondaryTypography variant="body2" gutterBottom>
+                  <CozySecondaryTypography variant="overline" gutterBottom>
                     System Health
                   </CozySecondaryTypography>
                   <motion.div variants={statVariants}>
@@ -237,12 +260,16 @@ const Dashboard = () => {
                   <Chip
                     label="✅ All systems operational"
                     size="small"
+                    variant="outlined"
                     sx={{
-                      backgroundColor: "#E8F5E8",
-                      color: "#2E7D32",
+                      backgroundColor: "rgba(129, 199, 132, 0.1)",
+                      color: "#81C784",
+                      borderColor: "rgba(129, 199, 132, 0.3)",
                       fontSize: "0.75rem",
+                      fontWeight: 500,
                       alignSelf: "flex-start",
                       mt: 1,
+                      height: 24,
                     }}
                   />
                 </CozyFlexColumn>
@@ -261,7 +288,11 @@ const Dashboard = () => {
           >
             <CozyCard sx={{ height: 400 }}>
               <CardContent>
-                <CozyTypography variant="h5" gutterBottom>
+                <CozyTypography
+                  variant="h5"
+                  gutterBottom
+                  sx={{ fontWeight: 600 }}
+                >
                   📊 Recent Activity
                 </CozyTypography>
                 <CozyAccent />
@@ -277,14 +308,16 @@ const Dashboard = () => {
                       >
                         <Box
                           sx={{
-                            p: 2,
-                            backgroundColor: "#FFF8DC",
-                            borderRadius: 2,
-                            border: "1px solid #DEB887",
+                            p: 2.5,
+                            backgroundColor: "#21262D",
+                            borderRadius: 1.5,
+                            border: "1px solid rgba(48, 54, 61, 0.5)",
                             transition: "all 0.2s ease",
                             "&:hover": {
-                              backgroundColor: "#F5DEB3",
-                              transform: "translateX(4px)",
+                              backgroundColor: "#30363D",
+                              borderColor: "rgba(0, 188, 212, 0.3)",
+                              transform: "translateY(-1px)",
+                              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
                             },
                           }}
                         >
@@ -292,31 +325,50 @@ const Dashboard = () => {
                             <Box sx={{ flex: 1 }}>
                               <CozyTypography
                                 variant="body2"
-                                sx={{ fontWeight: 600 }}
+                                sx={{
+                                  fontWeight: 500,
+                                  color: "#F0F6FC",
+                                  fontFamily: '"Inter", sans-serif',
+                                }}
                               >
                                 {activity.type}: {activity.file}
                               </CozyTypography>
-                              <CozySecondaryTypography variant="caption">
+                              <CozySecondaryTypography
+                                variant="caption"
+                                sx={{
+                                  color: "#8B949E",
+                                  fontFamily: '"JetBrains Mono", monospace',
+                                }}
+                              >
                                 {activity.time}
                               </CozySecondaryTypography>
                             </Box>
                             <Chip
                               label={activity.status}
                               size="small"
+                              variant="outlined"
                               sx={{
                                 backgroundColor:
                                   activity.status === "Clean"
-                                    ? "#E8F5E8"
+                                    ? "rgba(129, 199, 132, 0.1)"
                                     : activity.status === "Threat"
-                                      ? "#FFEBEE"
-                                      : "#E3F2FD",
+                                      ? "rgba(229, 115, 115, 0.1)"
+                                      : "rgba(77, 208, 225, 0.1)",
                                 color:
                                   activity.status === "Clean"
-                                    ? "#2E7D32"
+                                    ? "#81C784"
                                     : activity.status === "Threat"
-                                      ? "#C62828"
-                                      : "#0D47A1",
+                                      ? "#E57373"
+                                      : "#4DD0E1",
+                                borderColor:
+                                  activity.status === "Clean"
+                                    ? "rgba(129, 199, 132, 0.3)"
+                                    : activity.status === "Threat"
+                                      ? "rgba(229, 115, 115, 0.3)"
+                                      : "rgba(77, 208, 225, 0.3)",
                                 fontSize: "0.75rem",
+                                fontWeight: 500,
+                                height: 22,
                               }}
                             />
                           </CozyFlexRow>
@@ -337,7 +389,11 @@ const Dashboard = () => {
           >
             <CozyCard sx={{ height: 400 }}>
               <CardContent>
-                <CozyTypography variant="h5" gutterBottom>
+                <CozyTypography
+                  variant="h5"
+                  gutterBottom
+                  sx={{ fontWeight: 600 }}
+                >
                   🛡️ Security Tips
                 </CozyTypography>
                 <CozyAccent />
@@ -351,19 +407,29 @@ const Dashboard = () => {
                     >
                       <Box
                         sx={{
-                          p: 2,
-                          backgroundColor: "#FFF8DC",
-                          borderRadius: 2,
-                          border: "1px solid #DEB887",
+                          p: 2.5,
+                          backgroundColor: "#21262D",
+                          borderRadius: 1.5,
+                          border: "1px solid rgba(48, 54, 61, 0.5)",
                           transition: "all 0.2s ease",
                           "&:hover": {
-                            backgroundColor: "#F5DEB3",
-                            transform: "translateY(-2px)",
-                            boxShadow: "0 4px 12px rgba(139, 69, 19, 0.1)",
+                            backgroundColor: "#30363D",
+                            borderColor: "rgba(0, 188, 212, 0.3)",
+                            transform: "translateY(-1px)",
+                            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
                           },
                         }}
                       >
-                        <CozyTypography variant="body2">• {tip}</CozyTypography>
+                        <CozyTypography
+                          variant="body2"
+                          sx={{
+                            color: "#F0F6FC",
+                            fontFamily: '"Inter", sans-serif',
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          • {tip}
+                        </CozyTypography>
                       </Box>
                     </motion.div>
                   ))}
@@ -377,7 +443,11 @@ const Dashboard = () => {
         <motion.div variants={cardVariants} style={{ marginTop: 24 }}>
           <CozyCard>
             <CardContent>
-              <CozyTypography variant="h5" gutterBottom>
+              <CozyTypography
+                variant="h5"
+                gutterBottom
+                sx={{ fontWeight: 600 }}
+              >
                 🚀 Quick Actions
               </CozyTypography>
               <CozyAccent />

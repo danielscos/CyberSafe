@@ -258,11 +258,11 @@ const HashingTool = () => {
                     <CozyTypography
                       variant="caption"
                       sx={{
-                        background: "#3D3731",
+                        background: "#21262D",
                         padding: "4px 8px",
                         borderRadius: 1,
-                        border: "1px solid #DEB887",
-                        color: "#F5DEB3",
+                        border: "1px solid #00BCD4",
+                        color: "#F0F6FC",
                       }}
                     >
                       Length: {hashResult.hash?.length || 0} characters
@@ -270,26 +270,14 @@ const HashingTool = () => {
                     <CozyTypography
                       variant="caption"
                       sx={{
-                        background: "#3D3731",
+                        background: "#21262D",
                         padding: "4px 8px",
                         borderRadius: 1,
-                        border: "1px solid #DEB887",
-                        color: "#F5DEB3",
+                        border: "1px solid #00BCD4",
+                        color: "#F0F6FC",
                       }}
                     >
                       Input size: {hashInput.length} characters
-                    </CozyTypography>
-                    <CozyTypography
-                      variant="caption"
-                      sx={{
-                        background: "#3D3731",
-                        padding: "4px 8px",
-                        borderRadius: 1,
-                        border: "1px solid #DEB887",
-                        color: "#F5DEB3",
-                      }}
-                    >
-                      Generated: {new Date().toLocaleTimeString()}
                     </CozyTypography>
                   </CozyFlexRow>
                 </motion.div>
@@ -297,18 +285,6 @@ const HashingTool = () => {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Info Section */}
-        <motion.div variants={itemVariants} style={{ marginTop: "2rem" }}>
-          <Alert severity="info" sx={{ borderRadius: 2 }}>
-            <CozyTypography variant="body2">
-              <strong>💡 Tip:</strong> Hash functions are one-way cryptographic
-              algorithms that convert input data into a fixed-size string.
-              They're commonly used for data integrity verification, password
-              storage, and digital signatures.
-            </CozyTypography>
-          </Alert>
-        </motion.div>
       </motion.div>
     </CozyToolContainer>
   );

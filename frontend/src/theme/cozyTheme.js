@@ -4,37 +4,37 @@ export const cozyTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#DEB887", // Burlywood - warmer primary for dark mode
-      light: "#F5DEB3", // Wheat
-      dark: "#CD853F", // Peru
-      contrastText: "#1A1A1A",
+      main: "#00BCD4", // Cyan - main color
+      light: "#4DD0E1", // Light cyan
+      dark: "#00838F", // Dark cyan
+      contrastText: "#FFFFFF",
     },
     secondary: {
-      main: "#DAA520", // Goldenrod
-      light: "#FFD700", // Gold
-      dark: "#B8860B", // Dark goldenrod
-      contrastText: "#1A1A1A",
+      main: "#26C6DA", // Bright cyan
+      light: "#80DEEA", // Very light cyan
+      dark: "#0097A7", // Deep cyan
+      contrastText: "#FFFFFF",
     },
     background: {
-      default: "#1A1A1A", // Very dark gray with warm undertone
-      paper: "#2D2A26", // Dark brown-gray
+      default: "#0D1117", // GitHub-like dark background
+      paper: "#161B22", // Slightly lighter dark gray
     },
     surface: {
-      main: "#3D3731", // Dark warm gray
-      light: "#4A453E", // Lighter warm gray
-      dark: "#252219", // Darker warm gray
+      main: "#21262D", // Medium dark surface
+      light: "#30363D", // Light surface
+      dark: "#0D1117", // Darkest surface
     },
     text: {
-      primary: "#F5DEB3", // Wheat - warm light text
-      secondary: "#DEB887", // Burlywood - secondary text
-      disabled: "#8D7B6B", // Muted brown-gray
+      primary: "#F0F6FC", // Very light gray - excellent contrast
+      secondary: "#8B949E", // Medium gray - good contrast
+      disabled: "#484F58", // Muted gray
     },
-    divider: "#5D4E42", // Dark warm brown divider
+    divider: "#30363D", // Clean divider color
     action: {
-      hover: "rgba(222, 184, 135, 0.08)", // Burlywood hover
-      selected: "rgba(222, 184, 135, 0.12)", // Burlywood selected
-      disabled: "rgba(222, 184, 135, 0.26)", // Burlywood disabled
-      disabledBackground: "rgba(222, 184, 135, 0.12)",
+      hover: "rgba(0, 188, 212, 0.08)", // Cyan hover
+      selected: "rgba(0, 188, 212, 0.12)", // Cyan selected
+      disabled: "rgba(139, 148, 158, 0.26)", // Gray disabled
+      disabledBackground: "rgba(139, 148, 158, 0.12)",
     },
     error: {
       main: "#D32F2F",
@@ -58,48 +58,86 @@ export const cozyTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily:
+      '"Inter", "SF Pro Display", "Segoe UI", "Roboto", "Helvetica Neue", sans-serif',
     h1: {
-      fontWeight: 600,
-      color: "#F5DEB3",
-      letterSpacing: "-0.01562em",
+      fontFamily:
+        '"JetBrains Mono", "SF Mono", "Monaco", "Cascadia Code", "Roboto Mono", monospace',
+      fontWeight: 700,
+      color: "#F0F6FC",
+      letterSpacing: "-0.02em",
+      fontSize: "2.5rem",
     },
     h2: {
-      fontWeight: 600,
-      color: "#F5DEB3",
-      letterSpacing: "-0.00833em",
+      fontFamily: '"Inter", "SF Pro Display", "Segoe UI", sans-serif',
+      fontWeight: 700,
+      color: "#F0F6FC",
+      letterSpacing: "-0.01em",
+      fontSize: "2rem",
     },
     h3: {
+      fontFamily: '"Inter", "SF Pro Display", "Segoe UI", sans-serif',
       fontWeight: 600,
-      color: "#F5DEB3",
-      letterSpacing: "0em",
+      color: "#F0F6FC",
+      letterSpacing: "-0.005em",
+      fontSize: "1.75rem",
     },
     h4: {
+      fontFamily: '"Inter", "SF Pro Display", "Segoe UI", sans-serif',
       fontWeight: 600,
-      color: "#F5DEB3",
-      letterSpacing: "0.00735em",
+      color: "#F0F6FC",
+      letterSpacing: "0em",
+      fontSize: "1.5rem",
     },
     h5: {
+      fontFamily: '"Inter", "SF Pro Display", "Segoe UI", sans-serif',
       fontWeight: 600,
-      color: "#F5DEB3",
-      letterSpacing: "0em",
+      color: "#F0F6FC",
+      letterSpacing: "0.005em",
+      fontSize: "1.25rem",
     },
     h6: {
+      fontFamily: '"Inter", "SF Pro Display", "Segoe UI", sans-serif',
       fontWeight: 600,
-      color: "#F5DEB3",
-      letterSpacing: "0.0075em",
+      color: "#F0F6FC",
+      letterSpacing: "0.01em",
+      fontSize: "1.125rem",
     },
     body1: {
-      color: "#F5DEB3",
+      fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
+      color: "#F0F6FC",
       lineHeight: 1.6,
+      fontSize: "1rem",
+      fontWeight: 400,
     },
     body2: {
-      color: "#DEB887",
+      fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
+      color: "#8B949E",
       lineHeight: 1.5,
+      fontSize: "0.875rem",
+      fontWeight: 400,
+    },
+    caption: {
+      fontFamily:
+        '"JetBrains Mono", "SF Mono", "Monaco", "Cascadia Code", "Roboto Mono", monospace',
+      color: "#8B949E",
+      fontSize: "0.75rem",
+      fontWeight: 500,
+      letterSpacing: "0.03em",
+    },
+    overline: {
+      fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
+      fontSize: "0.75rem",
+      fontWeight: 600,
+      letterSpacing: "0.08em",
+      textTransform: "uppercase",
+      color: "#8B949E",
     },
     button: {
+      fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
       fontWeight: 600,
-      textTransform: "none", // Remove uppercase
+      textTransform: "none",
+      letterSpacing: "0.02em",
     },
   },
   shape: {
@@ -109,9 +147,9 @@ export const cozyTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: "#1A1A1A",
+          backgroundColor: "#0D1117",
           backgroundImage: `
-            radial-gradient(circle at 1px 1px, rgba(222, 184, 135, 0.05) 1px, transparent 0)
+            radial-gradient(circle at 1px 1px, rgba(0, 188, 212, 0.05) 1px, transparent 0)
           `,
           backgroundSize: "20px 20px",
         },
@@ -120,9 +158,9 @@ export const cozyTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor: "#2D2A26",
+          backgroundColor: "#161B22",
           backgroundImage: "none",
-          border: "1px solid rgba(222, 184, 135, 0.2)",
+          border: "1px solid rgba(48, 54, 61, 0.5)",
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
         },
         elevation1: {
@@ -144,24 +182,24 @@ export const cozyTheme = createTheme({
           fontWeight: 600,
           boxShadow: "none",
           "&:hover": {
-            boxShadow: "0 2px 8px rgba(222, 184, 135, 0.3)",
+            boxShadow: "0 2px 8px rgba(0, 188, 212, 0.3)",
             transform: "translateY(-1px)",
             transition: "all 0.2s ease",
           },
         },
         contained: {
-          background: "linear-gradient(45deg, #DEB887 30%, #DAA520 90%)",
-          color: "#1A1A1A",
+          background: "linear-gradient(45deg, #00BCD4 30%, #26C6DA 90%)",
+          color: "#FFFFFF",
           "&:hover": {
-            background: "linear-gradient(45deg, #F5DEB3 30%, #DEB887 90%)",
+            background: "linear-gradient(45deg, #00ACC1 30%, #00BCD4 90%)",
           },
         },
         outlined: {
-          borderColor: "#DEB887",
-          color: "#DEB887",
+          borderColor: "#00BCD4",
+          color: "#00BCD4",
           "&:hover": {
-            borderColor: "#F5DEB3",
-            backgroundColor: "rgba(222, 184, 135, 0.08)",
+            borderColor: "#4DD0E1",
+            backgroundColor: "rgba(0, 188, 212, 0.08)",
           },
         },
       },
@@ -169,8 +207,8 @@ export const cozyTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: "#2D2A26",
-          border: "1px solid rgba(222, 184, 135, 0.2)",
+          backgroundColor: "#161B22",
+          border: "1px solid rgba(48, 54, 61, 0.5)",
           borderRadius: 16,
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
           transition: "all 0.3s ease",
@@ -188,22 +226,22 @@ export const cozyTheme = createTheme({
           border: "1px solid",
         },
         standardInfo: {
-          backgroundColor: "#1A2332",
-          borderColor: "#2196F3",
-          color: "#64B5F6",
+          backgroundColor: "#0D1B26",
+          borderColor: "#00BCD4",
+          color: "#4DD0E1",
         },
         standardSuccess: {
-          backgroundColor: "#1B2A1B",
+          backgroundColor: "#0A1F0A",
           borderColor: "#4CAF50",
           color: "#81C784",
         },
         standardWarning: {
-          backgroundColor: "#332A1A",
+          backgroundColor: "#2D1F0A",
           borderColor: "#FF9800",
           color: "#FFB74D",
         },
         standardError: {
-          backgroundColor: "#331A1A",
+          backgroundColor: "#2D0A0A",
           borderColor: "#F44336",
           color: "#E57373",
         },
@@ -213,14 +251,14 @@ export const cozyTheme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            backgroundColor: "#3D3731",
+            backgroundColor: "#21262D",
             borderRadius: 8,
-            color: "#F5DEB3",
+            color: "#F0F6FC",
             "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#DEB887",
+              borderColor: "#00BCD4",
             },
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#F5DEB3",
+              borderColor: "#4DD0E1",
               borderWidth: 2,
             },
           },
@@ -230,12 +268,12 @@ export const cozyTheme = createTheme({
     MuiTabs: {
       styleOverrides: {
         root: {
-          backgroundColor: "#3D3731",
+          backgroundColor: "#21262D",
           borderRadius: 12,
           minHeight: 48,
         },
         indicator: {
-          backgroundColor: "#DEB887",
+          backgroundColor: "#00BCD4",
           height: 3,
           borderRadius: "3px 3px 0 0",
         },
@@ -246,13 +284,13 @@ export const cozyTheme = createTheme({
         root: {
           textTransform: "none",
           fontWeight: 600,
-          color: "#DEB887",
+          color: "#8B949E",
           "&.Mui-selected": {
-            color: "#F5DEB3",
+            color: "#00BCD4",
           },
           "&:hover": {
-            color: "#F5DEB3",
-            backgroundColor: "rgba(222, 184, 135, 0.08)",
+            color: "#4DD0E1",
+            backgroundColor: "rgba(0, 188, 212, 0.08)",
           },
         },
       },
@@ -260,18 +298,18 @@ export const cozyTheme = createTheme({
     MuiChip: {
       styleOverrides: {
         root: {
-          backgroundColor: "#3D3731",
-          color: "#F5DEB3",
+          backgroundColor: "#21262D",
+          color: "#F0F6FC",
           fontWeight: 500,
           "&:hover": {
-            backgroundColor: "#4A453E",
+            backgroundColor: "#30363D",
           },
         },
         filled: {
-          backgroundColor: "#DEB887",
-          color: "#1A1A1A",
+          backgroundColor: "#00BCD4",
+          color: "#FFFFFF",
           "&:hover": {
-            backgroundColor: "#F5DEB3",
+            backgroundColor: "#4DD0E1",
           },
         },
       },
@@ -279,11 +317,11 @@ export const cozyTheme = createTheme({
     MuiLinearProgress: {
       styleOverrides: {
         root: {
-          backgroundColor: "#4A453E",
+          backgroundColor: "#30363D",
           borderRadius: 4,
         },
         bar: {
-          backgroundColor: "#DEB887",
+          backgroundColor: "#00BCD4",
           borderRadius: 4,
         },
       },
@@ -291,32 +329,32 @@ export const cozyTheme = createTheme({
   },
 });
 
-// Additional utility colors for custom components - Dark Theme
+// Additional utility colors for custom components - Dark + Cyan Theme
 export const cozyColors = {
   // Dark theme background colors
-  warmCream: "#1A1A1A", // Main dark background
-  antiqueWhite: "#2D2A26", // Paper/card background
-  wheat: "#3D3731", // Surface color
-  cornsilk: "#4A453E", // Light surface
+  warmCream: "#0D1117", // Main dark background
+  antiqueWhite: "#161B22", // Paper/card background
+  wheat: "#21262D", // Surface color
+  cornsilk: "#30363D", // Light surface
 
-  // Dark theme accent colors
-  saddleBrown: "#DEB887", // Primary accent
-  sienna: "#F5DEB3", // Light accent
-  darkBrown: "#CD853F", // Dark accent
-  chocolate: "#DAA520", // Secondary accent
-  burlywood: "#FFD700", // Bright accent
-  darkGoldenrod: "#B8860B", // Muted accent
+  // Cyan theme accent colors
+  saddleBrown: "#00BCD4", // Primary cyan accent
+  sienna: "#4DD0E1", // Light cyan accent
+  darkBrown: "#00838F", // Dark cyan accent
+  chocolate: "#26C6DA", // Secondary cyan accent
+  burlywood: "#80DEEA", // Bright cyan accent
+  darkGoldenrod: "#0097A7", // Deep cyan accent
 
   // Dark theme text colors
-  textPrimary: "#F5DEB3", // Primary text
-  textSecondary: "#DEB887", // Secondary text
-  textDisabled: "#8D7B6B", // Disabled text
+  textPrimary: "#F0F6FC", // Primary text - high contrast
+  textSecondary: "#8B949E", // Secondary text - medium contrast
+  textDisabled: "#484F58", // Disabled text - low contrast
 
   // Accent colors for special states
   accent: {
-    warm: "#DEB887",
-    cozy: "#DAA520",
-    comfortable: "#CD853F",
+    warm: "#00BCD4",
+    cozy: "#26C6DA",
+    comfortable: "#4DD0E1",
   },
 
   // Status colors with dark theme adjustments
@@ -324,7 +362,7 @@ export const cozyColors = {
     success: "#81C784",
     warning: "#FFB74D",
     error: "#E57373",
-    info: "#64B5F6",
+    info: "#4DD0E1",
   },
 };
 

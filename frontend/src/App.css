@@ -1,10 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
 body,
 html,
 #root {
     height: 100%;
     margin: 0;
-    font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2a26 100%);
+    font-family:
+        "Inter", "SF Pro Display", "Segoe UI", "Roboto", "Helvetica Neue",
+        sans-serif;
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .main-bg {
@@ -13,7 +22,7 @@ html,
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2a26 50%, #3d3731 100%);
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #21262d 100%);
     background-attachment: fixed;
     position: relative;
 }
@@ -28,12 +37,12 @@ html,
     background-image:
         radial-gradient(
             circle at 20% 80%,
-            rgba(222, 184, 135, 0.08) 0%,
+            rgba(0, 188, 212, 0.08) 0%,
             transparent 50%
         ),
         radial-gradient(
             circle at 80% 20%,
-            rgba(218, 165, 32, 0.08) 0%,
+            rgba(38, 198, 218, 0.08) 0%,
             transparent 50%
         );
     pointer-events: none;
@@ -51,13 +60,13 @@ html,
 }
 
 .sidebar-glass {
-    background: rgba(45, 42, 38, 0.95);
+    background: rgba(22, 27, 34, 0.95);
     backdrop-filter: blur(12px);
     box-shadow:
         0 8px 32px 0 rgba(0, 0, 0, 0.3),
         0 2px 8px 0 rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(222, 184, 135, 0.1);
-    border: 1px solid rgba(222, 184, 135, 0.2);
+        inset 0 1px 0 rgba(0, 188, 212, 0.1);
+    border: 1px solid rgba(48, 54, 61, 0.5);
     border-radius: 24px;
     padding: 36px 28px;
     min-width: 270px;
@@ -75,33 +84,30 @@ html,
 }
 
 .sidebar-glass::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #deb887 0%, #daa520 50%, #deb887 100%);
+    display: none;
 }
 
 .brand-title {
-    font-size: 2.2em;
+    font-family:
+        "JetBrains Mono", "SF Mono", "Monaco", "Cascadia Code", "Roboto Mono",
+        monospace;
+    font-size: 1.75rem;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 24px;
-    letter-spacing: 1px;
-    color: #deb887;
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+    color: #00bcd4;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar-section h2 {
-    font-size: 1.1em;
+    font-family: "Inter", "SF Pro Text", "Segoe UI", sans-serif;
+    font-size: 0.75rem;
     font-weight: 600;
     margin: 0 0 16px 0;
-    color: #daa520;
-    letter-spacing: 1.5px;
+    color: #26c6da;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    font-size: 0.75rem;
     padding-left: 16px;
 }
 
@@ -112,53 +118,47 @@ html,
 }
 
 .sidebar-btn {
-    margin: 2px 8px 6px 8px;
-    font-size: 1.08em;
+    margin: 4px 0;
+    font-family: "Inter", "SF Pro Text", "Segoe UI", sans-serif;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     cursor: pointer;
-    border-radius: 12px;
-    padding: 14px 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    color: #deb887;
+    border-radius: 10px;
+    padding: 12px 16px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    color: #8b949e;
     font-weight: 500;
     position: relative;
-    overflow: hidden;
+    border: none;
+    letter-spacing: 0.01em;
 }
 
 .sidebar-btn:hover {
-    background: #3d3731;
-    color: #f5deb3;
-    transform: translateX(4px);
-    box-shadow: 0 2px 8px rgba(222, 184, 135, 0.1);
+    background: rgba(0, 188, 212, 0.08);
+    color: #00bcd4;
+    transform: none;
+    border-radius: 10px;
 }
 
 .sidebar-btn.active {
-    background: linear-gradient(135deg, #deb887 0%, #daa520 100%);
-    color: #1a1a1a;
+    background: rgba(0, 188, 212, 0.15);
+    color: #00bcd4;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(222, 184, 135, 0.3);
+    border-left: 3px solid #00bcd4;
+    padding-left: 13px;
 }
 
 .sidebar-btn.active::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.15) 0%,
-        transparent 100%
-    );
-    border-radius: 12px 12px 0 0;
+    display: none;
 }
 
 .sidebar-btn.active:hover {
-    background: linear-gradient(135deg, #f5deb3 0%, #deb887 100%);
-    transform: translateX(4px);
+    background: rgba(0, 188, 212, 0.2);
+    color: #4dd0e1;
+    transform: none;
 }
 
 .icon {
@@ -183,84 +183,82 @@ html,
 }
 
 .dashboard-card {
-    background: rgba(45, 42, 38, 0.95);
+    background: rgba(22, 27, 34, 0.95);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(222, 184, 135, 0.2);
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    padding: 28px 38px;
+    border: 1px solid rgba(48, 54, 61, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
     min-width: 220px;
-    color: #f5deb3;
+    color: #f0f6fc;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
 }
 
 .dashboard-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #deb887 0%, #daa520 50%, #deb887 100%);
+    display: none;
 }
 
 .dashboard-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 188, 212, 0.2);
 }
 
 .card-label {
-    font-size: 1.1em;
-    color: #daa520;
-    margin-bottom: 8px;
-    font-weight: 500;
+    font-family: "Inter", "SF Pro Text", "Segoe UI", sans-serif;
+    font-size: 0.75rem;
+    color: #8b949e;
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
 .card-value {
-    font-size: 1.35em;
-    font-weight: 600;
-    color: #deb887;
+    font-family:
+        "JetBrains Mono", "SF Mono", "Monaco", "Cascadia Code", "Roboto Mono",
+        monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00bcd4;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
 }
 
 .dashboard-news {
-    background: rgba(45, 42, 38, 0.95);
+    background: rgba(22, 27, 34, 0.95);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(222, 184, 135, 0.2);
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    padding: 28px 38px;
-    color: #f5deb3;
-    height: 600px;
+    border: 1px solid rgba(48, 54, 61, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    color: #f0f6fc;
+    height: 400px;
     position: relative;
     overflow: hidden;
+    transition: all 0.2s ease;
 }
 
 .dashboard-news::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #deb887 0%, #daa520 50%, #deb887 100%);
+    display: none;
 }
 
 .news-placeholder {
     min-height: 80px;
     opacity: 0.7;
     font-style: italic;
-    color: #deb887;
+    color: #8b949e;
 }
 
 .cybersafe-bg {
     min-height: 100vh;
     width: 100vw;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2a26 100%) !important;
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%) !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -270,67 +268,62 @@ html,
 .cybersafe-window {
     width: 100%;
     max-width: 540px;
-    padding: 36px 24px;
-    border-radius: 28px;
-    background: rgba(45, 42, 38, 0.95) !important;
+    padding: 32px 24px;
+    border-radius: 16px;
+    background: rgba(22, 27, 34, 0.95) !important;
     backdrop-filter: blur(12px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(222, 184, 135, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(48, 54, 61, 0.3);
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 24px;
     position: relative;
     overflow: hidden;
 }
 
 .cybersafe-window::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #deb887 0%, #daa520 50%, #deb887 100%);
+    display: none;
 }
 
 .cybersafe-title {
     font-weight: 700 !important;
     letter-spacing: 1px;
     margin-bottom: 18px !important;
-    color: #deb887 !important;
+    color: #00bcd4 !important;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .cybersafe-status {
     margin-bottom: 24px !important;
-    color: #deb887 !important;
+    color: #8b949e !important;
     font-weight: 500 !important;
 }
 
 .cybersafe-card {
-    border-radius: 16px !important;
-    background: rgba(61, 55, 49, 0.8) !important;
+    border-radius: 12px !important;
+    background: rgba(33, 38, 45, 0.8) !important;
     backdrop-filter: blur(8px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-    border: 1px solid rgba(222, 184, 135, 0.2) !important;
-    padding: 28px 18px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(48, 54, 61, 0.3) !important;
+    padding: 24px !important;
     margin-bottom: 0 !important;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .cybersafe-card:hover {
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+    border-color: rgba(0, 188, 212, 0.2) !important;
 }
 
 .cybersafe-card .MuiTypography-h5 {
-    color: #deb887 !important;
+    color: #00bcd4 !important;
     margin-top: -10px !important;
     margin-bottom: 18px !important;
     font-weight: 600 !important;
 }
 
 .cybersafe-card label {
-    color: #deb887 !important;
+    color: #8b949e !important;
     font-weight: 500 !important;
 }
 
@@ -342,17 +335,17 @@ html,
 }
 
 .cybersafe-btn {
-    background: linear-gradient(135deg, #deb887 0%, #daa520 100%);
-    color: #1a1a1a !important;
+    background: #00bcd4;
+    color: #ffffff !important;
     font-weight: 600;
-    border-radius: 12px !important;
+    border-radius: 8px !important;
     min-width: 0;
     min-height: 40px;
-    box-shadow: 0 4px 12px rgba(222, 184, 135, 0.3);
+    box-shadow: none;
     border: none !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-size: 1.08em;
-    letter-spacing: 0.02em;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.95rem;
+    letter-spacing: 0.025em;
     cursor: pointer;
     outline: none;
     display: inline-flex;
@@ -365,30 +358,19 @@ html,
 }
 
 .cybersafe-btn::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.15) 0%,
-        transparent 100%
-    );
-    border-radius: 12px 12px 0 0;
+    display: none;
 }
 
 .cybersafe-btn:hover,
 .cybersafe-btn:focus-visible {
-    background: linear-gradient(135deg, #f5deb3 0%, #deb887 100%);
-    box-shadow: 0 6px 20px rgba(245, 222, 179, 0.4);
-    transform: translateY(-2px);
+    background: #4dd0e1;
+    box-shadow: 0 2px 8px rgba(0, 188, 212, 0.2);
+    transform: translateY(-1px);
 }
 
 .cybersafe-btn:active {
-    background: linear-gradient(135deg, #deb887 0%, #daa520 100%);
-    box-shadow: 0 2px 8px rgba(222, 184, 135, 0.3);
+    background: #00bcd4;
+    box-shadow: none;
     transform: translateY(0px);
 }
 
@@ -397,7 +379,7 @@ html,
     opacity: 0.6;
     cursor: not-allowed;
     box-shadow: none;
-    background: #8d7b6b !important;
+    background: #484f58 !important;
     transform: none;
 }
 
@@ -406,13 +388,17 @@ html,
 }
 
 .cybersafe-filename {
-    font-size: 1.05em;
-    color: #f5deb3 !important;
+    font-family:
+        "JetBrains Mono", "SF Mono", "Monaco", "Cascadia Code", "Roboto Mono",
+        monospace;
+    font-size: 0.95rem;
+    color: #f0f6fc !important;
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-weight: 500;
+    letter-spacing: 0.01em;
 }
 
 .cybersafe-result {
@@ -465,20 +451,20 @@ html,
 
 .MuiInputBase-input,
 .MuiInputLabel-root {
-    color: #f5deb3 !important;
+    color: #f0f6fc !important;
     font-weight: 500 !important;
 }
 
 .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-    border-color: #deb887 !important;
+    border-color: #30363d !important;
 }
 
 .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
-    border-color: #f5deb3 !important;
+    border-color: #00bcd4 !important;
 }
 
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: #deb887 !important;
+    border-color: #4dd0e1 !important;
     border-width: 2px !important;
 }
 
@@ -488,33 +474,33 @@ html,
 }
 
 ::-webkit-scrollbar-track {
-    background: #3d3731;
+    background: #21262d;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #deb887;
+    background: #30363d;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #f5deb3;
+    background: #00bcd4;
 }
 
 /* Selection styling */
 ::selection {
-    background-color: rgba(222, 184, 135, 0.3);
-    color: #f5deb3;
+    background-color: rgba(0, 188, 212, 0.3);
+    color: #f0f6fc;
 }
 
 ::-moz-selection {
-    background-color: rgba(222, 184, 135, 0.3);
-    color: #f5deb3;
+    background-color: rgba(0, 188, 212, 0.3);
+    color: #f0f6fc;
 }
 
 /* Focus outline styling */
 *:focus-visible {
-    outline: 2px solid #deb887;
+    outline: 2px solid #00bcd4;
     outline-offset: 2px;
     border-radius: 4px;
 }
