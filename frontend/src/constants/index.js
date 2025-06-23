@@ -88,6 +88,12 @@ export const API_ENDPOINTS = {
   HASH: (type, text) =>
     `${API_BASE_URL}/hash_${type}?text=${encodeURIComponent(text)}`,
   FILETYPE: `${API_BASE_URL}/filetype`,
+  YARA: {
+    SCAN: `${API_BASE_URL}/yara/scan`,
+    VALIDATE: `${API_BASE_URL}/yara/validate-rules`,
+    DEFAULT_RULES: `${API_BASE_URL}/yara/default-rules`,
+    BATCH_SCAN: `${API_BASE_URL}/yara/batch-scan`,
+  },
 };
 
 // Common Styles
@@ -188,12 +194,30 @@ export const LAYOUT = {
 export const MESSAGES = {
   copySuccess: "Copied!",
   copyDefault: "Copy",
-  yaraComingSoon:
-    "YARA scanning functionality will be available in a future update.",
   uploadFile: "Upload File",
   detectFileType: "Detect File Type",
   generateHash: "Generate Hash",
   deselect: "Deselect",
   selectedFile: "Selected:",
   hashingTool: "Hashing Tool",
+  yaraScanner: "YARA Scanner",
+  scanFile: "Scan File",
+  scanFiles: "Scan Files",
+  validateRules: "Validate Rules",
+  loadDefaultRules: "Load Default Rules",
+  clearRules: "Clear Rules",
+  scanInProgress: "Scanning...",
+  validatingRules: "Validating...",
+  clean: "Clean",
+  suspicious: "Suspicious",
+  error: "Error",
+  noMatches: "No threats detected",
+  matchesFound: "matches found",
+  rulesValid: "Rules are valid",
+  rulesInvalid: "Rules contain errors",
+  customRules: "Custom YARA Rules",
+  scanResults: "Scan Results",
+  batchScanResults: "Batch Scan Results",
+  useDefaultRules: "Use Default Rules",
+  addCustomRules: "Add Custom Rules",
 };

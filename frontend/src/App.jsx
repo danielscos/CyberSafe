@@ -7,6 +7,7 @@ import {
 import { cozyTheme } from "./theme/cozyTheme";
 import HashingTool from "./components/HashingTool";
 import FileScanTool from "./components/FileScanTool";
+import YaraScanner from "./components/YaraScanner";
 import Dashboard from "./components/Dashboard";
 import Sidebar from "./components/Sidebar";
 import FloatingParticles from "./components/FloatingParticles";
@@ -16,16 +17,6 @@ import "./App.css";
 
 // Use cozy cottage theme
 const theme = cozyTheme;
-
-// YARA tool plaeholder component
-const YaraTool = () => (
-  <CozyToolContainer>
-    <CozyTypography variant="h5" gutterBottom>
-      YARA Scan (Coming Soon)
-    </CozyTypography>
-    <Alert severity="info">{MESSAGES.yaraComingSoon}</Alert>
-  </CozyToolContainer>
-);
 
 // error boundary component
 const ErrorFallback = ({ error, resetError }) => (
@@ -82,7 +73,7 @@ function App() {
         case NAVIGATION_TABS.FILESCAN:
           return <FileScanTool />;
         case NAVIGATION_TABS.YARA:
-          return <YaraTool />;
+          return <YaraScanner />;
         case NAVIGATION_TABS.DASHBOARD:
         default:
           return <Dashboard />;

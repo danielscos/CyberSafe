@@ -157,6 +157,182 @@ export const useFileUpload = () => {
   };
 };
 
+// YARA scanner hook
+export const useYaraScanner = () => {
+  const [scanResult, setScanResult] = useState(null);
+  const [validationResult, setValidationResult] = useState(null);
+  const [defaultRules, setDefaultRules] = useState(null);
+  const [batchScanResult, setBatchScanResult] = useState(null);
+  const { loading, error, executeRequest, clearError } = useApi();
+
+  const scanFile = useCallback(
+    async (file, customRules = null, useDefaultRules = true) => {
+      if (!file) {
+        throw new Error("Please select a file to scan");
+      }
+
+      const result = await executeRequest(async () => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("use_default_rules", useDefaultRules.toString());
+        if (customRules) {
+          formData.append("rules", customRules);
+        }
+
+        const response = await axios.post(API_ENDPOINTS.YARA.SCAN, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        return response.data;
+      });
+
+      setScanResult(result);
+      return result;
+    },
+    [executeRequest],
+  );
+
+  const batchScanFiles = useCallback(
+    async (files, customRules = null, useDefaultRules = true) => {
+      if (!files || files.length === 0) {
+        throw new Error("Please select files to scan");
+      }
+
+      if (files.length > 10) {
+        throw new Error("Maximum 10 files allowed for batch scanning");
+      }
+
+      const result = await executeRequest(async () => {
+        const formData = new FormData();
+        files.forEach((file) => {
+          formData.append("files", file);
+        });
+        formData.append("use_default_rules", useDefaultRules.toString());
+        if (customRules) {
+          formData.append("rules", customRules);
+        }
+
+        const response = await axios.post(
+          API_ENDPOINTS.YARA.BATCH_SCAN,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          },
+        );
+        return response.data;
+      });
+
+      setBatchScanResult(result);
+      return result;
+    },
+    [executeRequest],
+  );
+
+  const validateRules = useCallback(
+    async (rules) => {
+      if (!rules || !rules.trim()) {
+        throw new Error("Please enter YARA rules to validate");
+      }
+
+      const result = await executeRequest(async () => {
+        const formData = new FormData();
+        formData.append("rules", rules);
+
+        const response = await axios.post(
+          API_ENDPOINTS.YARA.VALIDATE,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          },
+        );
+        return response.data;
+      });
+
+      setValidationResult(result);
+      return result;
+    },
+    [executeRequest],
+  );
+
+  const loadDefaultRules = useCallback(async () => {
+    const result = await executeRequest(async () => {
+      const response = await axios.get(API_ENDPOINTS.YARA.DEFAULT_RULES);
+      return response.data;
+    });
+
+    setDefaultRules(result);
+    return result;
+  }, [executeRequest]);
+
+  const clearScanResult = useCallback(() => {
+    setScanResult(null);
+    clearError();
+  }, [clearError]);
+
+  const clearValidationResult = useCallback(() => {
+    setValidationResult(null);
+    clearError();
+  }, [clearError]);
+
+  const clearBatchScanResult = useCallback(() => {
+    setBatchScanResult(null);
+    clearError();
+  }, [clearError]);
+
+  const clearAllResults = useCallback(() => {
+    setScanResult(null);
+    setValidationResult(null);
+    setBatchScanResult(null);
+    clearError();
+  }, [clearError]);
+
+  return {
+    scanResult,
+    validationResult,
+    defaultRules,
+    batchScanResult,
+    loading,
+    error,
+    scanFile,
+    batchScanFiles,
+    validateRules,
+    loadDefaultRules,
+    clearScanResult,
+    clearValidationResult,
+    clearBatchScanResult,
+    clearAllResults,
+  };
+};
+
+// Multiple file upload hook for batch operations
+export const useMultiFileUpload = () => {
+  const [files, setFiles] = useState([]);
+
+  const handleFilesChange = useCallback((event) => {
+    const selectedFiles = Array.from(event.target.files);
+    setFiles(selectedFiles);
+  }, []);
+
+  const removeFile = useCallback((index) => {
+    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  }, []);
+
+  const clearFiles = useCallback(() => {
+    setFiles([]);
+  }, []);
+
+  const addFiles = useCallback((newFiles) => {
+    setFiles((prevFiles) => [...prevFiles, ...Array.from(newFiles)]);
+  }, []);
+
+  return {
+    files,
+    handleFilesChange,
+    removeFile,
+    clearFiles,
+    addFiles,
+  };
+};
+
 // Local storage hook for persisting user preferences
 export const useLocalStorage = (key, initialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
