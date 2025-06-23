@@ -8,6 +8,7 @@ backend/__pyo3_build__/
 backend/gemini_api_key.py
 backend/__pycache__/
 backend/*.pyc
+venv/
 
 # Electron build and dependencies
 electron-ui/node_modules/

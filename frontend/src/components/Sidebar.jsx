@@ -1,8 +1,8 @@
 import {
-  BrandTitle,
-  SidebarSectionTitle,
-  SidebarButton,
-} from "./StyledComponents";
+  CozyBrandTitle,
+  CozySidebarSectionTitle,
+  CozySidebarButton,
+} from "./CozyStyledComponents";
 import { SIDEBAR_TOOLS, SIDEBAR_RESOURCES } from "../constants";
 
 const Sidebar = ({ activeTab, onTabChange }) => {
@@ -18,13 +18,13 @@ const Sidebar = ({ activeTab, onTabChange }) => {
       role="navigation"
       aria-label="Main navigation"
     >
-      <BrandTitle component="h1">CyberSafe</BrandTitle>
+      <CozyBrandTitle component="h1">CyberSafe</CozyBrandTitle>
 
       <div className="sidebar-section">
-        <SidebarSectionTitle component="h2">TOOLS</SidebarSectionTitle>
+        <CozySidebarSectionTitle component="h2">TOOLS</CozySidebarSectionTitle>
         <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
           {SIDEBAR_TOOLS.map((tool) => (
-            <SidebarButton
+            <CozySidebarButton
               key={tool.id}
               active={activeTab === tool.id}
               onClick={() => onTabChange(tool.id)}
@@ -46,16 +46,18 @@ const Sidebar = ({ activeTab, onTabChange }) => {
                 {tool.icon}
               </span>
               {tool.label}
-            </SidebarButton>
+            </CozySidebarButton>
           ))}
         </ul>
       </div>
 
       <div className="sidebar-section">
-        <SidebarSectionTitle component="h2">RESOURCES</SidebarSectionTitle>
+        <CozySidebarSectionTitle component="h2">
+          RESOURCES
+        </CozySidebarSectionTitle>
         <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
           {SIDEBAR_RESOURCES.map((resource) => (
-            <SidebarButton
+            <CozySidebarButton
               key={resource.id}
               onClick={() => handleResourceClick(resource.url)}
               role="button"
@@ -76,7 +78,7 @@ const Sidebar = ({ activeTab, onTabChange }) => {
                 {resource.icon}
               </span>
               {resource.label}
-            </SidebarButton>
+            </CozySidebarButton>
           ))}
         </ul>
       </div>

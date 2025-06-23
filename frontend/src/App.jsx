@@ -1,45 +1,40 @@
 import { useState } from "react";
-import { CssBaseline, ThemeProvider, createTheme, Alert } from "@mui/material";
-import { WhiteTypography, ToolContainer } from "./components/StyledComponents";
-import HashingTool from "./components/HashingTool";
+import { CssBaseline, ThemeProvider, Alert } from "@mui/material";
+import {
+  CozyTypography,
+  CozyToolContainer,
+} from "./components/CozyStyledComponents";
+import { cozyTheme } from "./theme/cozyTheme";
+import CozyHashingTool from "./components/CozyHashingTool";
 import FileScanTool from "./components/FileScanTool";
-import Dashboard from "./components/Dashboard";
+import CozyDashboard from "./components/CozyDashboard";
 import Sidebar from "./components/Sidebar";
+import FloatingParticles from "./components/FloatingParticles";
 import { useLocalStorage } from "./hooks/useApi";
 import { NAVIGATION_TABS, MESSAGES } from "./constants";
 import "./App.css";
 
-// create Material-UI theme
-const theme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: "#00c6fb",
-    },
-    secondary: {
-      main: "#4caf50",
-    },
-  },
-});
+// Use cozy cottage theme
+const theme = cozyTheme;
 
 // YARA tool plaeholder component
 const YaraTool = () => (
-  <ToolContainer>
-    <WhiteTypography variant="h5" gutterBottom>
+  <CozyToolContainer>
+    <CozyTypography variant="h5" gutterBottom>
       YARA Scan (Coming Soon)
-    </WhiteTypography>
+    </CozyTypography>
     <Alert severity="info">{MESSAGES.yaraComingSoon}</Alert>
-  </ToolContainer>
+  </CozyToolContainer>
 );
 
 // error boundary component
 const ErrorFallback = ({ error, resetError }) => (
-  <ToolContainer>
+  <CozyToolContainer>
     <Alert severity="error" sx={{ mb: 2 }}>
-      <WhiteTypography variant="h6" gutterBottom>
+      <CozyTypography variant="h6" gutterBottom>
         Something went wrong
-      </WhiteTypography>
-      <WhiteTypography variant="body2">{error.message}</WhiteTypography>
+      </CozyTypography>
+      <CozyTypography variant="body2">{error.message}</CozyTypography>
     </Alert>
     <button
       onClick={resetError}
@@ -54,10 +49,10 @@ const ErrorFallback = ({ error, resetError }) => (
     >
       Try again
     </button>
-  </ToolContainer>
+  </CozyToolContainer>
 );
 
-// Main App Component
+// main app component
 function App() {
   // use localStorage to persist the active tab
   const [activeTab, setActiveTab] = useLocalStorage(
@@ -65,11 +60,10 @@ function App() {
     NAVIGATION_TABS.DASHBOARD,
   );
   const [error, setError] = useState(null);
-
   // error boundary functionality
   const resetError = () => setError(null);
 
-  // Handle tab changes
+  // handle tab changes
   const handleTabChange = (newTab) => {
     setActiveTab(newTab);
     setError(null); // clear any existing errors when switching tabs
@@ -84,14 +78,14 @@ function App() {
     try {
       switch (activeTab) {
         case NAVIGATION_TABS.HASHING:
-          return <HashingTool />;
+          return <CozyHashingTool />;
         case NAVIGATION_TABS.FILESCAN:
           return <FileScanTool />;
         case NAVIGATION_TABS.YARA:
           return <YaraTool />;
         case NAVIGATION_TABS.DASHBOARD:
         default:
-          return <Dashboard />;
+          return <CozyDashboard />;
       }
     } catch (err) {
       setError(err);
@@ -103,6 +97,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className="main-bg">
+        <FloatingParticles />
         <div className="dashboard-container">
           <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
           <main className="main-content" role="main">
