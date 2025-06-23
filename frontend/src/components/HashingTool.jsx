@@ -258,10 +258,11 @@ const HashingTool = () => {
                     <CozyTypography
                       variant="caption"
                       sx={{
-                        background: "#F5DEB3",
+                        background: "#3D3731",
                         padding: "4px 8px",
                         borderRadius: 1,
                         border: "1px solid #DEB887",
+                        color: "#F5DEB3",
                       }}
                     >
                       Length: {hashResult.hash?.length || 0} characters
@@ -269,10 +270,11 @@ const HashingTool = () => {
                     <CozyTypography
                       variant="caption"
                       sx={{
-                        background: "#F5DEB3",
+                        background: "#3D3731",
                         padding: "4px 8px",
                         borderRadius: 1,
                         border: "1px solid #DEB887",
+                        color: "#F5DEB3",
                       }}
                     >
                       Input size: {hashInput.length} characters
@@ -280,10 +282,11 @@ const HashingTool = () => {
                     <CozyTypography
                       variant="caption"
                       sx={{
-                        background: "#F5DEB3",
+                        background: "#3D3731",
                         padding: "4px 8px",
                         borderRadius: 1,
                         border: "1px solid #DEB887",
+                        color: "#F5DEB3",
                       }}
                     >
                       Generated: {new Date().toLocaleTimeString()}

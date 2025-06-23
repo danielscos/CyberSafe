@@ -2,39 +2,39 @@ import { createTheme } from "@mui/material/styles";
 
 export const cozyTheme = createTheme({
   palette: {
-    mode: "light",
+    mode: "dark",
     primary: {
-      main: "#8B4513", // Saddle brown
-      light: "#A0522D", // Sienna
-      dark: "#654321", // Dark brown
-      contrastText: "#FFFFFF",
+      main: "#DEB887", // Burlywood - warmer primary for dark mode
+      light: "#F5DEB3", // Wheat
+      dark: "#CD853F", // Peru
+      contrastText: "#1A1A1A",
     },
     secondary: {
-      main: "#D2691E", // Chocolate
-      light: "#DEB887", // Burlywood
+      main: "#DAA520", // Goldenrod
+      light: "#FFD700", // Gold
       dark: "#B8860B", // Dark goldenrod
-      contrastText: "#FFFFFF",
+      contrastText: "#1A1A1A",
     },
     background: {
-      default: "#FDF5E6", // Old lace - warm cream background
-      paper: "#FAEBD7", // Antique white
+      default: "#1A1A1A", // Very dark gray with warm undertone
+      paper: "#2D2A26", // Dark brown-gray
     },
     surface: {
-      main: "#F5DEB3", // Wheat
-      light: "#FFF8DC", // Cornsilk
-      dark: "#DDD0B8", // Darker wheat
+      main: "#3D3731", // Dark warm gray
+      light: "#4A453E", // Lighter warm gray
+      dark: "#252219", // Darker warm gray
     },
     text: {
-      primary: "#3E2723", // Dark brown
-      secondary: "#5D4037", // Medium brown
-      disabled: "#8D6E63", // Light brown
+      primary: "#F5DEB3", // Wheat - warm light text
+      secondary: "#DEB887", // Burlywood - secondary text
+      disabled: "#8D7B6B", // Muted brown-gray
     },
-    divider: "#BCAAA4", // Light brown divider
+    divider: "#5D4E42", // Dark warm brown divider
     action: {
-      hover: "rgba(139, 69, 19, 0.08)", // Brown hover
-      selected: "rgba(139, 69, 19, 0.12)", // Brown selected
-      disabled: "rgba(139, 69, 19, 0.26)", // Brown disabled
-      disabledBackground: "rgba(139, 69, 19, 0.12)",
+      hover: "rgba(222, 184, 135, 0.08)", // Burlywood hover
+      selected: "rgba(222, 184, 135, 0.12)", // Burlywood selected
+      disabled: "rgba(222, 184, 135, 0.26)", // Burlywood disabled
+      disabledBackground: "rgba(222, 184, 135, 0.12)",
     },
     error: {
       main: "#D32F2F",
@@ -61,40 +61,40 @@ export const cozyTheme = createTheme({
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
       fontWeight: 600,
-      color: "#3E2723",
+      color: "#F5DEB3",
       letterSpacing: "-0.01562em",
     },
     h2: {
       fontWeight: 600,
-      color: "#3E2723",
+      color: "#F5DEB3",
       letterSpacing: "-0.00833em",
     },
     h3: {
       fontWeight: 600,
-      color: "#3E2723",
+      color: "#F5DEB3",
       letterSpacing: "0em",
     },
     h4: {
       fontWeight: 600,
-      color: "#3E2723",
+      color: "#F5DEB3",
       letterSpacing: "0.00735em",
     },
     h5: {
       fontWeight: 600,
-      color: "#3E2723",
+      color: "#F5DEB3",
       letterSpacing: "0em",
     },
     h6: {
       fontWeight: 600,
-      color: "#3E2723",
+      color: "#F5DEB3",
       letterSpacing: "0.0075em",
     },
     body1: {
-      color: "#3E2723",
+      color: "#F5DEB3",
       lineHeight: 1.6,
     },
     body2: {
-      color: "#5D4037",
+      color: "#DEB887",
       lineHeight: 1.5,
     },
     button: {
@@ -109,9 +109,9 @@ export const cozyTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: "#FDF5E6",
+          backgroundColor: "#1A1A1A",
           backgroundImage: `
-            radial-gradient(circle at 1px 1px, rgba(139, 69, 19, 0.03) 1px, transparent 0)
+            radial-gradient(circle at 1px 1px, rgba(222, 184, 135, 0.05) 1px, transparent 0)
           `,
           backgroundSize: "20px 20px",
         },
@@ -120,19 +120,19 @@ export const cozyTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor: "#FAEBD7",
+          backgroundColor: "#2D2A26",
           backgroundImage: "none",
-          border: "1px solid rgba(139, 69, 19, 0.12)",
-          boxShadow: "0 4px 12px rgba(139, 69, 19, 0.1)",
+          border: "1px solid rgba(222, 184, 135, 0.2)",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
         },
         elevation1: {
-          boxShadow: "0 2px 8px rgba(139, 69, 19, 0.08)",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)",
         },
         elevation2: {
-          boxShadow: "0 4px 12px rgba(139, 69, 19, 0.1)",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
         },
         elevation3: {
-          boxShadow: "0 6px 16px rgba(139, 69, 19, 0.12)",
+          boxShadow: "0 6px 16px rgba(0, 0, 0, 0.35)",
         },
       },
     },
@@ -144,23 +144,24 @@ export const cozyTheme = createTheme({
           fontWeight: 600,
           boxShadow: "none",
           "&:hover": {
-            boxShadow: "0 2px 8px rgba(139, 69, 19, 0.2)",
+            boxShadow: "0 2px 8px rgba(222, 184, 135, 0.3)",
             transform: "translateY(-1px)",
             transition: "all 0.2s ease",
           },
         },
         contained: {
-          background: "linear-gradient(45deg, #8B4513 30%, #A0522D 90%)",
+          background: "linear-gradient(45deg, #DEB887 30%, #DAA520 90%)",
+          color: "#1A1A1A",
           "&:hover": {
-            background: "linear-gradient(45deg, #654321 30%, #8B4513 90%)",
+            background: "linear-gradient(45deg, #F5DEB3 30%, #DEB887 90%)",
           },
         },
         outlined: {
-          borderColor: "#8B4513",
-          color: "#8B4513",
+          borderColor: "#DEB887",
+          color: "#DEB887",
           "&:hover": {
-            borderColor: "#654321",
-            backgroundColor: "rgba(139, 69, 19, 0.04)",
+            borderColor: "#F5DEB3",
+            backgroundColor: "rgba(222, 184, 135, 0.08)",
           },
         },
       },
@@ -168,13 +169,13 @@ export const cozyTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: "#FAEBD7",
-          border: "1px solid rgba(139, 69, 19, 0.12)",
+          backgroundColor: "#2D2A26",
+          border: "1px solid rgba(222, 184, 135, 0.2)",
           borderRadius: 16,
-          boxShadow: "0 4px 12px rgba(139, 69, 19, 0.1)",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
           transition: "all 0.3s ease",
           "&:hover": {
-            boxShadow: "0 6px 20px rgba(139, 69, 19, 0.15)",
+            boxShadow: "0 6px 20px rgba(0, 0, 0, 0.4)",
             transform: "translateY(-2px)",
           },
         },
@@ -187,24 +188,24 @@ export const cozyTheme = createTheme({
           border: "1px solid",
         },
         standardInfo: {
-          backgroundColor: "#E3F2FD",
-          borderColor: "#BBDEFB",
-          color: "#0D47A1",
+          backgroundColor: "#1A2332",
+          borderColor: "#2196F3",
+          color: "#64B5F6",
         },
         standardSuccess: {
-          backgroundColor: "#E8F5E8",
-          borderColor: "#C8E6C9",
-          color: "#2E7D32",
+          backgroundColor: "#1B2A1B",
+          borderColor: "#4CAF50",
+          color: "#81C784",
         },
         standardWarning: {
-          backgroundColor: "#FFF3E0",
-          borderColor: "#FFCC02",
-          color: "#E65100",
+          backgroundColor: "#332A1A",
+          borderColor: "#FF9800",
+          color: "#FFB74D",
         },
         standardError: {
-          backgroundColor: "#FFEBEE",
-          borderColor: "#FFCDD2",
-          color: "#C62828",
+          backgroundColor: "#331A1A",
+          borderColor: "#F44336",
+          color: "#E57373",
         },
       },
     },
@@ -212,13 +213,14 @@ export const cozyTheme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            backgroundColor: "#FFF8DC",
+            backgroundColor: "#3D3731",
             borderRadius: 8,
+            color: "#F5DEB3",
             "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#A0522D",
+              borderColor: "#DEB887",
             },
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#8B4513",
+              borderColor: "#F5DEB3",
               borderWidth: 2,
             },
           },
@@ -228,12 +230,12 @@ export const cozyTheme = createTheme({
     MuiTabs: {
       styleOverrides: {
         root: {
-          backgroundColor: "#F5DEB3",
+          backgroundColor: "#3D3731",
           borderRadius: 12,
           minHeight: 48,
         },
         indicator: {
-          backgroundColor: "#8B4513",
+          backgroundColor: "#DEB887",
           height: 3,
           borderRadius: "3px 3px 0 0",
         },
@@ -244,13 +246,13 @@ export const cozyTheme = createTheme({
         root: {
           textTransform: "none",
           fontWeight: 600,
-          color: "#5D4037",
+          color: "#DEB887",
           "&.Mui-selected": {
-            color: "#8B4513",
+            color: "#F5DEB3",
           },
           "&:hover": {
-            color: "#8B4513",
-            backgroundColor: "rgba(139, 69, 19, 0.04)",
+            color: "#F5DEB3",
+            backgroundColor: "rgba(222, 184, 135, 0.08)",
           },
         },
       },
@@ -258,18 +260,18 @@ export const cozyTheme = createTheme({
     MuiChip: {
       styleOverrides: {
         root: {
-          backgroundColor: "#F5DEB3",
-          color: "#3E2723",
+          backgroundColor: "#3D3731",
+          color: "#F5DEB3",
           fontWeight: 500,
           "&:hover": {
-            backgroundColor: "#DDD0B8",
+            backgroundColor: "#4A453E",
           },
         },
         filled: {
-          backgroundColor: "#8B4513",
-          color: "#FFFFFF",
+          backgroundColor: "#DEB887",
+          color: "#1A1A1A",
           "&:hover": {
-            backgroundColor: "#654321",
+            backgroundColor: "#F5DEB3",
           },
         },
       },
@@ -277,11 +279,11 @@ export const cozyTheme = createTheme({
     MuiLinearProgress: {
       styleOverrides: {
         root: {
-          backgroundColor: "#DDD0B8",
+          backgroundColor: "#4A453E",
           borderRadius: 4,
         },
         bar: {
-          backgroundColor: "#8B4513",
+          backgroundColor: "#DEB887",
           borderRadius: 4,
         },
       },
@@ -289,35 +291,40 @@ export const cozyTheme = createTheme({
   },
 });
 
-// Additional utility colors for custom components
+// Additional utility colors for custom components - Dark Theme
 export const cozyColors = {
-  warmCream: "#FDF5E6",
-  antiqueWhite: "#FAEBD7",
-  wheat: "#F5DEB3",
-  cornsilk: "#FFF8DC",
-  saddleBrown: "#8B4513",
-  sienna: "#A0522D",
-  darkBrown: "#654321",
-  chocolate: "#D2691E",
-  burlywood: "#DEB887",
-  darkGoldenrod: "#B8860B",
-  textPrimary: "#3E2723",
-  textSecondary: "#5D4037",
-  textDisabled: "#8D6E63",
+  // Dark theme background colors
+  warmCream: "#1A1A1A", // Main dark background
+  antiqueWhite: "#2D2A26", // Paper/card background
+  wheat: "#3D3731", // Surface color
+  cornsilk: "#4A453E", // Light surface
+
+  // Dark theme accent colors
+  saddleBrown: "#DEB887", // Primary accent
+  sienna: "#F5DEB3", // Light accent
+  darkBrown: "#CD853F", // Dark accent
+  chocolate: "#DAA520", // Secondary accent
+  burlywood: "#FFD700", // Bright accent
+  darkGoldenrod: "#B8860B", // Muted accent
+
+  // Dark theme text colors
+  textPrimary: "#F5DEB3", // Primary text
+  textSecondary: "#DEB887", // Secondary text
+  textDisabled: "#8D7B6B", // Disabled text
 
   // Accent colors for special states
   accent: {
     warm: "#DEB887",
-    cozy: "#F4A460",
+    cozy: "#DAA520",
     comfortable: "#CD853F",
   },
 
-  // Status colors with warm undertones
+  // Status colors with dark theme adjustments
   status: {
-    success: "#228B22",
-    warning: "#DAA520",
-    error: "#B22222",
-    info: "#4682B4",
+    success: "#81C784",
+    warning: "#FFB74D",
+    error: "#E57373",
+    info: "#64B5F6",
   },
 };
 

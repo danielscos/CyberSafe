@@ -11,20 +11,20 @@ import {
   Box,
 } from "@mui/material";
 
-// Cozy color palette
+// Dark Cozy color palette
 const cozyColors = {
-  warmCream: "#FDF5E6",
-  antiqueWhite: "#FAEBD7",
-  wheat: "#F5DEB3",
-  cornsilk: "#FFF8DC",
-  saddleBrown: "#8B4513",
-  sienna: "#A0522D",
-  darkBrown: "#654321",
-  chocolate: "#D2691E",
-  burlywood: "#DEB887",
-  textPrimary: "#3E2723",
-  textSecondary: "#5D4037",
-  textDisabled: "#8D6E63",
+  warmCream: "#1A1A1A",
+  antiqueWhite: "#2D2A26",
+  wheat: "#3D3731",
+  cornsilk: "#4A453E",
+  saddleBrown: "#DEB887",
+  sienna: "#F5DEB3",
+  darkBrown: "#CD853F",
+  chocolate: "#DAA520",
+  burlywood: "#FFD700",
+  textPrimary: "#F5DEB3",
+  textSecondary: "#DEB887",
+  textDisabled: "#8D7B6B",
 };
 
 // Animation constants
@@ -45,7 +45,7 @@ export const CozyLinearProgress = styled(LinearProgress)(() => ({
   "& .MuiLinearProgress-bar": {
     borderRadius: 12,
     background: `linear-gradient(90deg, ${cozyColors.saddleBrown} 0%, ${cozyColors.chocolate} 50%, ${cozyColors.sienna} 100%)`,
-    boxShadow: "0 1px 3px rgba(139, 69, 19, 0.3)",
+    boxShadow: "0 1px 3px rgba(222, 184, 135, 0.3)",
     position: "relative",
     "&::after": {
       content: '""',
@@ -55,7 +55,7 @@ export const CozyLinearProgress = styled(LinearProgress)(() => ({
       right: 0,
       height: "50%",
       background:
-        "linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%)",
+        "linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%)",
       borderRadius: "12px 12px 0 0",
     },
   },
@@ -70,7 +70,7 @@ export const CozyPrimaryButton = styled(Button)({
   padding: "12px 32px",
   textTransform: "none",
   fontSize: "1rem",
-  boxShadow: "0 4px 12px rgba(139, 69, 19, 0.3)",
+  boxShadow: "0 4px 12px rgba(222, 184, 135, 0.3)",
   border: "none",
   transition: `all ${animations.normal} cubic-bezier(0.4, 0, 0.2, 1)`,
   position: "relative",
@@ -87,13 +87,13 @@ export const CozyPrimaryButton = styled(Button)({
     borderRadius: "12px 12px 0 0",
   },
   "&:hover": {
-    background: `linear-gradient(135deg, ${cozyColors.darkBrown} 0%, ${cozyColors.saddleBrown} 100%)`,
-    boxShadow: "0 6px 20px rgba(139, 69, 19, 0.4)",
+    background: `linear-gradient(135deg, ${cozyColors.sienna} 0%, ${cozyColors.saddleBrown} 100%)`,
+    boxShadow: "0 6px 20px rgba(245, 222, 179, 0.4)",
     transform: "translateY(-2px)",
   },
   "&:active": {
     transform: "translateY(0px)",
-    boxShadow: "0 2px 8px rgba(139, 69, 19, 0.3)",
+    boxShadow: "0 2px 8px rgba(222, 184, 135, 0.3)",
   },
   "&:disabled": {
     background: cozyColors.textDisabled,
@@ -121,7 +121,7 @@ export const CozySecondaryButton = styled(Button)({
   "&:hover": {
     background: cozyColors.saddleBrown,
     color: "#FFFFFF",
-    boxShadow: "0 4px 12px rgba(139, 69, 19, 0.2)",
+    boxShadow: "0 4px 12px rgba(222, 184, 135, 0.2)",
     transform: "translateY(-1px)",
   },
   "&:active": {
@@ -138,15 +138,15 @@ export const CozyClearButton = styled(Button)({
   padding: "8px 16px",
   textTransform: "none",
   fontSize: "0.875rem",
-  border: `1px solid ${cozyColors.burlywood}`,
+  border: `1px solid ${cozyColors.saddleBrown}`,
   transition: `all ${animations.fast}`,
   display: "flex",
   alignItems: "center",
   gap: 6,
   "&:hover": {
-    background: cozyColors.burlywood,
-    borderColor: cozyColors.saddleBrown,
-    color: cozyColors.saddleBrown,
+    background: cozyColors.cornsilk,
+    borderColor: cozyColors.sienna,
+    color: cozyColors.sienna,
   },
 });
 
@@ -163,10 +163,10 @@ export const CozyCopyButton = styled(Button)(({ copySuccess }) => ({
   border: `1px solid`,
   transition: `all ${animations.normal} ease`,
   "&:hover": {
-    backgroundColor: copySuccess ? "#C8E6C9" : cozyColors.wheat,
-    borderColor: copySuccess ? "#2E7D32" : cozyColors.darkBrown,
+    backgroundColor: copySuccess ? "#2E5D32" : cozyColors.wheat,
+    borderColor: copySuccess ? "#4CAF50" : cozyColors.sienna,
     transform: "translateY(-1px)",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
   },
 }));
 
@@ -174,10 +174,10 @@ export const CozyCopyButton = styled(Button)(({ copySuccess }) => ({
 export const CozyGlassPaper = styled(Paper)({
   backgroundColor: cozyColors.antiqueWhite,
   backdropFilter: "blur(10px)",
-  border: `1px solid ${cozyColors.burlywood}`,
+  border: `1px solid ${cozyColors.saddleBrown}`,
   borderRadius: 16,
   padding: 24,
-  boxShadow: "0 8px 32px rgba(139, 69, 19, 0.12)",
+  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
   position: "relative",
   overflow: "hidden",
   "&::before": {
@@ -187,21 +187,21 @@ export const CozyGlassPaper = styled(Paper)({
     left: 0,
     right: 0,
     height: 1,
-    background: `linear-gradient(90deg, transparent 0%, ${cozyColors.burlywood} 50%, transparent 100%)`,
+    background: `linear-gradient(90deg, transparent 0%, ${cozyColors.saddleBrown} 50%, transparent 100%)`,
   },
 });
 
 // Result Display Paper
 export const CozyResultPaper = styled(Paper)({
   backgroundColor: cozyColors.cornsilk,
-  border: `1px solid ${cozyColors.wheat}`,
+  border: `1px solid ${cozyColors.saddleBrown}`,
   borderRadius: 12,
   padding: 20,
   marginTop: 16,
-  boxShadow: "0 4px 16px rgba(139, 69, 19, 0.08)",
+  boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
   transition: `all ${animations.normal}`,
   "&:hover": {
-    boxShadow: "0 6px 24px rgba(139, 69, 19, 0.12)",
+    boxShadow: "0 6px 24px rgba(0, 0, 0, 0.3)",
   },
 });
 
@@ -212,7 +212,7 @@ export const CozyTextField = styled(TextField)({
     borderRadius: 12,
     transition: `all ${animations.fast}`,
     "& fieldset": {
-      borderColor: cozyColors.burlywood,
+      borderColor: cozyColors.saddleBrown,
       borderWidth: 1,
     },
     "&:hover fieldset": {
@@ -221,7 +221,7 @@ export const CozyTextField = styled(TextField)({
     "&.Mui-focused fieldset": {
       borderColor: cozyColors.saddleBrown,
       borderWidth: 2,
-      boxShadow: `0 0 0 3px rgba(139, 69, 19, 0.1)`,
+      boxShadow: `0 0 0 3px rgba(222, 184, 135, 0.1)`,
     },
   },
   "& .MuiInputBase-input": {
@@ -246,7 +246,7 @@ export const CozySelect = styled(Select)({
   backgroundColor: cozyColors.cornsilk,
   borderRadius: 12,
   "& .MuiOutlinedInput-notchedOutline": {
-    borderColor: cozyColors.burlywood,
+    borderColor: cozyColors.saddleBrown,
   },
   "&:hover .MuiOutlinedInput-notchedOutline": {
     borderColor: cozyColors.saddleBrown,
@@ -297,11 +297,11 @@ export const CozyCodeTypography = styled(Typography)({
   color: cozyColors.textPrimary,
   padding: "12px 16px",
   borderRadius: 8,
-  border: `1px solid ${cozyColors.burlywood}`,
+  border: `1px solid ${cozyColors.saddleBrown}`,
   fontSize: "0.875rem",
   lineHeight: 1.5,
   wordBreak: "break-all",
-  boxShadow: "inset 0 1px 3px rgba(139, 69, 19, 0.1)",
+  boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.2)",
 });
 
 // Tool Container with cozy styling
@@ -312,7 +312,7 @@ export const CozyToolContainer = styled(Box)(
     minHeight,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     position: "relative",
   }),
 );
@@ -320,9 +320,9 @@ export const CozyToolContainer = styled(Box)(
 // Cozy Card Component
 export const CozyCard = styled(Card)({
   backgroundColor: cozyColors.antiqueWhite,
-  border: `1px solid ${cozyColors.burlywood}`,
+  border: `1px solid ${cozyColors.saddleBrown}`,
   borderRadius: 20,
-  boxShadow: "0 8px 24px rgba(139, 69, 19, 0.12)",
+  boxShadow: "0 8px 24px rgba(0, 0, 0, 0.3)",
   transition: `all ${animations.normal} cubic-bezier(0.4, 0, 0.2, 1)`,
   overflow: "hidden",
   position: "relative",
@@ -336,7 +336,7 @@ export const CozyCard = styled(Card)({
     background: `linear-gradient(90deg, ${cozyColors.saddleBrown} 0%, ${cozyColors.chocolate} 50%, ${cozyColors.saddleBrown} 100%)`,
   },
   "&:hover": {
-    boxShadow: "0 12px 32px rgba(139, 69, 19, 0.16)",
+    boxShadow: "0 12px 32px rgba(0, 0, 0, 0.4)",
     transform: "translateY(-4px)",
   },
 });
@@ -377,7 +377,7 @@ export const CozyFileInfoContainer = styled(Box)({
   padding: "12px 16px",
   backgroundColor: cozyColors.wheat,
   borderRadius: 8,
-  border: `1px solid ${cozyColors.burlywood}`,
+  border: `1px solid ${cozyColors.saddleBrown}`,
 });
 
 // Result Header Container
@@ -387,7 +387,7 @@ export const CozyResultHeader = styled(Box)({
   alignItems: "flex-start",
   marginBottom: 16,
   paddingBottom: 12,
-  borderBottom: `2px solid ${cozyColors.wheat}`,
+  borderBottom: `2px solid ${cozyColors.saddleBrown}`,
 });
 
 // Upload Button
@@ -401,14 +401,14 @@ export const CozyUploadButton = styled(Button)({
   marginTop: 16,
   textTransform: "none",
   fontSize: "1rem",
-  border: `2px dashed ${cozyColors.saddleBrown}`,
+  border: `2px dashed ${cozyColors.chocolate}`,
   transition: `all ${animations.normal}`,
   "&:hover": {
     background: `linear-gradient(135deg, ${cozyColors.wheat} 0%, ${cozyColors.cornsilk} 100%)`,
-    borderColor: cozyColors.chocolate,
+    borderColor: cozyColors.saddleBrown,
     borderStyle: "solid",
     transform: "translateY(-2px)",
-    boxShadow: "0 4px 16px rgba(139, 69, 19, 0.2)",
+    boxShadow: "0 4px 16px rgba(222, 184, 135, 0.2)",
   },
 });
 
@@ -419,7 +419,7 @@ export const CozyBrandTitle = styled(Typography)({
   fontSize: "1.75rem",
   marginBottom: 32,
   textAlign: "center",
-  textShadow: "0 1px 2px rgba(139, 69, 19, 0.1)",
+  textShadow: "0 1px 2px rgba(0, 0, 0, 0.3)",
 });
 
 // Sidebar Section Title
@@ -469,13 +469,13 @@ export const CozySidebarButton = styled(Box, {
     : {},
   "&:hover": {
     backgroundColor: active
-      ? `linear-gradient(135deg, ${cozyColors.darkBrown} 0%, ${cozyColors.saddleBrown} 100%)`
+      ? `linear-gradient(135deg, ${cozyColors.sienna} 0%, ${cozyColors.saddleBrown} 100%)`
       : cozyColors.wheat,
-    color: active ? "#FFFFFF" : cozyColors.saddleBrown,
+    color: active ? "#1A1A1A" : cozyColors.sienna,
     transform: "translateX(4px)",
     boxShadow: active
-      ? "0 4px 12px rgba(139, 69, 19, 0.3)"
-      : "0 2px 8px rgba(139, 69, 19, 0.1)",
+      ? "0 4px 12px rgba(222, 184, 135, 0.3)"
+      : "0 2px 8px rgba(222, 184, 135, 0.1)",
   },
 }));
 
