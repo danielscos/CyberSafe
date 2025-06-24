@@ -201,7 +201,7 @@ npm run dist         # Create distributable package
 - [x] Basic encoding/decoding tools
 
 #### Phase 2 (Planned)
-- [ ] YARA rule integration
+- [x] YARA rule integration
 - [x] Entropy calculator
 - [ ] String extractor
 - [ ] Live hash monitoring
