@@ -61,7 +61,6 @@ const YaraScanner = () => {
   const [batchMode, setBatchMode] = useState(false);
   const [showRulesEditor, setShowRulesEditor] = useState(false);
 
-  // Load default rules on component mount
   useEffect(() => {
     loadDefaultRules();
   }, [loadDefaultRules]);
