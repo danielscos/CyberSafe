@@ -360,7 +360,7 @@ const YaraScanner = () => {
           minHeight: "70vh",
         }}
       >
-        {/* Left Panel - Controls */}
+        {/* left panel */}
         <Box
           sx={{
             flex: { xs: "1 1 100%", lg: "0 0 480px" },
