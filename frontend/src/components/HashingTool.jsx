@@ -102,7 +102,7 @@ const HashingTool = () => {
         initial="hidden"
         animate="visible"
       >
-        {/* Header */}
+        {/* header */}
         <motion.div variants={itemVariants}>
           <CozyTypography variant="h4" component="h1" gutterBottom>
             🔐 Hash Generator
@@ -113,7 +113,7 @@ const HashingTool = () => {
           </CozyTypography>
         </motion.div>
 
-        {/* Input Section */}
+        {/* input */}
         <motion.div variants={itemVariants}>
           <CozyFlexColumn sx={{ gap: 3, mb: 3 }}>
             <CozyTextField
