@@ -20,6 +20,14 @@ import InfoIcon from "@mui/icons-material/Info";
 import SecurityIcon from "@mui/icons-material/Security";
 import WarningIcon from "@mui/icons-material/Warning";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import ScannerIcon from "@mui/icons-material/Scanner";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
+import CodeIcon from "@mui/icons-material/Code";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import ClearIcon from "@mui/icons-material/Clear";
+import GetAppIcon from "@mui/icons-material/GetApp";
 import {
   CozyPrimaryButton,
   CozySecondaryButton,
@@ -374,7 +382,7 @@ const YaraScanner = () => {
         {MESSAGES.yaraScanner}
       </CozyTypography>
 
-      {/* Mode Selection */}
+      {/* mode select */}
       <Box sx={{ mb: 3 }}>
         <FormControlLabel
           control={
@@ -393,15 +401,39 @@ const YaraScanner = () => {
         />
       </Box>
 
-      {/* File Upload Section */}
+      {/* file upload */}
       {!batchMode ? (
-        // Single file mode
         <>
           <CozyUploadButton
             variant="contained"
             component="label"
             role="button"
             aria-label="Upload file for scanning"
+            startIcon={<CloudUploadIcon />}
+            sx={{
+              position: "relative",
+              overflow: "hidden",
+              minHeight: 56,
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: "-100%",
+                width: "100%",
+                height: "100%",
+                background:
+                  "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
+                transition: "left 0.5s",
+              },
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: "0 4px 20px rgba(0, 188, 212, 0.15)",
+              },
+              "&:hover::before": {
+                left: "100%",
+              },
+            }}
           >
             {MESSAGES.uploadFile}
             <input
@@ -414,29 +446,94 @@ const YaraScanner = () => {
           </CozyUploadButton>
 
           {file && (
-            <CozyFileInfoContainer>
-              <CozyTypography sx={{ mt: 1 }}>
-                {MESSAGES.selectedFile} {file.name}
-              </CozyTypography>
-              <CozySecondaryButton
-                variant="outlined"
-                onClick={clearFile}
-                sx={{ mt: 1, width: 140 }}
-                aria-label="Deselect current file"
+            <CozyFileInfoContainer
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                marginTop: 2,
+                padding: "16px 20px",
+                borderRadius: 2,
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  transform: "translateY(-1px)",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                },
+              }}
+            >
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, flex: 1 }}
               >
-                ✖ {MESSAGES.deselect}
-              </CozySecondaryButton>
+                <Chip
+                  label={file.name}
+                  sx={{
+                    backgroundColor: "rgba(0, 188, 212, 0.1)",
+                    color: "#00BCD4",
+                    fontWeight: 500,
+                    maxWidth: "300px",
+                    "& .MuiChip-label": {
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                    },
+                  }}
+                />
+                <CozySecondaryTypography variant="caption">
+                  ({formatFileSize(file.size)})
+                </CozySecondaryTypography>
+              </Box>
+              <Tooltip title="Remove file">
+                <IconButton
+                  onClick={clearFile}
+                  size="small"
+                  sx={{
+                    color: "#f44336",
+                    "&:hover": {
+                      backgroundColor: "rgba(244, 67, 54, 0.1)",
+                      transform: "scale(1.1)",
+                    },
+                    transition: "all 0.2s ease",
+                  }}
+                  aria-label="Remove selected file"
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
             </CozyFileInfoContainer>
           )}
         </>
       ) : (
-        // Batch mode
         <>
           <CozyUploadButton
             variant="contained"
             component="label"
             role="button"
             aria-label="Upload files for batch scanning"
+            startIcon={<FolderOpenIcon />}
+            sx={{
+              position: "relative",
+              overflow: "hidden",
+              minHeight: 56,
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: "-100%",
+                width: "100%",
+                height: "100%",
+                background:
+                  "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
+                transition: "left 0.5s",
+              },
+              "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: "0 4px 20px rgba(0, 188, 212, 0.15)",
+              },
+              "&:hover::before": {
+                left: "100%",
+              },
+            }}
           >
             Upload Files (Max 10)
             <input
@@ -474,7 +571,15 @@ const YaraScanner = () => {
               <CozySecondaryButton
                 variant="outlined"
                 onClick={clearFiles}
-                sx={{ mt: 1 }}
+                startIcon={<ClearIcon />}
+                sx={{
+                  mt: 1,
+                  "&:hover": {
+                    transform: "translateY(-1px)",
+                    boxShadow: "0 4px 12px rgba(0, 188, 212, 0.2)",
+                  },
+                  transition: "all 0.2s ease",
+                }}
               >
                 Clear All Files
               </CozySecondaryButton>
@@ -483,7 +588,7 @@ const YaraScanner = () => {
         </>
       )}
 
-      {/* Rules Configuration */}
+      {/* rules config */}
       <Box sx={{ mt: 3 }}>
         <FormControlLabel
           control={
@@ -504,7 +609,7 @@ const YaraScanner = () => {
         />
       </Box>
 
-      {/* Custom Rules Section */}
+      {/* custom rules */}
       <Accordion sx={{ mt: 2, backgroundColor: "rgba(255, 255, 255, 0.05)" }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -520,13 +625,29 @@ const YaraScanner = () => {
               variant="outlined"
               onClick={handleLoadDefaultRules}
               disabled={!defaultRules}
-              sx={{ mr: 1 }}
+              startIcon={<GetAppIcon />}
+              sx={{
+                mr: 1,
+                "&:hover": {
+                  transform: "translateY(-1px)",
+                  boxShadow: "0 4px 12px rgba(0, 188, 212, 0.2)",
+                },
+                transition: "all 0.2s ease",
+              }}
             >
               {MESSAGES.loadDefaultRules}
             </CozySecondaryButton>
             <CozySecondaryButton
               variant="outlined"
               onClick={() => setCustomRules("")}
+              startIcon={<ClearIcon />}
+              sx={{
+                "&:hover": {
+                  transform: "translateY(-1px)",
+                  boxShadow: "0 4px 12px rgba(0, 188, 212, 0.2)",
+                },
+                transition: "all 0.2s ease",
+              }}
             >
               {MESSAGES.clearRules}
             </CozySecondaryButton>
@@ -565,6 +686,24 @@ const YaraScanner = () => {
             variant="outlined"
             onClick={handleValidateRules}
             disabled={!customRules.trim() || loading}
+            startIcon={
+              loading ? (
+                <RefreshIcon sx={{ animation: "spin 1s linear infinite" }} />
+              ) : (
+                <PlaylistAddCheckIcon />
+              )
+            }
+            sx={{
+              "&:hover": {
+                transform: "translateY(-1px)",
+                boxShadow: "0 4px 12px rgba(0, 188, 212, 0.2)",
+              },
+              transition: "all 0.2s ease",
+              "@keyframes spin": {
+                "0%": { transform: "rotate(0deg)" },
+                "100%": { transform: "rotate(360deg)" },
+              },
+            }}
           >
             {loading ? MESSAGES.validatingRules : MESSAGES.validateRules}
           </CozySecondaryButton>
@@ -588,7 +727,7 @@ const YaraScanner = () => {
         </AccordionDetails>
       </Accordion>
 
-      {/* Scan Button */}
+      {/* scan button */}
       <CozyPrimaryButton
         variant="contained"
         color="primary"
@@ -599,7 +738,58 @@ const YaraScanner = () => {
           (batchMode && files.length === 0) ||
           (!useDefaultRules && !customRules.trim())
         }
-        sx={{ mt: 3, width: "100%" }}
+        startIcon={
+          loading ? (
+            <RefreshIcon sx={{ animation: "spin 1s linear infinite" }} />
+          ) : (
+            <ScannerIcon />
+          )
+        }
+        sx={{
+          mt: 3,
+          width: "100%",
+          height: 48,
+          fontSize: "1rem",
+          fontWeight: 600,
+          position: "relative",
+          overflow: "hidden",
+          background: loading
+            ? "linear-gradient(45deg, #00BCD4 30%, #4DD0E1 90%)"
+            : "linear-gradient(45deg, #00BCD4 30%, #26C6DA 90%)",
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background:
+              "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)",
+            transform: "translateX(-100%)",
+            transition: "transform 0.6s",
+          },
+          "&:hover": {
+            transform: "translateY(-2px)",
+            boxShadow: "0 6px 25px rgba(0, 188, 212, 0.35)",
+          },
+          "&:hover::after": {
+            transform: "translateX(100%)",
+          },
+          "&:active": {
+            transform: "translateY(0px) scale(0.98)",
+            transition: "transform 0.1s ease",
+          },
+          "&:disabled": {
+            background: "#484F58",
+            color: "#8B949E",
+            transform: "none",
+            boxShadow: "none",
+          },
+          "@keyframes spin": {
+            "0%": { transform: "rotate(0deg)" },
+            "100%": { transform: "rotate(360deg)" },
+          },
+        }}
       >
         {loading
           ? MESSAGES.scanInProgress
@@ -616,17 +806,26 @@ const YaraScanner = () => {
         </Alert>
       )}
 
-      {/* Results Section */}
+      {/* results */}
       <div style={{ minHeight: 120 }}>
         {batchMode ? renderBatchScanResult() : renderSingleScanResult()}
       </div>
 
-      {/* Clear Results Button */}
+      {/* clear result */}
       {(scanResult || batchScanResult) && (
         <CozySecondaryButton
           variant="outlined"
           onClick={clearAllResults}
-          sx={{ mt: 2, width: "100%" }}
+          startIcon={<ClearIcon />}
+          sx={{
+            mt: 2,
+            width: "100%",
+            "&:hover": {
+              transform: "translateY(-1px)",
+              boxShadow: "0 4px 12px rgba(0, 188, 212, 0.2)",
+            },
+            transition: "all 0.2s ease",
+          }}
         >
           Clear Results
         </CozySecondaryButton>
