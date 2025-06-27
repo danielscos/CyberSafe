@@ -112,7 +112,7 @@ const YaraScanner = () => {
       y: 0,
       transition: {
         duration: 0.3,
-        delay: 0.55,
+        delay: 0.15,
       },
     },
   };
@@ -484,17 +484,6 @@ const YaraScanner = () => {
         initial="hidden"
         animate="visible"
       >
-        <motion.div variants={itemVariants}>
-          <CozyTypography
-            variant="h4"
-            gutterBottom
-            margin="0 auto"
-            sx={{ mb: 4 }}
-          >
-            {MESSAGES.yaraScanner}
-          </CozyTypography>
-        </motion.div>
-
         <Box
           sx={{
             display: "flex",
@@ -512,333 +501,354 @@ const YaraScanner = () => {
               gap: 3,
             }}
           >
-            {/* mode select */}
+            {/* Grouped YARA Scanner Section */}
             <motion.div variants={itemVariants}>
               <Box
                 sx={{
-                  p: 2,
+                  p: 3,
                   backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  borderRadius: 2,
+                  borderRadius: 3,
                   border: "1px solid rgba(255, 255, 255, 0.1)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                  ml: 10,
                 }}
               >
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={batchMode}
-                      onChange={(e) => {
-                        setBatchMode(e.target.checked);
-                        clearAllResults();
-                        clearFile();
-                        clearFiles();
-                      }}
-                    />
-                  }
-                  label="Batch Scan Mode"
-                  sx={{ color: COLORS.text.primary }}
-                />
-              </Box>
-            </motion.div>
+                {/* YARA Scanner Title */}
+                <CozyTypography
+                  variant="h4"
+                  gutterBottom
+                  align="center"
+                  sx={{ mb: 2 }}
+                >
+                  {MESSAGES.yaraScanner}
+                </CozyTypography>
 
-            {/* file upload */}
-            {!batchMode ? (
-              <>
-                <motion.div variants={itemVariants}>
-                  <CozyUploadButton
-                    variant="contained"
-                    component="label"
-                    role="button"
-                    aria-label="Upload file for scanning"
-                    startIcon={<CloudUploadIcon />}
-                    sx={{
-                      position: "relative",
-                      overflow: "hidden",
-                      minHeight: 56,
-                      width: "100%",
-                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                      "&::before": {
-                        content: '""',
-                        position: "absolute",
-                        top: 0,
-                        left: "-100%",
-                        width: "100%",
-                        height: "100%",
-                        background:
-                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
-                        transition: "left 0.5s",
-                      },
-                      "&:hover": {
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 4px 20px rgba(0, 188, 212, 0.15)",
-                      },
-                      "&:hover::before": {
-                        left: "100%",
-                      },
-                    }}
-                  >
-                    {MESSAGES.uploadFile}
-                    <input
-                      type="file"
-                      hidden
-                      onChange={handleFileChange}
-                      accept="*/*"
-                      aria-label="File input for upload"
-                    />
-                  </CozyUploadButton>
-                </motion.div>
-
-                {file && (
-                  <CozyFileInfoContainer
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      width: "100%",
-                      marginTop: 2,
-                      padding: "16px 20px",
-                      borderRadius: 2,
-                      transition: "all 0.2s ease",
-                      "&:hover": {
-                        transform: "translateY(-1px)",
-                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                      },
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
-                        flex: 1,
-                      }}
-                    >
-                      <Chip
-                        label={file.name}
-                        sx={{
-                          backgroundColor: "rgba(0, 188, 212, 0.1)",
-                          color: "#00BCD4",
-                          fontWeight: 500,
-                          maxWidth: "300px",
-                          "& .MuiChip-label": {
-                            textOverflow: "ellipsis",
-                            overflow: "hidden",
-                          },
+                {/* Mode Select */}
+                <Box
+                  sx={{
+                    p: 2,
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    borderRadius: 2,
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                  }}
+                >
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={batchMode}
+                        onChange={(e) => {
+                          setBatchMode(e.target.checked);
+                          clearAllResults();
+                          clearFile();
+                          clearFiles();
                         }}
                       />
-                      <CozySecondaryTypography variant="caption">
-                        ({formatFileSize(file.size)})
-                      </CozySecondaryTypography>
-                    </Box>
-                    <Tooltip title="Remove file">
-                      <IconButton
-                        onClick={clearFile}
-                        size="small"
-                        sx={{
-                          color: "#f44336",
-                          "&:hover": {
-                            backgroundColor: "rgba(244, 67, 54, 0.1)",
-                            transform: "scale(1.1)",
-                          },
-                          transition: "all 0.2s ease",
-                        }}
-                        aria-label="Remove selected file"
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  </CozyFileInfoContainer>
-                )}
-              </>
-            ) : (
-              <>
-                <motion.div variants={itemVariants}>
-                  <CozyUploadButton
-                    variant="contained"
-                    component="label"
-                    role="button"
-                    aria-label="Upload files for batch scanning"
-                    startIcon={<FolderOpenIcon />}
-                    sx={{
-                      position: "relative",
-                      overflow: "hidden",
-                      minHeight: 56,
-                      width: "100%",
-                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                      "&::before": {
-                        content: '""',
-                        position: "absolute",
-                        top: 0,
-                        left: "-100%",
-                        width: "100%",
-                        height: "100%",
-                        background:
-                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
-                        transition: "left 0.5s",
-                      },
-                      "&:hover": {
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 4px 20px rgba(0, 188, 212, 0.15)",
-                      },
-                      "&:hover::before": {
-                        left: "100%",
-                      },
-                    }}
-                  >
-                    Upload Files (Max 10)
-                    <input
-                      type="file"
-                      hidden
-                      multiple
-                      onChange={handleFilesChange}
-                      accept="*/*"
-                      aria-label="File input for batch upload"
-                    />
-                  </CozyUploadButton>
-                </motion.div>
+                    }
+                    label="Batch Scan Mode"
+                    sx={{ color: COLORS.text.primary }}
+                  />
+                </Box>
 
-                {files.length > 0 && (
-                  <CozyFileInfoContainer>
-                    <CozyTypography sx={{ mt: 1, mb: 2 }}>
-                      Selected Files ({files.length}):
-                    </CozyTypography>
-                    {files.map((file, index) => (
-                      <Box
-                        key={index}
+                {/* File Upload */}
+                {!batchMode ? (
+                  <>
+                    <CozyUploadButton
+                      variant="contained"
+                      component="label"
+                      role="button"
+                      aria-label="Upload file for scanning"
+                      startIcon={<CloudUploadIcon />}
+                      sx={{
+                        position: "relative",
+                        overflow: "hidden",
+                        minHeight: 56,
+                        width: "100%",
+                        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                        "&::before": {
+                          content: '""',
+                          position: "absolute",
+                          top: 0,
+                          left: "-100%",
+                          width: "100%",
+                          height: "100%",
+                          background:
+                            "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
+                          transition: "left 0.5s",
+                        },
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow: "0 4px 20px rgba(0, 188, 212, 0.15)",
+                        },
+                        "&:hover::before": {
+                          left: "100%",
+                        },
+                      }}
+                    >
+                      {MESSAGES.uploadFile}
+                      <input
+                        type="file"
+                        hidden
+                        onChange={handleFileChange}
+                        accept="*/*"
+                        aria-label="File input for upload"
+                      />
+                    </CozyUploadButton>
+
+                    {file && (
+                      <CozyFileInfoContainer
                         sx={{
                           display: "flex",
                           alignItems: "center",
-                          gap: 1,
-                          mb: 1,
+                          justifyContent: "space-between",
+                          width: "100%",
+                          marginTop: 2,
+                          padding: "16px 20px",
+                          borderRadius: 2,
+                          transition: "all 0.2s ease",
+                          "&:hover": {
+                            transform: "translateY(-1px)",
+                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                          },
                         }}
                       >
-                        <CozySecondaryTypography>
-                          {file.name} ({formatFileSize(file.size)})
-                        </CozySecondaryTypography>
-                        <IconButton
-                          size="small"
-                          onClick={() => removeFile(index)}
-                          sx={{ color: COLORS.text.secondary }}
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            flex: 1,
+                          }}
                         >
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
-                      </Box>
-                    ))}
-                    <CozySecondaryButton
-                      variant="outlined"
-                      onClick={clearFiles}
-                      startIcon={<ClearIcon />}
+                          <Chip
+                            label={file.name}
+                            sx={{
+                              backgroundColor: "rgba(0, 188, 212, 0.1)",
+                              color: "#00BCD4",
+                              fontWeight: 500,
+                              maxWidth: "300px",
+                              "& .MuiChip-label": {
+                                textOverflow: "ellipsis",
+                                overflow: "hidden",
+                              },
+                            }}
+                          />
+                          <CozySecondaryTypography variant="caption">
+                            ({formatFileSize(file.size)})
+                          </CozySecondaryTypography>
+                        </Box>
+                        <Tooltip title="Remove file">
+                          <IconButton
+                            onClick={clearFile}
+                            size="small"
+                            sx={{
+                              color: "#f44336",
+                              "&:hover": {
+                                backgroundColor: "rgba(244, 67, 54, 0.1)",
+                                transform: "scale(1.1)",
+                              },
+                              transition: "all 0.2s ease",
+                            }}
+                            aria-label="Remove selected file"
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </CozyFileInfoContainer>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <CozyUploadButton
+                      variant="contained"
+                      component="label"
+                      role="button"
+                      aria-label="Upload files for batch scanning"
+                      startIcon={<FolderOpenIcon />}
                       sx={{
-                        mt: 1,
-                        "&:hover": {
-                          transform: "translateY(-1px)",
-                          boxShadow: "0 4px 12px rgba(0, 188, 212, 0.2)",
+                        position: "relative",
+                        overflow: "hidden",
+                        minHeight: 56,
+                        width: "100%",
+                        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                        "&::before": {
+                          content: '""',
+                          position: "absolute",
+                          top: 0,
+                          left: "-100%",
+                          width: "100%",
+                          height: "100%",
+                          background:
+                            "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
+                          transition: "left 0.5s",
                         },
-                        transition: "all 0.2s ease",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow: "0 4px 20px rgba(0, 188, 212, 0.15)",
+                        },
+                        "&:hover::before": {
+                          left: "100%",
+                        },
                       }}
                     >
-                      Clear All Files
-                    </CozySecondaryButton>
-                  </CozyFileInfoContainer>
+                      Upload Files (Max 10)
+                      <input
+                        type="file"
+                        hidden
+                        multiple
+                        onChange={handleFilesChange}
+                        accept="*/*"
+                        aria-label="File input for batch upload"
+                      />
+                    </CozyUploadButton>
+
+                    {files.length > 0 && (
+                      <CozyFileInfoContainer>
+                        <CozyTypography sx={{ mt: 1, mb: 2 }}>
+                          Selected Files ({files.length}):
+                        </CozyTypography>
+                        {files.map((file, index) => (
+                          <Box
+                            key={index}
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                              mb: 1,
+                            }}
+                          >
+                            <CozySecondaryTypography>
+                              {file.name} ({formatFileSize(file.size)})
+                            </CozySecondaryTypography>
+                            <IconButton
+                              size="small"
+                              onClick={() => removeFile(index)}
+                              sx={{ color: COLORS.text.secondary }}
+                            >
+                              <DeleteIcon fontSize="small" />
+                            </IconButton>
+                          </Box>
+                        ))}
+                        <CozySecondaryButton
+                          variant="outlined"
+                          onClick={clearFiles}
+                          startIcon={<ClearIcon />}
+                          sx={{
+                            mt: 1,
+                            "&:hover": {
+                              transform: "translateY(-1px)",
+                              boxShadow: "0 4px 12px rgba(0, 188, 212, 0.2)",
+                            },
+                            transition: "all 0.2s ease",
+                          }}
+                        >
+                          Clear All Files
+                        </CozySecondaryButton>
+                      </CozyFileInfoContainer>
+                    )}
+                  </>
                 )}
-              </>
-            )}
 
-            {/* rules info */}
-            <motion.div variants={itemVariants}>
-              <Box
-                sx={{
-                  p: 2,
-                  backgroundColor: "rgba(0, 188, 212, 0.1)",
-                  borderRadius: 2,
-                  border: "1px solid rgba(0, 188, 212, 0.2)",
-                }}
-              >
+                {/* Rules Info */}
                 <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+                  sx={{
+                    p: 2,
+                    backgroundColor: "rgba(0, 188, 212, 0.1)",
+                    borderRadius: 2,
+                    border: "1px solid rgba(0, 188, 212, 0.2)",
+                  }}
                 >
-                  <InfoIcon sx={{ color: COLORS.primary.main }} />
-                  <CozyTypography variant="body1" sx={{ fontWeight: "bold" }}>
-                    Using Default YARA Rules
-                  </CozyTypography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      mb: 1,
+                    }}
+                  >
+                    <InfoIcon sx={{ color: COLORS.primary.main }} />
+                    <CozyTypography variant="body1" sx={{ fontWeight: "bold" }}>
+                      Using Default YARA Rules
+                    </CozyTypography>
+                  </Box>
+                  <CozySecondaryTypography variant="body2">
+                    CyberSafe uses built-in YARA rules optimized for detecting
+                    common malware patterns and threats.
+                  </CozySecondaryTypography>
                 </Box>
-                <CozySecondaryTypography variant="body2">
-                  CyberSafe uses built-in YARA rules optimized for detecting
-                  common malware patterns and threats.
-                </CozySecondaryTypography>
-              </Box>
-            </motion.div>
 
-            {/* scan button */}
-            <motion.div variants={itemVariants}>
-              <CozyPrimaryButton
-                variant="contained"
-                color="primary"
-                onClick={batchMode ? handleBatchScan : handleScanFile}
-                disabled={
-                  loading ||
-                  (!batchMode && !file) ||
-                  (batchMode && files.length === 0)
-                }
-                startIcon={
-                  loading ? (
-                    <RefreshIcon
-                      sx={{ animation: "spin 1s linear infinite" }}
-                    />
-                  ) : (
-                    <ScannerIcon />
-                  )
-                }
-                sx={{
-                  width: "100%",
-                  height: 48,
-                  fontSize: "1rem",
-                  fontWeight: 600,
-                  position: "relative",
-                  overflow: "hidden",
-                  background: loading
-                    ? "linear-gradient(45deg, #00BCD4 30%, #4DD0E1 90%)"
-                    : "linear-gradient(45deg, #00BCD4 30%, #26C6DA 90%)",
-                  "&::after": {
-                    content: '""',
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background:
-                      "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)",
-                    transform: "translateX(-100%)",
-                    transition: "transform 0.6s",
-                  },
-                  "&:hover": {
-                    transform: "translateY(-2px)",
-                    boxShadow: "0 6px 25px rgba(0, 188, 212, 0.35)",
-                  },
-                  "&:hover::after": {
-                    transform: "translateX(100%)",
-                  },
-                  "&:active": {
-                    transform: "translateY(0px) scale(0.98)",
-                    transition: "transform 0.1s ease",
-                  },
-                  "&:disabled": {
-                    background: "#484F58",
-                    color: "#8B949E",
-                    transform: "none",
-                    boxShadow: "none",
-                  },
-                  "@keyframes spin": {
-                    "0%": { transform: "rotate(0deg)" },
-                    "100%": { transform: "rotate(360deg)" },
-                  },
-                }}
-              >
-                {loading
-                  ? MESSAGES.scanInProgress
-                  : batchMode
-                    ? MESSAGES.scanFiles
-                    : MESSAGES.scanFile}
-              </CozyPrimaryButton>
+                {/* Scan Button */}
+                <CozyPrimaryButton
+                  variant="contained"
+                  color="primary"
+                  onClick={batchMode ? handleBatchScan : handleScanFile}
+                  disabled={
+                    loading ||
+                    (!batchMode && !file) ||
+                    (batchMode && files.length === 0)
+                  }
+                  startIcon={
+                    loading ? (
+                      <RefreshIcon
+                        sx={{ animation: "spin 1s linear infinite" }}
+                      />
+                    ) : (
+                      <ScannerIcon />
+                    )
+                  }
+                  sx={{
+                    width: "100%",
+                    height: 48,
+                    fontSize: "1rem",
+                    fontWeight: 600,
+                    position: "relative",
+                    overflow: "hidden",
+                    background: loading
+                      ? "linear-gradient(45deg, #00BCD4 30%, #4DD0E1 90%)"
+                      : "linear-gradient(45deg, #00BCD4 30%, #26C6DA 90%)",
+                    "&::after": {
+                      content: '""',
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background:
+                        "linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)",
+                      transform: "translateX(-100%)",
+                      transition: "transform 0.6s",
+                    },
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow: "0 6px 25px rgba(0, 188, 212, 0.35)",
+                    },
+                    "&:hover::after": {
+                      transform: "translateX(100%)",
+                    },
+                    "&:active": {
+                      transform: "translateY(0px) scale(0.98)",
+                      transition: "transform 0.1s ease",
+                    },
+                    "&:disabled": {
+                      background: "#484F58",
+                      color: "#8B949E",
+                      transform: "none",
+                      boxShadow: "none",
+                    },
+                    "@keyframes spin": {
+                      "0%": { transform: "rotate(0deg)" },
+                      "100%": { transform: "rotate(360deg)" },
+                    },
+                  }}
+                >
+                  {loading
+                    ? MESSAGES.scanInProgress
+                    : batchMode
+                      ? MESSAGES.scanFiles
+                      : MESSAGES.scanFile}
+                </CozyPrimaryButton>
+              </Box>
             </motion.div>
 
             {loading && <CozyLinearProgress sx={{ mt: 2 }} />}
@@ -857,7 +867,8 @@ const YaraScanner = () => {
                   onClick={clearAllResults}
                   startIcon={<ClearIcon />}
                   sx={{
-                    width: "100%",
+                    width: "350px",
+                    ml: 13,
                     "&:hover": {
                       transform: "translateY(-1px)",
                       boxShadow: "0 4px 12px rgba(0, 188, 212, 0.2)",
