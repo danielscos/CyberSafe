@@ -195,7 +195,7 @@ export const MESSAGES = {
   copySuccess: "Copied!",
   copyDefault: "Copy",
   uploadFile: "Upload File",
-  detectFileType: "Detect File Type",
+  detectFileType: "Analyze File",
   generateHash: "Generate Hash",
   deselect: "Deselect",
   selectedFile: "Selected:",

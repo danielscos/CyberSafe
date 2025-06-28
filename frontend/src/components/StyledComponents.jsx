@@ -308,14 +308,27 @@ export const CozyCodeTypography = styled(Typography)({
 
 // Tool Container with cozy styling
 export const CozyToolContainer = styled(Box)(
-  ({ maxWidth = 600, minHeight = 420 }) => ({
+  ({ maxWidth = 450, minHeight = 420 }) => ({
+    width: "100%",
     maxWidth,
+    minWidth: Math.min(350, maxWidth),
     margin: "0 auto",
     minHeight,
+    maxHeight: "90vh",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     position: "relative",
+    padding: "20px",
+    boxSizing: "border-box",
+    resize: "none",
+    overflow: "hidden",
+    "& > *": {
+      flexShrink: 0,
+    },
+    "& > *:not(:last-child)": {
+      marginBottom: "14px",
+    },
   }),
 );
 
