@@ -395,8 +395,6 @@ const FileScanTool = () => {
           </Box>
         </motion.div>
 
-        {loading && <CozyLinearProgress sx={{ mt: 2 }} />}
-
         {error && (
           <Alert severity="error" sx={{ mt: 2 }}>
             {error}

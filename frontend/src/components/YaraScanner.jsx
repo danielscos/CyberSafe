@@ -501,7 +501,7 @@ const YaraScanner = () => {
               gap: 3,
             }}
           >
-            {/* Grouped YARA Scanner Section */}
+            {/* grouped section */}
             <motion.div variants={itemVariants}>
               <Box
                 sx={{
@@ -515,7 +515,7 @@ const YaraScanner = () => {
                   ml: 10,
                 }}
               >
-                {/* YARA Scanner Title */}
+                {/* Title */}
                 <CozyTypography
                   variant="h4"
                   gutterBottom
@@ -525,7 +525,7 @@ const YaraScanner = () => {
                   {MESSAGES.yaraScanner}
                 </CozyTypography>
 
-                {/* Mode Select */}
+                {/* mode Select */}
                 <Box
                   sx={{
                     p: 2,
@@ -551,7 +551,7 @@ const YaraScanner = () => {
                   />
                 </Box>
 
-                {/* File Upload */}
+                {/* file upload */}
                 {!batchMode ? (
                   <>
                     <CozyUploadButton
@@ -750,7 +750,7 @@ const YaraScanner = () => {
                   </>
                 )}
 
-                {/* Rules Info */}
+                {/* rules info */}
                 <Box
                   sx={{
                     p: 2,
@@ -778,7 +778,7 @@ const YaraScanner = () => {
                   </CozySecondaryTypography>
                 </Box>
 
-                {/* Scan Button */}
+                {/* scan button */}
                 <CozyPrimaryButton
                   variant="contained"
                   color="primary"
@@ -851,8 +851,6 @@ const YaraScanner = () => {
               </Box>
             </motion.div>
 
-            {loading && <CozyLinearProgress sx={{ mt: 2 }} />}
-
             {error && (
               <Alert severity="error" sx={{ mt: 2 }}>
                 {error}
@@ -882,7 +880,7 @@ const YaraScanner = () => {
             )}
           </Box>
 
-          {/* Right Panel - Results */}
+          {/* results */}
           <Box
             sx={{
               flex: "1 1 auto",
