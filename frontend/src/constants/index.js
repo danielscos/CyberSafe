@@ -1,7 +1,7 @@
-// API Configuration
+// API configuration
 export const API_BASE_URL = "http://127.0.0.1:8000";
 
-// Hash Types
+// hash Types
 export const HASH_TYPES = [
   { label: "MD5", value: "md5" },
   { label: "SHA-1", value: "sha1" },
@@ -10,7 +10,7 @@ export const HASH_TYPES = [
   { label: "BLAKE3", value: "blake3" },
 ];
 
-// Color Palette
+// color Palette
 export const COLORS = {
   primary: {
     main: "#00c6fb",
@@ -39,7 +39,7 @@ export const COLORS = {
   },
 };
 
-// Navigation Tabs
+// navigation tabs
 export const NAVIGATION_TABS = {
   DASHBOARD: "dashboard",
   HASHING: "hashing",
@@ -47,7 +47,7 @@ export const NAVIGATION_TABS = {
   YARA: "yara",
 };
 
-// Sidebar Menu Items
+// sidebar menu
 export const SIDEBAR_TOOLS = [
   { id: NAVIGATION_TABS.DASHBOARD, icon: "🏠", label: "Home" },
   { id: NAVIGATION_TABS.HASHING, icon: "#", label: "Hashing" },
@@ -83,7 +83,7 @@ export const SIDEBAR_RESOURCES = [
   },
 ];
 
-// API Endpoints
+// API endpoints
 export const API_ENDPOINTS = {
   HASH: (type, text) =>
     `${API_BASE_URL}/hash_${type}?text=${encodeURIComponent(text)}`,
@@ -96,7 +96,7 @@ export const API_ENDPOINTS = {
   },
 };
 
-// Common Styles
+// common Styles
 export const COMMON_STYLES = {
   glassMorphism: {
     background: "rgba(255, 255, 255, 0.1)",
@@ -168,14 +168,14 @@ export const COMMON_STYLES = {
   },
 };
 
-// Animation Durations
+// animation durations
 export const ANIMATIONS = {
   fast: "0.2s",
   normal: "0.3s",
   slow: "0.5s",
 };
 
-// Layout Constants
+// layout constants
 export const LAYOUT = {
   sidebar: {
     width: 280,
@@ -190,7 +190,7 @@ export const LAYOUT = {
   },
 };
 
-// Messages
+// messages
 export const MESSAGES = {
   copySuccess: "Copied!",
   copyDefault: "Copy",

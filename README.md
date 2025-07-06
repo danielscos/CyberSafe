@@ -83,8 +83,7 @@ Download the latest release for your platform from the [GitHub Releases](https:/
 ### Option 2: Build from Source
 
 **Prerequisites:**
-- Node.js 18+
-- Python 3.12+
+- Python 3.13+
 - npm or yarn
 - Git
 
@@ -116,7 +115,7 @@ The executable will be created in `frontend/dist/` directory.
 
 ### Prerequisites
 - Node.js 18+
-- Python 3.12+
+- Python 3.13+
 - Git
 
 ### Setup Instructions
@@ -255,7 +254,7 @@ If you discover a security vulnerability, please send an email to [security@cybe
 - **Framer Motion** - Animations
 
 ### Backend
-- **Python 3.12** - Core backend language
+- **Python 3.13** - Core backend language
 - **FastAPI** - High-performance API framework
 - **Uvicorn** - ASGI server
 - **PyInstaller** - Python executable packaging

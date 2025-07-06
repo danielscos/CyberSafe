@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Alert, Box, Chip, IconButton, Tooltip } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -81,42 +80,7 @@ const FileScanTool = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  // Animation variants for result popup
-  const resultVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0.95,
-      y: 20,
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-        staggerChildren: 0.1,
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.95,
-      y: -20,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
-
-  const resultItemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.3 },
-    },
-  };
+  // animation variants for result popup
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },

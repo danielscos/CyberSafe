@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { MenuItem, Alert } from "@mui/material";
-// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CozyTextField,
@@ -23,7 +22,7 @@ import {
 import { useHash, useCopyToClipboard } from "../hooks/useApi";
 import { HASH_TYPES, MESSAGES } from "../constants";
 
-// animation variants
+// animations
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -170,7 +169,7 @@ const HashingTool = () => {
           </CozyFlexColumn>
         </motion.div>
 
-        {/* Loading Progress */}
+        {/* loading */}
         <AnimatePresence>
           {loading && (
             <motion.div
@@ -184,7 +183,7 @@ const HashingTool = () => {
           )}
         </AnimatePresence>
 
-        {/* Error Alert */}
+        {/* error */}
         <AnimatePresence>
           {error && (
             <motion.div
@@ -200,7 +199,7 @@ const HashingTool = () => {
           )}
         </AnimatePresence>
 
-        {/* Result Section */}
+        {/* results */}
         <AnimatePresence mode="wait">
           {hashResult && (
             <motion.div
@@ -248,7 +247,7 @@ const HashingTool = () => {
                   </CozyCodeTypography>
                 </motion.div>
 
-                {/* Hash Info */}
+                {/* hash info */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}

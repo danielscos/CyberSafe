@@ -61,7 +61,7 @@ export const CozyLinearProgress = styled(LinearProgress)(() => ({
   },
 }));
 
-// Modern Primary Button
+// primary button
 export const CozyPrimaryButton = styled(Button)({
   fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
   background: cozyColors.saddleBrown,
@@ -98,7 +98,7 @@ export const CozyPrimaryButton = styled(Button)({
   },
 });
 
-// Modern Secondary Button
+// secondary button
 export const CozySecondaryButton = styled(Button)({
   fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
   background: "transparent",
@@ -125,7 +125,7 @@ export const CozySecondaryButton = styled(Button)({
   },
 });
 
-// Gentle Clear Button
+// clear button
 export const CozyClearButton = styled(Button)({
   background: cozyColors.wheat,
   color: cozyColors.textPrimary,
@@ -146,7 +146,7 @@ export const CozyClearButton = styled(Button)({
   },
 });
 
-// Copy Button with Success State
+// copy button
 export const CozyCopyButton = styled(Button)(({ copySuccess }) => ({
   minWidth: 100,
   height: 36,
@@ -166,7 +166,7 @@ export const CozyCopyButton = styled(Button)(({ copySuccess }) => ({
   },
 }));
 
-// Cozy Glass Paper Component
+// glass paper
 export const CozyGlassPaper = styled(Paper)({
   backgroundColor: cozyColors.antiqueWhite,
   backdropFilter: "blur(10px)",
@@ -187,7 +187,7 @@ export const CozyGlassPaper = styled(Paper)({
   },
 });
 
-// Modern Result Paper
+// result paper
 export const CozyResultPaper = styled(Paper)({
   backgroundColor: cozyColors.cornsilk,
   border: `1px solid rgba(48, 54, 61, 0.3)`,
@@ -202,7 +202,7 @@ export const CozyResultPaper = styled(Paper)({
   },
 });
 
-// Cozy TextField
+// textfield
 export const CozyTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
     backgroundColor: cozyColors.cornsilk,
@@ -238,7 +238,7 @@ export const CozyTextField = styled(TextField)({
   },
 });
 
-// Cozy Select
+// select
 export const CozySelect = styled(Select)({
   backgroundColor: cozyColors.cornsilk,
   borderRadius: 12,
@@ -258,7 +258,7 @@ export const CozySelect = styled(Select)({
   },
 });
 
-// Cozy FormControl
+// formcontrol
 export const CozyFormControl = styled(FormControl)({
   "& .MuiInputLabel-root": {
     color: cozyColors.textSecondary,
@@ -272,7 +272,7 @@ export const CozyFormControl = styled(FormControl)({
   },
 });
 
-// Warm Typography
+// typography (warm)
 export const CozyTypography = styled(Typography)({
   fontFamily: '"Inter", "SF Pro Display", "Segoe UI", sans-serif',
   color: cozyColors.textPrimary,
@@ -280,7 +280,7 @@ export const CozyTypography = styled(Typography)({
   lineHeight: 1.6,
 });
 
-// Secondary Text Typography
+// text typography
 export const CozySecondaryTypography = styled(Typography)({
   fontFamily: '"Inter", "SF Pro Text", "Segoe UI", sans-serif',
   color: cozyColors.textSecondary,
@@ -289,7 +289,7 @@ export const CozySecondaryTypography = styled(Typography)({
   lineHeight: 1.5,
 });
 
-// Code Block Typography
+// code block typography
 export const CozyCodeTypography = styled(Typography)({
   fontFamily:
     '"JetBrains Mono", "SF Mono", "Monaco", "Cascadia Code", "Roboto Mono", monospace',
@@ -306,7 +306,7 @@ export const CozyCodeTypography = styled(Typography)({
   letterSpacing: "0.01em",
 });
 
-// Tool Container with cozy styling
+// tool container
 export const CozyToolContainer = styled(Box)(
   ({ maxWidth = 450, minHeight = 420 }) => ({
     width: "100%",
@@ -332,7 +332,7 @@ export const CozyToolContainer = styled(Box)(
   }),
 );
 
-// Modern Card Component
+// card component
 export const CozyCard = styled(Card)({
   backgroundColor: cozyColors.antiqueWhite,
   border: `1px solid rgba(48, 54, 61, 0.3)`,

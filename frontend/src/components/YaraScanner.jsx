@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Alert,
   Chip,
@@ -83,7 +83,7 @@ const YaraScanner = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  // Animation variants
+  // animations
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -515,7 +515,7 @@ const YaraScanner = () => {
                   ml: 10,
                 }}
               >
-                {/* Title */}
+                {/* title */}
                 <CozyTypography
                   variant="h4"
                   gutterBottom
@@ -525,7 +525,7 @@ const YaraScanner = () => {
                   {MESSAGES.yaraScanner}
                 </CozyTypography>
 
-                {/* mode Select */}
+                {/* mode */}
                 <Box
                   sx={{
                     p: 2,

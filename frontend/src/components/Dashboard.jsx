@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CozyToolContainer,
@@ -13,7 +12,7 @@ import {
 } from "./StyledComponents";
 import { CardContent, Box, Chip } from "@mui/material";
 
-// Animation variants
+// animations
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -135,7 +134,7 @@ const Dashboard = () => {
         initial="hidden"
         animate="visible"
       >
-        {/* Header Section */}
+        {/* header */}
         <motion.div variants={cardVariants}>
           <Box mb={4}>
             <CozyTypography
@@ -159,7 +158,7 @@ const Dashboard = () => {
           </Box>
         </motion.div>
 
-        {/* Stats Cards Row */}
+        {/* stats card */}
         <motion.div variants={cardVariants}>
           <CozyFlexRow mb={4} sx={{ gap: 3, flexWrap: "wrap" }}>
             <motion.div variants={cardVariants} whileHover="hover">
