@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { CssBaseline, ThemeProvider, Alert } from "@mui/material";
+import { CssBaseline, ThemeProvider as MuiThemeProvider, Alert } from "@mui/material";
 import {
   CozyTypography,
   CozyToolContainer,
 } from "./components/StyledComponents";
-import { cozyTheme } from "./theme/cozyTheme";
+import { ThemeProvider, useTheme } from "./hooks/useTheme";
 import HashingTool from "./components/HashingTool";
 import FileScanTool from "./components/FileScanTool";
 import YaraScanner from "./components/YaraScanner";
@@ -15,8 +15,8 @@ import { useLocalStorage } from "./hooks/useApi";
 import { NAVIGATION_TABS, MESSAGES } from "./constants";
 import "./App.css";
 
-// Use cozy cottage theme
-const theme = cozyTheme;
+// Use dynamic theme
+// const theme = cozyTheme; // Removed - now using theme from context
 
 // error boundary component
 const ErrorFallback = ({ error, resetError }) => (
@@ -43,8 +43,10 @@ const ErrorFallback = ({ error, resetError }) => (
   </CozyToolContainer>
 );
 
-// main app component
-function App() {
+// Main app content component (needs to be inside ThemeProvider)
+const AppContent = () => {
+  const { theme } = useTheme();
+  
   // use localStorage to persist the active tab
   const [activeTab, setActiveTab] = useLocalStorage(
     "cyberSafeActiveTab",
@@ -85,7 +87,7 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <div className="main-bg">
         <FloatingParticles />
@@ -96,6 +98,15 @@ function App() {
           </main>
         </div>
       </div>
+    </MuiThemeProvider>
+  );
+};
+
+// Main app component
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
     </ThemeProvider>
   );
 }
