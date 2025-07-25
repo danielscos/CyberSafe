@@ -14,7 +14,6 @@ import threading
 from datetime import datetime
 import socket
 
-# Add current directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 try:
@@ -37,14 +36,12 @@ class SilentHTTPServer(HTTPServer):
         import sys
         import traceback
 
-        # Get the exception info
+        # exception info
         exc_type, exc_value, exc_traceback = sys.exc_info()
 
-        # Ignore common client disconnection errors
         if exc_type in (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
             return
 
-        # For other errors, use default handling but with cleaner output
         print(f"Error handling request from {client_address}: {exc_value}")
 
     def server_bind(self):
@@ -90,6 +87,8 @@ class DirectoryScannerWebHandler(BaseHTTPRequestHandler):
             pass
         except Exception as e:
             print(f"Error in do_POST: {e}")
+
+    # web page made with ai cuz me lazy
 
     def serve_main_page(self):
         """Serve the main HTML page"""
@@ -462,7 +461,7 @@ class DirectoryScannerWebHandler(BaseHTTPRequestHandler):
             {"name": "Current", "path": os.getcwd()}
         ]
 
-        # Filter to existing directories
+        # filter to existing directories
         existing_dirs = [d for d in common_dirs if os.path.exists(d["path"])]
 
         self.send_json_response({"directories": existing_dirs})
@@ -470,15 +469,14 @@ class DirectoryScannerWebHandler(BaseHTTPRequestHandler):
     def handle_scan(self):
         """Handle scan endpoint"""
         try:
-            # Read and parse JSON body
+            # parse json body
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
             data = json.loads(post_data.decode('utf-8'))
 
-            # Create request object
             request = DirectoryScanRequest(**data)
 
-            # Run async scan
+            # async scan
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             result = loop.run_until_complete(scan_directory_by_file_types(request))
@@ -504,7 +502,7 @@ class DirectoryScannerWebHandler(BaseHTTPRequestHandler):
 
             self.wfile.write(response.encode('utf-8'))
         except (ConnectionAbortedError, BrokenPipeError):
-            # Client disconnected, ignore silently
+            # silent ignore on disconnect
             pass
         except Exception as e:
             print(f"Error sending response: {e}")
@@ -514,14 +512,14 @@ class DirectoryScannerWebHandler(BaseHTTPRequestHandler):
         try:
             self.send_error(code, message)
         except (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
-            # Client disconnected, ignore silently
+            # same thing as above
             pass
         except Exception as e:
             print(f"Error sending error response: {e}")
 
     def log_message(self, format, *args):
         """Custom log format - suppress 404 and broken pipe errors"""
-        # Suppress common client disconnection errors
+        # suppress common client disconnection errors
         if "broken pipe" in (format % args).lower() or "connection aborted" in (format % args).lower():
             return
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -532,16 +530,15 @@ def run_web_server(port=8002):
     server_address = ('', port)
     httpd = SilentHTTPServer(server_address, DirectoryScannerWebHandler)
 
-    print(f"🌐 CyberSafe Directory Scanner Web Interface")
-    print(f"🚀 Starting on http://localhost:{port}")
-    print(f"📱 Open in your browser: http://localhost:{port}")
-    print(f"🛑 Press Ctrl+C to stop")
+    print(f"CyberSafe Directory Scanner Web Interface")
+    print(f"Starting on http://localhost:{port}")
+    print(f"Press Ctrl+C to stop")
     print("=" * 60)
 
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
-        print(f"\n🛑 Server stopped")
+        print(f"\nServer stopped")
         httpd.shutdown()
 
 if __name__ == "__main__":
