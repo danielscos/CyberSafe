@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.hashing import router as hashing_router
 from api.filetype import router as features_router
 from api.yara_scanner import router as yara_router
+from api.clamav_scanning import router as clamav_router
 
 app = FastAPI()
 
@@ -21,3 +22,4 @@ async def root():
 app.include_router(hashing_router)
 app.include_router(features_router)
 app.include_router(yara_router)
+app.include_router(clamav_router)

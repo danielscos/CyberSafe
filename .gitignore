@@ -45,3 +45,8 @@ node_modules
 
 # images
 main_design.png
+
+# scripts
+scripts/
+
+test_malware_samples/

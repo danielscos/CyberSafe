@@ -259,10 +259,6 @@ If you discover a security vulnerability, please send an email to [security@cybe
 - **Uvicorn** - ASGI server
 - **PyInstaller** - Python executable packaging
 
-### Future Integrations
-- **Rust** - Performance-critical components
-- **YARA** - Pattern matching engine
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
