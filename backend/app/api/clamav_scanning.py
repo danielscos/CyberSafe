@@ -1,12 +1,14 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from dataclasses import dataclass
+from pydantic import BaseModel
 import subprocess
 import tempfile
 import os
 import logging
 import socket
 import struct
+import asyncio
 from datetime import datetime
 from rustlib import hash_sha256_bytes
 
@@ -23,6 +25,24 @@ class ScanResult:
     stdout: Optional[str] = None
     stderr: Optional[str] = None
 
+@dataclass
+class BatchScanResult:
+    """Result for batch scanning operations."""
+    total_files: int
+    completed: int
+    infected_count: int
+    clean_count: int
+    error_count: int
+    scan_time: float
+    results: List[Dict[str, Any]]
+    errors: List[Dict[str, Any]]
+
+class DirectoryScanRequest(BaseModel):
+    """Request model for directory scanning by file types."""
+    directory: str
+    file_types: List[str]
+    recursive: bool = True
+
 class ClamAVError(Exception):
     """Base exception for ClamAV operations."""
     pass
@@ -35,8 +55,9 @@ class ClamAVScanner:
     def __init__(self):
         self.status = self._check_clamav_availability()
         self.scan_history = []
-        self.max_file_size = 50 * 1024 * 1024  # 50mb limit
+        self.max_file_size = 50 * 1024 * 1024  # 50MB limit
         self.timeout = 30
+        self.max_concurrent_scans = 5  # Limit concurrent scans to avoid resource exhaustion
 
     def _check_clamav_availability(self) -> Dict[str, Any]:
         """Check if ClamAV is available and properly configured."""
@@ -165,7 +186,7 @@ class ClamAVScanner:
             logger.warning(f"ClamAV daemon test failed: {e}")
             return False
 
-    async def scan_file_content(self, file_content: bytes, filename: str) -> Dict[str, Any]:
+    async def scan_file_content(self, file_content: bytes, filename: str, file_path: str = None) -> Dict[str, Any]:
         """Scan file content with ClamAV if available, with performance optimizations."""
 
         start_time = datetime.now()
@@ -226,7 +247,9 @@ class ClamAVScanner:
                 "hash": file_hash,
                 "timestamp": start_time.isoformat(),
                 "scan_mode": self.status["mode"],
-                "message": "File scanned successfully"
+                "message": "File scanned successfully",
+                "filename": filename,
+                "file_path": file_path or filename
             }
 
         except subprocess.TimeoutExpired:
@@ -236,7 +259,7 @@ class ClamAVScanner:
                 "message": f"Scan timed out after {self.timeout} seconds"
             }
         except Exception as e:
-            return await self._handle_scan_error(e, file_content, filename, start_time, file_hash)
+            return await self._handle_scan_error(e, file_content, filename, start_time, file_hash, file_path)
 
     async def _perform_scan(self, file_content: bytes, filename: str) -> ScanResult:
         """Perform the actual scan with appropriate method."""
@@ -282,7 +305,7 @@ class ClamAVScanner:
             self.scan_history = self.scan_history[-100:]
 
     async def _handle_scan_error(self, error: Exception, file_content: bytes,
-                                filename: str, start_time: datetime, file_hash: str) -> Dict[str, Any]:
+                                filename: str, start_time: datetime, file_hash: str, file_path: str = None) -> Dict[str, Any]:
         """Handle scan errors with fallback logic."""
         if self.status["mode"] == "daemon":
             try:
@@ -313,7 +336,9 @@ class ClamAVScanner:
                     "hash": file_hash,
                     "timestamp": start_time.isoformat(),
                     "scan_mode": "standalone_fallback",
-                    "message": "File scanned successfully (fallback mode)"
+                    "message": "File scanned successfully (fallback mode)",
+                    "filename": filename,
+                    "file_path": file_path or filename
                 }
 
             except Exception as fallback_error:
@@ -321,12 +346,16 @@ class ClamAVScanner:
                 return {
                     "success": False,
                     "error": "Scan failed",
-                    "message": f"Both daemon and standalone scanning failed: {str(fallback_error)}"
+                    "message": f"Both daemon and standalone scanning failed: {str(fallback_error)}",
+                    "filename": filename,
+                    "file_path": file_path or filename
                 }
         else:
             return {
                 "success": False,
                 "error": "Scan error",
+                "filename": filename,
+                "file_path": file_path or filename,
                 "message": f"Unexpected error during scan: {str(error)}"
             }
 
@@ -473,6 +502,313 @@ class ClamAVScanner:
             except OSError:
                 logger.warning(f"Failed to delete temporary file: {temp_file_path}")
 
+    async def scan_multiple_files(self, files_data: List[tuple], progress_callback=None) -> BatchScanResult:
+        """
+        Scan multiple files concurrently with progress tracking.
+
+        Args:
+            files_data: List of tuples (file_content: bytes, filename: str) or (file_content: bytes, filename: str, file_path: str)
+            progress_callback: Optional callback function for progress updates
+
+        Returns:
+            BatchScanResult with aggregated results
+        """
+        if not self.status["available"]:
+            raise ClamAVNotAvailableError("ClamAV not available for batch scanning")
+
+        start_time = datetime.now()
+        total_files = len(files_data)
+        results = []
+        errors = []
+
+        logger.info(f"Starting batch scan of {total_files} files")
+
+        # create semaphore to limit concurrent scans
+        semaphore = asyncio.Semaphore(self.max_concurrent_scans)
+
+        async def scan_single_file(file_data, index):
+            """Scan a single file with semaphore control."""
+            if len(file_data) == 3:
+                file_content, filename, file_path = file_data
+            else:
+                file_content, filename = file_data
+                file_path = None
+
+            async with semaphore:
+                try:
+                    result = await self.scan_file_content(file_content, filename, file_path)
+
+                    if progress_callback:
+                        progress = (index + 1) / total_files * 100
+                        await progress_callback(progress, filename, result.get('infected', False))
+
+                    return result
+                except Exception as e:
+                    error = {
+                        "filename": filename,
+                        "file_path": file_path or filename,
+                        "error": str(e),
+                        "timestamp": datetime.now().isoformat()
+                    }
+                    logger.error(f"Error scanning {filename}: {e}")
+                    return error
+
+        # execute all scans concurrently
+        tasks = [scan_single_file(file_data, i) for i, file_data in enumerate(files_data)]
+        scan_results = await asyncio.gather(*tasks, return_exceptions=True)
+
+        # process results
+        infected_count = 0
+        clean_count = 0
+        error_count = 0
+
+        for result in scan_results:
+            if isinstance(result, Exception):
+                error_count += 1
+                errors.append({
+                    "error": str(result),
+                    "timestamp": datetime.now().isoformat()
+                })
+            elif isinstance(result, dict):
+                if "error" in result:
+                    error_count += 1
+                    errors.append(result)
+                else:
+                    results.append(result)
+                    if result.get("infected", False):
+                        infected_count += 1
+                    else:
+                        clean_count += 1
+
+        scan_time = (datetime.now() - start_time).total_seconds()
+        completed = len(results)
+
+        logger.info(f"Batch scan completed: {completed}/{total_files} files, "
+                   f"{infected_count} infected, {clean_count} clean, "
+                   f"{error_count} errors in {scan_time:.2f}s")
+
+        return BatchScanResult(
+            total_files=total_files,
+            completed=completed,
+            infected_count=infected_count,
+            clean_count=clean_count,
+            error_count=error_count,
+            scan_time=scan_time,
+            results=results,
+            errors=errors
+        )
+
+    async def scan_files_by_pattern(self, directory: str, pattern: str = "*") -> BatchScanResult:
+        """
+        Scan files in a directory matching a pattern.
+
+        Args:
+            directory: Directory path to scan
+            pattern: File pattern (e.g., "*.pdf", "*.exe")
+
+        Returns:
+            BatchScanResult with scan results
+        """
+        import glob
+
+        if not os.path.exists(directory):
+            raise ValueError(f"Directory does not exist: {directory}")
+
+        # find matching files
+        search_pattern = os.path.join(directory, pattern)
+        file_paths = glob.glob(search_pattern, recursive=True)
+
+        if not file_paths:
+            return BatchScanResult(
+                total_files=0, completed=0, infected_count=0,
+                clean_count=0, error_count=0, scan_time=0.0,
+                results=[], errors=[]
+            )
+
+        # read file contents
+        files_data = []
+        for file_path in file_paths:
+            try:
+                if os.path.getsize(file_path) > self.max_file_size:
+                    logger.warning(f"Skipping large file: {file_path}")
+                    continue
+
+                with open(file_path, 'rb') as f:
+                    content = f.read()
+                    filename = os.path.basename(file_path)
+                    files_data.append((content, filename))
+            except Exception as e:
+                logger.error(f"Error reading file {file_path}: {e}")
+
+        return await self.scan_multiple_files(files_data)
+
+    async def scan_by_file_types(self, directory: str, file_types: List[str],
+                               recursive: bool = True) -> BatchScanResult:
+        """
+        Scan files in a directory by multiple file type categories.
+
+        Args:
+            directory: Directory path to scan
+            file_types: List of file type categories to scan
+            recursive: Whether to scan subdirectories
+
+        Returns:
+            BatchScanResult with scan results
+        """
+        import glob
+
+        if not os.path.exists(directory):
+            raise ValueError(f"Directory does not exist: {directory}")
+
+        all_files = set()  # Use set to avoid duplicates
+
+        for file_type in file_types:
+            patterns = FileTypeCategories.get_patterns_for_category(file_type)
+
+            for pattern in patterns:
+                if recursive:
+                    search_pattern = os.path.join(directory, "**", pattern)
+                    files = glob.glob(search_pattern, recursive=True)
+                else:
+                    search_pattern = os.path.join(directory, pattern)
+                    files = glob.glob(search_pattern)
+
+                # Filter to only include actual files
+                for file_path in files:
+                    if os.path.isfile(file_path):
+                        all_files.add(file_path)
+
+        # Special handling for "no-extension" category
+        if "no-extension" in file_types:
+            # Filter to files without extensions
+            all_files = {f for f in all_files if not os.path.splitext(f)[1]}
+
+        if not all_files:
+            return BatchScanResult(
+                total_files=0, completed=0, infected_count=0,
+                clean_count=0, error_count=0, scan_time=0.0,
+                results=[], errors=[]
+            )
+
+        # Read file contents
+        files_data = []
+        for file_path in all_files:
+            try:
+                if os.path.getsize(file_path) > self.max_file_size:
+                    logger.warning(f"Skipping large file: {file_path}")
+                    continue
+
+                with open(file_path, 'rb') as f:
+                    content = f.read()
+                    filename = os.path.basename(file_path)
+                    # Include file type info
+                    file_ext = os.path.splitext(filename)[1].lower()
+                    file_category = FileTypeCategories.get_category_for_extension(file_ext)
+                    files_data.append((content, f"{filename} [{file_category}]", file_path))
+            except Exception as e:
+                logger.error(f"Error reading file {file_path}: {e}")
+
+        return await self.scan_multiple_files(files_data)
+
+
+class FileTypeCategories:
+    """File type categories for comprehensive scanning"""
+
+    EXECUTABLES = {
+        'windows': ['.exe', '.msi', '.bat', '.cmd', '.com', '.scr', '.pif', '.dll', '.sys'],
+        'linux': ['.sh', '.bin', '.run', '.AppImage', '.deb', '.rpm', '.snap'],
+        'macos': ['.app', '.dmg', '.pkg', '.command'],
+        'scripts': ['.py', '.pl', '.rb', '.php', '.js', '.vbs', '.ps1', '.bash', '.zsh', '.fish', '.csh']
+    }
+
+    ARCHIVES = ['.zip', '.rar', '.7z', '.tar', '.gz', '.bz2', '.xz', '.tar.gz', '.tar.bz2', '.tar.xz', '.lz4', '.zst']
+
+    DOCUMENTS = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.odt', '.ods', '.odp', '.rtf', '.txt']
+
+    MEDIA = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.svg', '.mp3', '.mp4', '.avi', '.mkv', '.wav', '.flac', '.webm', '.mov']
+
+    SOURCE_CODE = ['.c', '.cpp', '.h', '.hpp', '.java', '.cs', '.go', '.rs', '.swift', '.kt', '.scala', '.html', '.css', '.xml', '.json', '.yaml', '.yml', '.ini', '.cfg', '.conf']
+
+    SUSPICIOUS = ['.tmp', '.temp', '.log', '.bak', '.old', '.swp', '.~', '.cache', '.lock']
+
+    @classmethod
+    def get_patterns_for_category(cls, category: str) -> List[str]:
+        """Get file patterns for a specific category"""
+        patterns = []
+
+        if category == "all":
+            patterns = ["*"]
+        elif category == "executables":
+            for exec_types in cls.EXECUTABLES.values():
+                patterns.extend([f"*{ext}" for ext in exec_types])
+        elif category == "windows-executables":
+            patterns = [f"*{ext}" for ext in cls.EXECUTABLES['windows']]
+        elif category == "linux-executables":
+            patterns = [f"*{ext}" for ext in cls.EXECUTABLES['linux']]
+        elif category == "macos-executables":
+            patterns = [f"*{ext}" for ext in cls.EXECUTABLES['macos']]
+        elif category == "scripts":
+            patterns = [f"*{ext}" for ext in cls.EXECUTABLES['scripts']]
+        elif category == "archives":
+            patterns = [f"*{ext}" for ext in cls.ARCHIVES]
+        elif category == "documents":
+            patterns = [f"*{ext}" for ext in cls.DOCUMENTS]
+        elif category == "media":
+            patterns = [f"*{ext}" for ext in cls.MEDIA]
+        elif category == "source-code":
+            patterns = [f"*{ext}" for ext in cls.SOURCE_CODE]
+        elif category == "suspicious":
+            patterns = [f"*{ext}" for ext in cls.SUSPICIOUS]
+        elif category == "no-extension":
+            patterns = ["*"]  # Will be filtered later
+        else:
+            patterns = [category]  # Custom pattern
+
+        return patterns
+
+    @classmethod
+    def get_category_for_extension(cls, ext: str) -> str:
+        """Get category name for a file extension"""
+        ext = ext.lower()
+
+        for exec_type, exts in cls.EXECUTABLES.items():
+            if ext in exts:
+                return f"executable-{exec_type}"
+
+        if ext in cls.ARCHIVES:
+            return "archive"
+        elif ext in cls.DOCUMENTS:
+            return "document"
+        elif ext in cls.MEDIA:
+            return "media"
+        elif ext in cls.SOURCE_CODE:
+            return "source-code"
+        elif ext in cls.SUSPICIOUS:
+            return "suspicious"
+        elif not ext:
+            return "no-extension"
+        else:
+            return "unknown"
+
+    @classmethod
+    def get_available_categories(cls) -> Dict[str, str]:
+        """Get all available file type categories with descriptions"""
+        return {
+            "all": "All files in directory",
+            "executables": "All executable files (Windows, Linux, macOS, Scripts)",
+            "windows-executables": "Windows executables (.exe, .msi, .bat, .dll, etc.)",
+            "linux-executables": "Linux executables (.sh, .bin, .run, .deb, etc.)",
+            "macos-executables": "macOS executables (.app, .dmg, .pkg, etc.)",
+            "scripts": "Script files (.py, .js, .sh, .ps1, etc.)",
+            "archives": "Archive files (.zip, .rar, .7z, .tar, etc.)",
+            "documents": "Document files (.pdf, .doc, .txt, etc.)",
+            "media": "Media files (.jpg, .mp4, .mp3, etc.)",
+            "source-code": "Source code files (.c, .java, .html, etc.)",
+            "suspicious": "Suspicious files (.tmp, .bak, .cache, etc.)",
+            "no-extension": "Files without extensions"
+        }
+
+
 # scanner instance
 clamav_scanner = ClamAVScanner()
 
@@ -536,6 +872,196 @@ async def scan_file_with_clamav(file: UploadFile = File(...)):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"File processing error: {str(e)}")
+
+@router.post("/clamav/scan-multiple")
+async def scan_multiple_files_endpoint(files: List[UploadFile] = File(...)):
+    """
+    Scan multiple files with ClamAV concurrently.
+    Returns batch scan results with individual file results.
+    """
+
+    # check if clamav is available first
+    if not clamav_scanner.status["available"]:
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "error": "ClamAV not available",
+                "reason": clamav_scanner.status["reason"],
+                "message": clamav_scanner.status["message"],
+                "help": clamav_scanner.status.get("installation_help") or clamav_scanner.status.get("troubleshooting"),
+                "feature_disabled": True
+            }
+        )
+
+    if len(files) > 20:  # limit to prevent abuse
+        raise HTTPException(
+            status_code=400,
+            detail="Too many files. Maximum 20 files per batch scan."
+        )
+
+    try:
+        # prepare file data
+        files_data = []
+        file_info = []
+
+        for file in files:
+            filename = file.filename or "unknown_file"
+            file_content = await file.read()
+
+            # validate file size
+            if len(file_content) > clamav_scanner.max_file_size:
+                raise HTTPException(
+                    status_code=413,
+                    detail=f"File {filename} exceeds maximum size limit"
+                )
+
+            files_data.append((file_content, filename))
+            file_info.append({
+                "filename": filename,
+                "size_bytes": len(file_content),
+                "size_mb": round(len(file_content) / (1024 * 1024), 2),
+                "sha256": hash_sha256_bytes(file_content)
+            })
+
+        # perform batch scan
+        batch_result = await clamav_scanner.scan_multiple_files(files_data)
+
+        return {
+            "batch_summary": {
+                "total_files": batch_result.total_files,
+                "completed": batch_result.completed,
+                "infected_count": batch_result.infected_count,
+                "clean_count": batch_result.clean_count,
+                "error_count": batch_result.error_count,
+                "scan_time": round(batch_result.scan_time, 2),
+                "average_time_per_file": round(batch_result.scan_time / max(batch_result.completed, 1), 3)
+            },
+            "files_info": file_info,
+            "scan_results": batch_result.results,
+            "errors": batch_result.errors,
+            "recommendations": [
+                _generate_recommendations(result) for result in batch_result.results
+            ]
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Batch scan error: {str(e)}")
+
+@router.post("/clamav/scan-directory")
+async def scan_directory_endpoint(directory: str, pattern: str = "*"):
+    """
+    Scan files in a directory matching a pattern.
+    """
+
+    # check if clamav is available
+    if not clamav_scanner.status["available"]:
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "error": "ClamAV not available",
+                "message": clamav_scanner.status["message"],
+                "feature_disabled": True
+            }
+        )
+
+    try:
+        batch_result = await clamav_scanner.scan_files_by_pattern(directory, pattern)
+
+        return {
+            "directory": directory,
+            "pattern": pattern,
+            "batch_summary": {
+                "total_files": batch_result.total_files,
+                "completed": batch_result.completed,
+                "infected_count": batch_result.infected_count,
+                "clean_count": batch_result.clean_count,
+                "error_count": batch_result.error_count,
+                "scan_time": round(batch_result.scan_time, 2)
+            },
+            "scan_results": batch_result.results,
+            "errors": batch_result.errors
+        }
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Directory scan error: {str(e)}")
+
+@router.get("/clamav/file-types")
+async def get_available_file_types():
+    """Get all available file type categories for scanning."""
+    return {
+        "categories": FileTypeCategories.get_available_categories(),
+        "examples": {
+            "windows_executables": FileTypeCategories.EXECUTABLES['windows'][:5],
+            "linux_executables": FileTypeCategories.EXECUTABLES['linux'][:5],
+            "scripts": FileTypeCategories.EXECUTABLES['scripts'][:5],
+            "archives": FileTypeCategories.ARCHIVES[:5],
+            "documents": FileTypeCategories.DOCUMENTS[:5]
+        }
+    }
+
+@router.post("/clamav/scan-by-types")
+async def scan_directory_by_file_types(request: DirectoryScanRequest):
+    """
+    Scan directory by specific file type categories.
+
+    Args:
+        request: DirectoryScanRequest containing directory, file_types, and recursive flag
+    """
+
+    # Check if ClamAV is available
+    if not clamav_scanner.status["available"]:
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "error": "ClamAV not available",
+                "reason": clamav_scanner.status["reason"],
+                "message": clamav_scanner.status["message"],
+                "help": clamav_scanner.status.get("installation_help") or clamav_scanner.status.get("troubleshooting"),
+                "feature_disabled": True
+            }
+        )
+
+    # Validate file types
+    available_categories = FileTypeCategories.get_available_categories()
+    invalid_types = [ft for ft in request.file_types if ft not in available_categories]
+    if invalid_types:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid file types: {invalid_types}. Available types: {list(available_categories.keys())}"
+        )
+
+    try:
+        batch_result = await clamav_scanner.scan_by_file_types(request.directory, request.file_types, request.recursive)
+
+        return {
+            "directory": request.directory,
+            "file_types": request.file_types,
+            "recursive": request.recursive,
+            "batch_summary": {
+                "total_files": batch_result.total_files,
+                "completed": batch_result.completed,
+                "infected_count": batch_result.infected_count,
+                "clean_count": batch_result.clean_count,
+                "error_count": batch_result.error_count,
+                "scan_time": round(batch_result.scan_time, 2),
+                "average_time_per_file": round(batch_result.scan_time / max(batch_result.completed, 1), 3)
+            },
+            "scan_results": batch_result.results,
+            "errors": batch_result.errors,
+            "file_type_breakdown": _get_file_type_breakdown(batch_result.results),
+            "recommendations": [
+                _generate_recommendations(result) for result in batch_result.results if result.get('infected')
+            ]
+        }
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"File type scan error: {str(e)}")
 
 @router.get("/clamav/scan-history")
 async def get_scan_history():
@@ -636,3 +1162,28 @@ def _generate_recommendations(result: Dict[str, Any]) -> Dict[str, Any]:
                 "Safe to process based on current signatures"
             ]
         }
+
+def _get_file_type_breakdown(results: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
+    """Get breakdown of scan results by file type."""
+    breakdown = {}
+
+    for result in results:
+        filename = result.get('filename', 'unknown')
+        # extract file type from filename if it includes category info [category]
+        if '[' in filename and ']' in filename:
+            file_type = filename.split('[')[-1].split(']')[0]
+        else:
+            # determine file type from extension
+            ext = os.path.splitext(filename)[1].lower()
+            file_type = FileTypeCategories.get_category_for_extension(ext)
+
+        if file_type not in breakdown:
+            breakdown[file_type] = {"total": 0, "clean": 0, "infected": 0}
+
+        breakdown[file_type]["total"] += 1
+        if result.get('infected'):
+            breakdown[file_type]["infected"] += 1
+        else:
+            breakdown[file_type]["clean"] += 1
+
+    return breakdown

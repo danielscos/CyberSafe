@@ -115,13 +115,13 @@ def format_match_result(match, file_data: bytes) -> dict:
     strings_matches = []
 
     for string in match.strings:
-        # Get context around the match (50 chars before and after)
+        # get context around the match
         for instance in string.instances:
             start = max(0, instance.offset - 50)
             end = min(len(file_data), instance.offset + len(instance.matched_data) + 50)
             context = file_data[start:end]
 
-            # Try to decode as UTF-8, fallback to latin-1 if that fails
+            # try to decode as UTF-8, fallback to latin-1 if that fails
             try:
                 context_str = context.decode('utf-8', errors='replace')
             except:
@@ -162,10 +162,10 @@ async def scan_file_with_yara(
     """
 
     try:
-        # Read file content
+        # read file content
         file_content = await file.read()
 
-        # Determine which rules to use
+        # determine which rules to use
         rules_content = ""
 
         if use_default_rules:
@@ -177,18 +177,18 @@ async def scan_file_with_yara(
         if not rules_content.strip():
             raise HTTPException(status_code=400, detail="No rules provided for scanning")
 
-        # Compile rules
+        # compile rules
         compiled_rules = compile_rules(rules_content)
 
-        # Perform scan
+        # perform scan
         matches = compiled_rules.match(data=file_content)
 
-        # Format results
+        # format results
         results = []
         for match in matches:
             results.append(format_match_result(match, file_content))
 
-        # Calculate basic file stats
+        # calculate basic file stats
         file_size = len(file_content)
 
         return {
@@ -219,10 +219,10 @@ async def validate_yara_rules(rules: str = Form(...)):
     """
 
     try:
-        # Try to compile the rules
+        # try to compile the rules
         compiled_rules = compile_rules(rules)
 
-        # Count rules by parsing the source
+        # count rules by parsing the source
         rule_count = len([line for line in rules.split('\n') if line.strip().startswith('rule ')])
 
         return {
@@ -277,11 +277,11 @@ async def batch_scan_files(
         Batch scan results
     """
 
-    if len(files) > 10:  # Limit batch size
+    if len(files) > 10:  # limit batch size
         raise HTTPException(status_code=400, detail="Maximum 10 files allowed in batch scan")
 
     try:
-        # Prepare rules
+        # prepare rules
         rules_content = ""
 
         if use_default_rules:
@@ -293,10 +293,10 @@ async def batch_scan_files(
         if not rules_content.strip():
             raise HTTPException(status_code=400, detail="No rules provided for scanning")
 
-        # Compile rules once for all files
+        # compile rules once for all files
         compiled_rules = compile_rules(rules_content)
 
-        # Process each file
+        # process each file
         batch_results = []
 
         for file in files:
@@ -304,7 +304,7 @@ async def batch_scan_files(
                 file_content = await file.read()
                 matches = compiled_rules.match(data=file_content)
 
-                # Format results for this file
+                # format results for this file
                 file_matches = []
                 for match in matches:
                     file_matches.append(format_match_result(match, file_content))
@@ -324,7 +324,7 @@ async def batch_scan_files(
                     "status": "error"
                 })
 
-        # Calculate summary
+        # calculate summary
         total_files = len(batch_results)
         clean_files = len([r for r in batch_results if r.get("status") == "clean"])
         suspicious_files = len([r for r in batch_results if r.get("status") == "suspicious"])

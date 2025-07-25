@@ -49,4 +49,8 @@ main_design.png
 # scripts
 scripts/
 
+# malware samples for testing
 test_malware_samples/
+
+# demo scan dir
+demo_scan_directory/
