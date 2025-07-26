@@ -4,6 +4,7 @@ import {
   CozySidebarButton,
 } from "./StyledComponents";
 import { SIDEBAR_TOOLS, SIDEBAR_RESOURCES } from "../constants";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const Sidebar = ({ activeTab, onTabChange }) => {
   const handleResourceClick = (url) => {
@@ -18,7 +19,10 @@ const Sidebar = ({ activeTab, onTabChange }) => {
       role="navigation"
       aria-label="Main navigation"
     >
-      <CozyBrandTitle component="h1">CyberSafe</CozyBrandTitle>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+        <CozyBrandTitle component="h1">CyberSafe</CozyBrandTitle>
+        <ThemeSwitcher />
+      </div>
 
       <div className="sidebar-section">
         <CozySidebarSectionTitle component="h2">TOOLS</CozySidebarSectionTitle>
