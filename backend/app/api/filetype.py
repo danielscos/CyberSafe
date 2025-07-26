@@ -1,21 +1,19 @@
-
 from fastapi import APIRouter, File, UploadFile
 import magic
 import mimetypes
 import os
-import os
-import google.generativeai as genai
 import time
-from .gemini_api_key import gemini_api_key
+import sys
+
 from rustlib import (
     hash_sha256_bytes,
     hash_md5_bytes,
     entropy_bytes
 )
 
+import google.generativeai as genai
+
 router = APIRouter()
-
-
 
 def interpret_entropy(entropy, filesize):
     if filesize < 1024:
@@ -73,10 +71,9 @@ async def detect_filetype(file: UploadFile = File(...)):
     prompt = f"Give a brief, one sentence explanation of what a {ext} file type is and what it is commonly used for. Keep it simple and easy to understand for non-technical users."
     description = "Could not fetch explanation."
 
-     # CORRECTED: Using the official google-generativeai library
     try:
         # Step 1: Configure the library with your API key
-        genai.configure(api_key=gemini_api_key)
+        genai.configure(api_key="AIzaSyD7LPM2NeyJLBmkpdvE-PkAqtcr3enzBT8")
 
         # Step 2: Create a model instance
         model = genai.GenerativeModel("gemini-1.5-flash-latest")

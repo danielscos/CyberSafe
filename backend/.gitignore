@@ -11,3 +11,4 @@ CLAMAV_SETUP_COMPLETE.md
 test_api_integration.py
 test_clamav_configuration.py
 test_clamav_direct.py
+filetype.py

@@ -22,13 +22,13 @@ app.whenReady().then(() => {
   } else {
     // production
     const cspPolicy = [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data:",
-      "connect-src 'self'",
-      "font-src 'self' data:",
-    ].join("; ");
+      "default-src 'self' data: blob:;",
+      "script-src 'self' 'unsafe-eval' 'unsafe-inline';",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;",
+      "font-src 'self' https://fonts.gstatic.com;",
+      "img-src 'self' data: blob:;",
+      "connect-src 'self' http://127.0.0.1:8000 http://localhost:8000;",
+    ].join(" ");
 
     session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
       callback({

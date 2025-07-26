@@ -63,7 +63,6 @@
   "build": {
     "appId": "com.danielscos.cybersafe",
     "productName": "CyberSafe",
-    "description": "Your Cyber Security Swiss Knife",
     "copyright": "Copyright © 2024 danielscos",
     "files": [
       "dist",
