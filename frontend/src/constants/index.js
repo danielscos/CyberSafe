@@ -45,6 +45,7 @@ export const NAVIGATION_TABS = {
   HASHING: "hashing",
   FILESCAN: "filescan",
   YARA: "yara",
+  CLAMAV: "clamav", // Added ClamAV tab
 };
 
 // sidebar menu
@@ -53,6 +54,7 @@ export const SIDEBAR_TOOLS = [
   { id: NAVIGATION_TABS.HASHING, icon: "#", label: "Hashing" },
   { id: NAVIGATION_TABS.FILESCAN, icon: "📁", label: "File Scan" },
   { id: NAVIGATION_TABS.YARA, icon: "🧬", label: "YARA Scan" },
+  { id: NAVIGATION_TABS.CLAMAV, icon: "🛡️", label: "ClamAV" }, // Added ClamAV to sidebar
 ];
 
 export const SIDEBAR_RESOURCES = [

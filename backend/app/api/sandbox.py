@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 class SandboxRequest(BaseModel):
-    """Base model for sandbox requests"""
     sandbox_type: str
     source: Union[str, HttpUrl]
     execution_command: Optional[str] = None

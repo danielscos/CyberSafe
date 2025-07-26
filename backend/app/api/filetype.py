@@ -1,6 +1,8 @@
+
 from fastapi import APIRouter, File, UploadFile
 import magic
 import mimetypes
+import os
 import os
 import google.generativeai as genai
 import time
@@ -13,7 +15,7 @@ from rustlib import (
 
 router = APIRouter()
 
-genai.configure(api_key=gemini_api_key)
+
 
 def interpret_entropy(entropy, filesize):
     if filesize < 1024:
@@ -71,31 +73,35 @@ async def detect_filetype(file: UploadFile = File(...)):
     prompt = f"Give a brief, one sentence explanation of what a {ext} file type is and what it is commonly used for. Keep it simple and easy to understand for non-technical users."
     description = "Could not fetch explanation."
 
-    for _ in range(3): # try up to 3 times
-        try:
-            model = genai.GenerativeModel("gemini-2.0-flash")
-            gemini_response = model.generate_content(prompt)
-            description = gemini_response.candidates[0].content.parts[0].text.strip()
-            break
-        except Exception as e:
-            if "overloaded" in str(e).lower():
-                time.sleep(2)  # wait and retry
-            else:
-                break
+     # CORRECTED: Using the official google-generativeai library
+    try:
+        # Step 1: Configure the library with your API key
+        genai.configure(api_key=gemini_api_key)
+
+        # Step 2: Create a model instance
+        model = genai.GenerativeModel("gemini-1.5-flash-latest")
+
+        # Step 3: Generate content
+        gemini_response = model.generate_content(prompt)
+        description = gemini_response.text.strip()
+
+    except Exception as e:
+        print(f"Gemini API error: {e}")
+        description = f"An error occurred with the Gemini API: {e}"
 
     filesize = len(contents)
     entropy_value = float(entropy)
     entropy_info = interpret_entropy(entropy_value, filesize)
 
     return {
-        "filesize": filesize,
-        "filename": file.filename,
-        "mime_type": mime,
-        "file_type": ext,
-        "sha256": hash_256,
-        "md5": hash_md5,
-        "entropy": round(entropy_value, 2),
-        "entropy_label": entropy_info["label"],
-        "entropy_explanation": entropy_info["explanation"],
-        "description": description
-    }
+            "filesize": filesize,
+            "filename": file.filename,
+            "mime_type": mime,
+            "file_type": ext,
+            "sha256": hash_256,
+            "md5": hash_md5,
+            "entropy": round(entropy_value, 2),
+            "entropy_label": entropy_info["label"],
+            "entropy_explanation": entropy_info["explanation"],
+            "description": description
+        }

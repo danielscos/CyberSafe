@@ -14,6 +14,7 @@ import FloatingParticles from "./components/FloatingParticles";
 import { useLocalStorage } from "./hooks/useApi";
 import { NAVIGATION_TABS, MESSAGES } from "./constants";
 import "./App.css";
+import ClamAVScanner from "./components/ClamAVScanner";
 
 // Use cozy cottage theme
 const theme = cozyTheme;
@@ -74,6 +75,8 @@ function App() {
           return <FileScanTool />;
         case NAVIGATION_TABS.YARA:
           return <YaraScanner />;
+        case NAVIGATION_TABS.CLAMAV:
+          return <ClamAVScanner />;
         case NAVIGATION_TABS.DASHBOARD:
         default:
           return <Dashboard />;

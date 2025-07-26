@@ -643,7 +643,7 @@ class ClamAVScanner:
         return await self.scan_multiple_files(files_data)
 
     async def scan_by_file_types(self, directory: str, file_types: List[str],
-                               recursive: bool = True) -> BatchScanResult:
+                               recursive: bool = True, fastapi_request=None) -> BatchScanResult:
         """
         Scan files in a directory by multiple file type categories.
 
@@ -693,6 +693,10 @@ class ClamAVScanner:
         # Read file contents
         files_data = []
         for file_path in all_files:
+            # Check for cancellation
+            if fastapi_request and hasattr(fastapi_request, "is_disconnected") and await fastapi_request.is_disconnected():
+                logger.warning("Scan aborted by client disconnect.")
+                break
             try:
                 if os.path.getsize(file_path) > self.max_file_size:
                     logger.warning(f"Skipping large file: {file_path}")
@@ -1003,13 +1007,16 @@ async def get_available_file_types():
         }
     }
 
+from fastapi import Request
+
 @router.post("/clamav/scan-by-types")
-async def scan_directory_by_file_types(request: DirectoryScanRequest):
+async def scan_directory_by_file_types(request: DirectoryScanRequest, fastapi_request: Request):
     """
     Scan directory by specific file type categories.
 
     Args:
         request: DirectoryScanRequest containing directory, file_types, and recursive flag
+        fastapi_request: FastAPI Request object for cancellation support
     """
 
     # Check if ClamAV is available
@@ -1035,7 +1042,9 @@ async def scan_directory_by_file_types(request: DirectoryScanRequest):
         )
 
     try:
-        batch_result = await clamav_scanner.scan_by_file_types(request.directory, request.file_types, request.recursive)
+        batch_result = await clamav_scanner.scan_by_file_types(
+            request.directory, request.file_types, request.recursive, fastapi_request
+        )
 
         return {
             "directory": request.directory,
