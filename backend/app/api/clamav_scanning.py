@@ -5,6 +5,7 @@ from pydantic import BaseModel
 import subprocess
 import tempfile
 import os
+import json
 import logging
 import socket
 import struct
@@ -52,12 +53,43 @@ class ClamAVNotAvailableError(ClamAVError):
     pass
 
 class ClamAVScanner:
+    import json
+    import os
+
+    HISTORY_FILE = os.path.join(os.path.dirname(__file__), "clamav_scan_history.json")
+
     def __init__(self):
         self.status = self._check_clamav_availability()
         self.scan_history = []
+        self.load_history_from_file()
+        print("ClamAVScanner initialized. scan_history loaded:", self.scan_history)
         self.max_file_size = 50 * 1024 * 1024  # 50MB limit
         self.timeout = 30
         self.max_concurrent_scans = 5  # Limit concurrent scans to avoid resource exhaustion
+
+    def save_history_to_file(self):
+        print("Saving scan_history to file:", self.HISTORY_FILE)
+        print("scan_history to save:", self.scan_history)
+        try:
+            with open(self.HISTORY_FILE, "w") as f:
+                json.dump(self.scan_history, f)
+        except Exception as e:
+            print(f"Error saving scan history: {e}")
+
+    def load_history_from_file(self):
+        if os.path.exists(self.HISTORY_FILE):
+            try:
+                with open(self.HISTORY_FILE, "r") as f:
+                    content = f.read().strip()
+                    print("Loaded history file content:", content)
+                    if not content:
+                        self.scan_history = []
+                    else:
+                        self.scan_history = json.loads(content)
+                print("Loaded scan_history:", self.scan_history)
+            except Exception as e:
+                print(f"Error loading scan history: {e}")
+                self.scan_history = []
 
     def _check_clamav_availability(self) -> Dict[str, Any]:
         """Check if ClamAV is available and properly configured."""
@@ -237,6 +269,7 @@ class ClamAVScanner:
 
             self.scan_history.append(scan_record)
             self._trim_scan_history()
+            self.save_history_to_file()
 
             return {
                 "success": True,
@@ -326,6 +359,7 @@ class ClamAVScanner:
                 )
                 self.scan_history.append(scan_record)
                 self._trim_scan_history()
+                self.save_history_to_file()
 
                 return {
                     "success": True,
@@ -972,6 +1006,12 @@ async def scan_directory_endpoint(directory: str, pattern: str = "*"):
 
     try:
         batch_result = await clamav_scanner.scan_files_by_pattern(directory, pattern)
+
+        # Append each scan result to scan_history for dashboard/history
+        for scan_record in batch_result.results:
+            clamav_scanner.scan_history.append(scan_record)
+        clamav_scanner._trim_scan_history()
+        clamav_scanner.save_history_to_file()
 
         return {
             "directory": directory,

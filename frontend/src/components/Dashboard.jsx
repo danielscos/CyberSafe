@@ -11,6 +11,7 @@ import {
   CozyAccent,
 } from "./StyledComponents";
 import { CardContent, Box, Chip } from "@mui/material";
+import { API_BASE_URL } from "../constants/index";
 
 // animations
 const containerVariants = {
@@ -78,19 +79,68 @@ const itemVariants = {
 };
 
 const Dashboard = () => {
-  const [stats, _setStats] = useState({
-    totalScans: 1247,
-    threatsDetected: 23,
-    filesProcessed: 8934,
-    systemHealth: "Excellent",
+  const [scanHistory, setScanHistory] = useState([]);
+  const [clamavStats, setClamavStats] = useState({
+    totalScans: 0,
+    threatsDetected: 0,
+    filesProcessed: 0,
   });
-
+  const [clamavStatus, setClamavStatus] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Helper to show "time ago"
+  function timeAgo(timestamp) {
+    const now = new Date();
+    const scanDate = new Date(timestamp);
+    const diffMs = now - scanDate;
+    const diffSec = Math.floor(diffMs / 1000);
+    if (diffSec < 60) return `${diffSec}s ago`;
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return `${diffMin}m ago`;
+    const diffHr = Math.floor(diffMin / 60);
+    if (diffHr < 24) return `${diffHr}h ago`;
+    const diffDay = Math.floor(diffHr / 24);
+    return `${diffDay}d ago`;
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
+
+    // Fetch ClamAV scan history and stats
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/clamav/scan-history`);
+        const data = await res.json();
+        const history = data.scan_history || [];
+        setScanHistory(history);
+        setClamavStats({
+          totalScans: history.length,
+          threatsDetected: history.filter((scan) => scan.infected).length,
+          filesProcessed: history.reduce(
+            (sum, scan) => sum + (scan.file_size || 0),
+            0,
+          ),
+        });
+      } catch (err) {
+        console.error("Failed to fetch scan history", err);
+      }
+    };
+
+    // Fetch ClamAV status
+    const fetchStatus = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/clamav/status`);
+        const data = await res.json();
+        setClamavStatus(data.clamav_status);
+      } catch (err) {
+        console.error("Failed to fetch ClamAV status", err);
+      }
+    };
+
+    fetchHistory();
+    fetchStatus();
 
     return () => clearInterval(timer);
   }, []);
@@ -118,13 +168,6 @@ const Dashboard = () => {
     "Enable two-factor authentication when available",
     "Regularly backup your important data",
     "Be cautious with email attachments and links",
-  ];
-
-  const recentActivity = [
-    { type: "Scan", file: "document.pdf", status: "Clean", time: "2 min ago" },
-    { type: "Hash", file: "image.jpg", status: "Verified", time: "5 min ago" },
-    { type: "Scan", file: "archive.zip", status: "Threat", time: "12 min ago" },
-    { type: "Hash", file: "video.mp4", status: "Clean", time: "18 min ago" },
   ];
 
   return (
@@ -170,24 +213,9 @@ const Dashboard = () => {
                     </CozySecondaryTypography>
                     <motion.div variants={statVariants}>
                       <CozyTypography variant="h4" component="div">
-                        {stats.totalScans.toLocaleString()}
+                        {clamavStats.totalScans.toLocaleString()}
                       </CozyTypography>
                     </motion.div>
-                    <Chip
-                      label="↗ +12% this week"
-                      size="small"
-                      variant="outlined"
-                      sx={{
-                        backgroundColor: "rgba(129, 199, 132, 0.1)",
-                        color: "#81C784",
-                        borderColor: "rgba(129, 199, 132, 0.3)",
-                        fontSize: "0.75rem",
-                        fontWeight: 500,
-                        alignSelf: "flex-start",
-                        mt: 1,
-                        height: 24,
-                      }}
-                    />
                   </CozyFlexColumn>
                 </CardContent>
               </CozyCard>
@@ -202,24 +230,9 @@ const Dashboard = () => {
                     </CozySecondaryTypography>
                     <motion.div variants={statVariants}>
                       <CozyTypography variant="h4" component="div">
-                        {stats.threatsDetected}
+                        {clamavStats.threatsDetected}
                       </CozyTypography>
                     </motion.div>
-                    <Chip
-                      label="🛡️ All resolved"
-                      size="small"
-                      variant="outlined"
-                      sx={{
-                        backgroundColor: "rgba(255, 183, 77, 0.1)",
-                        color: "#FFB74D",
-                        borderColor: "rgba(255, 183, 77, 0.3)",
-                        fontSize: "0.75rem",
-                        fontWeight: 500,
-                        alignSelf: "flex-start",
-                        mt: 1,
-                        height: 24,
-                      }}
-                    />
                   </CozyFlexColumn>
                 </CardContent>
               </CozyCard>
@@ -230,28 +243,13 @@ const Dashboard = () => {
                 <CardContent>
                   <CozyFlexColumn>
                     <CozySecondaryTypography variant="overline" gutterBottom>
-                      Files Processed
+                      Total Bytes Scanned
                     </CozySecondaryTypography>
                     <motion.div variants={statVariants}>
                       <CozyTypography variant="h4" component="div">
-                        {stats.filesProcessed.toLocaleString()}
+                        {clamavStats.filesProcessed.toLocaleString()} bytes
                       </CozyTypography>
                     </motion.div>
-                    <Chip
-                      label="🔄 Processing"
-                      size="small"
-                      variant="outlined"
-                      sx={{
-                        backgroundColor: "rgba(77, 208, 225, 0.1)",
-                        color: "#4DD0E1",
-                        borderColor: "rgba(77, 208, 225, 0.3)",
-                        fontSize: "0.75rem",
-                        fontWeight: 500,
-                        alignSelf: "flex-start",
-                        mt: 1,
-                        height: 24,
-                      }}
-                    />
                   </CozyFlexColumn>
                 </CardContent>
               </CozyCard>
@@ -266,24 +264,11 @@ const Dashboard = () => {
                     </CozySecondaryTypography>
                     <motion.div variants={statVariants}>
                       <CozyTypography variant="h4" component="div">
-                        {stats.systemHealth}
+                        {clamavStatus?.available
+                          ? "Excellent"
+                          : "Issues Detected"}
                       </CozyTypography>
                     </motion.div>
-                    <Chip
-                      label="✅ All systems operational"
-                      size="small"
-                      variant="outlined"
-                      sx={{
-                        backgroundColor: "rgba(129, 199, 132, 0.1)",
-                        color: "#81C784",
-                        borderColor: "rgba(129, 199, 132, 0.3)",
-                        fontSize: "0.75rem",
-                        fontWeight: 500,
-                        alignSelf: "flex-start",
-                        mt: 1,
-                        height: 24,
-                      }}
-                    />
                   </CozyFlexColumn>
                 </CardContent>
               </CozyCard>
@@ -335,12 +320,12 @@ const Dashboard = () => {
                     },
                     // Enhanced scrolling for trackpad/touchpad
                     scrollBehavior: "smooth",
-                    "-webkit-overflow-scrolling": "touch",
+                    WebkitOverflowScrolling: "touch",
                   }}
                 >
                   <CozyFlexColumn sx={{ gap: 2 }}>
                     <AnimatePresence>
-                      {recentActivity.map((activity, index) => (
+                      {scanHistory.slice(0, 8).map((scan, index) => (
                         <motion.div
                           key={index}
                           variants={itemVariants}
@@ -353,68 +338,35 @@ const Dashboard = () => {
                             sx={{
                               p: 2.5,
                               backgroundColor: "#21262D",
-                              borderRadius: 1.5,
-                              border: "1px solid rgba(48, 54, 61, 0.5)",
-                              transition: "all 0.2s ease",
-                              "&:hover": {
-                                backgroundColor: "#30363D",
-                                borderColor: "rgba(0, 188, 212, 0.3)",
-                                transform: "translateY(-1px)",
-                                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                              },
+                              borderRadius: 2,
+                              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 1,
                             }}
                           >
-                            <CozyFlexRow sx={{ alignItems: "center" }}>
-                              <Box sx={{ flex: 1 }}>
-                                <CozyTypography
-                                  variant="body2"
-                                  sx={{
-                                    fontWeight: 500,
-                                    color: "#F0F6FC",
-                                    fontFamily: '"Inter", sans-serif',
-                                  }}
-                                >
-                                  {activity.type}: {activity.file}
-                                </CozyTypography>
-                                <CozySecondaryTypography
-                                  variant="caption"
-                                  sx={{
-                                    color: "#8B949E",
-                                    fontFamily: '"JetBrains Mono", monospace',
-                                  }}
-                                >
-                                  {activity.time}
-                                </CozySecondaryTypography>
-                              </Box>
-                              <Chip
-                                label={activity.status}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  backgroundColor:
-                                    activity.status === "Clean"
-                                      ? "rgba(129, 199, 132, 0.1)"
-                                      : activity.status === "Threat"
-                                        ? "rgba(229, 115, 115, 0.1)"
-                                        : "rgba(77, 208, 225, 0.1)",
-                                  color:
-                                    activity.status === "Clean"
-                                      ? "#81C784"
-                                      : activity.status === "Threat"
-                                        ? "#E57373"
-                                        : "#4DD0E1",
-                                  borderColor:
-                                    activity.status === "Clean"
-                                      ? "rgba(129, 199, 132, 0.3)"
-                                      : activity.status === "Threat"
-                                        ? "rgba(229, 115, 115, 0.3)"
-                                        : "rgba(77, 208, 225, 0.3)",
-                                  fontSize: "0.75rem",
-                                  fontWeight: 500,
-                                  height: 22,
-                                }}
-                              />
-                            </CozyFlexRow>
+                            <CozyTypography
+                              variant="body1"
+                              sx={{ fontWeight: 600 }}
+                            >
+                              {scan.filename ||
+                                scan.file_path ||
+                                "Unknown file"}
+                            </CozyTypography>
+                            <CozySecondaryTypography
+                              variant="body2"
+                              sx={{
+                                color: scan.infected ? "#f44336" : "#00bfae",
+                              }}
+                            >
+                              {scan.infected ? "Threat" : "Clean"}
+                            </CozySecondaryTypography>
+                            <CozySecondaryTypography
+                              variant="caption"
+                              sx={{ color: "#aaa" }}
+                            >
+                              {scan.timestamp ? timeAgo(scan.timestamp) : ""}
+                            </CozySecondaryTypography>
                           </Box>
                         </motion.div>
                       ))}
@@ -482,50 +434,6 @@ const Dashboard = () => {
             </CozyCard>
           </motion.div>
         </CozyFlexRow>
-
-        {/* quick act */}
-        <motion.div
-          variants={cardVariants}
-          whileHover="hover"
-          style={{ marginTop: 24 }}
-        >
-          <CozyCard>
-            <CardContent>
-              <CozyTypography
-                variant="h5"
-                gutterBottom
-                sx={{ fontWeight: 600 }}
-              >
-                🚀 Quick Actions
-              </CozyTypography>
-              <CozyAccent />
-              <CozyFlexRow sx={{ gap: 2, flexWrap: "wrap", mt: 2 }}>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <CozyPrimaryButton>Start Full System Scan</CozyPrimaryButton>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <CozyPrimaryButton>
-                    Update Virus Definitions
-                  </CozyPrimaryButton>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <CozyPrimaryButton>
-                    Generate Security Report
-                  </CozyPrimaryButton>
-                </motion.div>
-              </CozyFlexRow>
-            </CardContent>
-          </CozyCard>
-        </motion.div>
       </motion.div>
     </CozyToolContainer>
   );
