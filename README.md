@@ -84,6 +84,7 @@ Download the latest release for your platform from the [GitHub Releases](https:/
 
 **Prerequisites:**
 - Python 3.13+
+- Rust (latest stable)
 - npm or yarn
 - Git
 
@@ -93,14 +94,17 @@ Download the latest release for your platform from the [GitHub Releases](https:/
 git clone https://github.com/danielscos/CyberSafe.git
 cd CyberSafe
 
+# Install Rust (if not already installed)
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+
 # Install frontend dependencies
 cd frontend
 npm install
 
-# Build the backend executable
+# Build the backend executable (includes Rust compilation)
 cd ../backend
 pip install -r requirements.txt
-pip install pyinstaller
 python build.py
 
 # Build the frontend and create distributable
@@ -116,6 +120,7 @@ The executable will be created in `frontend/dist/` directory.
 ### Prerequisites
 - Node.js 18+
 - Python 3.13+
+- Rust (latest stable)
 - Git
 
 ### Setup Instructions
@@ -126,13 +131,26 @@ The executable will be created in `frontend/dist/` directory.
    cd CyberSafe
    ```
 
-2. **Backend Setup:**
+2. **Install Rust:**
+   ```bash
+   # Install Rust if not already installed
+   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   source ~/.cargo/env
+   ```
+
+3. **Backend Setup:**
    ```bash
    cd backend
    pip install -r requirements.txt
+   
+   # Build the Rust library for development
+   cd ../rustlib
+   pip install maturin
+   maturin develop --release
+   cd ../backend
    ```
 
-3. **Frontend Setup:**
+4. **Frontend Setup:**
    ```bash
    cd frontend
    npm install

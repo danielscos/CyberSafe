@@ -1,6 +1,16 @@
 import { useState, useCallback } from "react";
 import axios from "axios";
-import { API_ENDPOINTS } from "../constants";
+import { API_ENDPOINTS, API_BASE_URL } from "../constants";
+
+// Simple backend connection check
+const isBackendAvailable = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/`, { timeout: 1000 });
+    return response.data && response.data.status === "up";
+  } catch (error) {
+    return false;
+  }
+};
 
 // Generic API hook for common patterns
 export const useApi = () => {
@@ -14,8 +24,12 @@ export const useApi = () => {
       const result = await requestFn();
       return result;
     } catch (err) {
-      setError(err.message);
-      throw err;
+      const errorMessage =
+        err.response?.data?.detail ||
+        err.message ||
+        "An unexpected error occurred";
+      setError(errorMessage);
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -79,9 +93,7 @@ export const useFileType = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await axios.post(API_ENDPOINTS.FILETYPE, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const response = await axios.post(API_ENDPOINTS.FILETYPE, formData);
         return response.data;
       });
 
@@ -179,9 +191,7 @@ export const useYaraScanner = () => {
           formData.append("rules", customRules);
         }
 
-        const response = await axios.post(API_ENDPOINTS.YARA.SCAN, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const response = await axios.post(API_ENDPOINTS.YARA.SCAN, formData);
         return response.data;
       });
 
@@ -214,9 +224,6 @@ export const useYaraScanner = () => {
         const response = await axios.post(
           API_ENDPOINTS.YARA.BATCH_SCAN,
           formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          },
         );
         return response.data;
       });
@@ -240,9 +247,6 @@ export const useYaraScanner = () => {
         const response = await axios.post(
           API_ENDPOINTS.YARA.VALIDATE,
           formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          },
         );
         return response.data;
       });

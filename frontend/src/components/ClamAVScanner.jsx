@@ -9,6 +9,7 @@ import {
   CozyUploadButton,
 } from "./StyledComponents";
 import { API_BASE_URL, COMMON_STYLES, MESSAGES } from "../constants";
+import axios from "axios";
 import {
   Button,
   TextField,
@@ -135,9 +136,8 @@ function ClamAVScanner() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(endpoints.status);
-        const data = await res.json();
-        setStatus(data);
+        const res = await axios.get(endpoints.status);
+        setStatus(res.data);
       } catch (err) {
         console.error(err);
         setError("Failed to fetch ClamAV status.");
@@ -165,15 +165,11 @@ function ClamAVScanner() {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await fetch(endpoints.scan, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      setScanResult(data);
+      const res = await axios.post(endpoints.scan, formData);
+      setScanResult(res.data);
     } catch (err) {
       console.error(err);
-      setError("Failed to scan file.");
+      setError(err.response?.data?.detail || "Failed to scan file.");
     }
     setLoading(false);
   };
@@ -204,13 +200,15 @@ function ClamAVScanner() {
         recursive,
       };
       console.log("Smart Directory Scan Payload:", payload);
-      const res = await fetch(`${API_BASE_URL}/clamav/scan-by-types`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-        signal: controller.signal,
-      });
-      const data = await res.json();
+      const res = await axios.post(
+        `${API_BASE_URL}/clamav/scan-by-types`,
+        payload,
+        {
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+      const data = res.data;
+      setBatchResult(data);
       setDirScanResult(data);
       console.log("Directory scan result:", data);
     } catch (err) {

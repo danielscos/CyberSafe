@@ -19,6 +19,7 @@ app.whenReady().then(() => {
         },
       });
     });
+    createWindow();
   } else {
     // production
     const cspPolicy = [
@@ -38,21 +39,66 @@ app.whenReady().then(() => {
         },
       });
     });
-  }
 
-  if (!isDev) {
-    // only spawn backend in production
-    const backendPath = path.join(
-      process.resourcesPath,
-      "app.asar.unpacked",
-      "backend",
-      "CyberSafeBackend",
-    );
-    backendProcess = spawn(backendPath, [], { stdio: "inherit" });
+    // Start backend in production
+    startBackendAndCreateWindow();
   }
-
-  createWindow();
 });
+
+function startBackendAndCreateWindow() {
+  const backendPath = path.join(
+    process.resourcesPath,
+    "app.asar.unpacked",
+    "backend",
+    "CyberSafeBackend",
+  );
+
+  console.log("=== BACKEND STARTUP DEBUG ===");
+  console.log("Backend path:", backendPath);
+  console.log("Backend exists:", require("fs").existsSync(backendPath));
+  console.log("Process resources path:", process.resourcesPath);
+
+  if (!require("fs").existsSync(backendPath)) {
+    console.error("❌ Backend executable not found at:", backendPath);
+    createWindow(); // Load anyway to show error
+    return;
+  }
+
+  console.log("Starting backend process...");
+
+  backendProcess = spawn(backendPath, [], {
+    stdio: ["ignore", "pipe", "pipe"],
+    detached: false,
+    shell: false,
+  });
+
+  backendProcess.stdout.on("data", (data) => {
+    console.log("Backend stdout:", data.toString());
+  });
+
+  backendProcess.stderr.on("data", (data) => {
+    console.log("Backend stderr:", data.toString());
+  });
+
+  backendProcess.on("spawn", () => {
+    console.log("✅ Backend process spawned successfully");
+  });
+
+  backendProcess.on("error", (err) => {
+    console.error("❌ Backend spawn error:", err);
+    createWindow(); // Load anyway
+  });
+
+  backendProcess.on("exit", (code, signal) => {
+    console.log(`❌ Backend exited with code ${code}, signal ${signal}`);
+  });
+
+  // Wait for backend to start before loading frontend
+  setTimeout(() => {
+    console.log("Loading frontend after backend startup delay...");
+    createWindow();
+  }, 3000);
+}
 
 function createWindow() {
   mainWindow = new BrowserWindow({

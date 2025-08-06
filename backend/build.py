@@ -23,7 +23,8 @@ REQUIRED_PACKAGES = [
     "fastapi",
     "uvicorn",
     "python-dotenv", # Good practice for managing environment variables
-    "requests"
+    "requests",
+    "maturin"  # Required for building Rust extensions
 ]
 
 
@@ -106,9 +107,50 @@ def find_google_package_path():
         sys.exit(1)
 
 
+def build_rust_library():
+    """Builds the Rust library using maturin."""
+    print("\n📋 Step 3: Building Rust library...")
+
+    # Path to the rustlib directory
+    rustlib_path = Path(__file__).parent / "../rustlib"
+
+    if not rustlib_path.exists():
+        print("❌ Rust library directory not found!")
+        return False
+
+    try:
+        # Save current directory
+        original_dir = os.getcwd()
+
+        # Change to rustlib directory
+        os.chdir(rustlib_path)
+        print(f"📁 Changed to rustlib directory: {rustlib_path.resolve()}")
+
+        # Build the Rust library in development mode
+        print("🔨 Building Rust library with maturin...")
+        result = subprocess.run([
+            sys.executable, "-m", "maturin", "develop", "--release"
+        ], check=True, capture_output=True, text=True)
+
+        print("✅ Rust library built successfully!")
+        return True
+
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Rust library build failed with exit code {e.returncode}")
+        print(f"   stdout: {e.stdout}")
+        print(f"   stderr: {e.stderr}")
+        return False
+    except Exception as e:
+        print(f"❌ Unexpected error building Rust library: {e}")
+        return False
+    finally:
+        # Always return to original directory
+        os.chdir(original_dir)
+
+
 def build_executable():
     """Builds the backend executable using PyInstaller."""
-    print("\n📋 Step 3: Building executable...")
+    print("\n📋 Step 4: Building executable...")
 
     output_dir = create_output_directory()
     google_path = find_google_package_path()
@@ -182,6 +224,13 @@ def main():
     try:
         clean_build_artifacts()
         ensure_dependencies()
+
+        # Build Rust library first
+        rust_success = build_rust_library()
+        if not rust_success:
+            print("❌ Rust library build failed. Cannot proceed with executable build.")
+            sys.exit(1)
+
         success = build_executable()
 
         if success:

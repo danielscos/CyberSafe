@@ -76,6 +76,44 @@
     "icon": "build/icon.png",
     "directories": {
       "buildResources": "build"
+    },
+    "linux": {
+      "category": "Security",
+      "description": "CyberSafe - Your Cyber Security Swiss Knife",
+      "synopsis": "Cybersecurity analysis and malware detection toolkit",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        },
+        {
+          "target": "tar.gz",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "deb": {
+      "depends": [
+        "libgtk-3-0",
+        "libnotify4",
+        "libnss3",
+        "libxss1",
+        "libgconf-2-4",
+        "libdrm2",
+        "libxcomposite1",
+        "libxdamage1",
+        "libxrandr2",
+        "libasound2",
+        "libpangocairo-1.0-0",
+        "libatk1.0-0",
+        "libcairo-gobject2",
+        "libgtk-3-0",
+        "libgdk-pixbuf2.0-0"
+      ]
     }
   }
 }
