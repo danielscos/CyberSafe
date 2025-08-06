@@ -104,6 +104,7 @@ const resultItemAnimationVariants = {
 function ClamAVScanner() {
   const [status, setStatus] = useState(null);
   const [showInstallPopup, setShowInstallPopup] = useState(true);
+  const [showStandalonePopup, setShowStandalonePopup] = useState(true);
   const [file, setFile] = useState(null);
   const [scanResult, setScanResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -370,6 +371,139 @@ function ClamAVScanner() {
             </Box>
           )}
       </AnimatePresence>
+
+      {/* ClamAV standalone mode floating card */}
+      <AnimatePresence>
+        {status?.clamav_status?.available &&
+          status?.clamav_status?.mode === "standalone" &&
+          showStandalonePopup && (
+            <Box
+              sx={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                zIndex: 2000,
+                pointerEvents: "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {/* Blurred overlay */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100vw",
+                  height: "100vh",
+                  backgroundColor: "rgba(30,34,44,0.55)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  zIndex: 2001,
+                  pointerEvents: "auto",
+                }}
+              />
+              {/* Animated floating card */}
+              <motion.div
+                variants={popupVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                style={{
+                  zIndex: 2002,
+                  width: "100%",
+                  maxWidth: 420,
+                  minWidth: 340,
+                }}
+              >
+                <Box
+                  sx={{
+                    backgroundColor: "rgba(35, 39, 47, 0.85)",
+                    color: "#fff",
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.45)",
+                    borderRadius: "24px",
+                    padding: "40px 36px 32px 36px",
+                    textAlign: "center",
+                    pointerEvents: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 2,
+                    position: "relative",
+                    border: "1.5px solid rgba(255,255,255,0.08)",
+                    minWidth: 340,
+                    maxWidth: 420,
+                  }}
+                >
+                  {/* X Button */}
+                  <IconButton
+                    aria-label="Close"
+                    onClick={() => setShowStandalonePopup(false)}
+                    sx={{
+                      position: "absolute",
+                      top: 18,
+                      right: 18,
+                      color: "#fff",
+                      backgroundColor: "rgba(255,255,255,0.18)",
+                      backdropFilter: "blur(2px)",
+                      WebkitBackdropFilter: "blur(2px)",
+                      "&:hover": { backgroundColor: "rgba(255,149,0,0.35)" },
+                      zIndex: 2003,
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
+                      transition: "background 0.2s",
+                    }}
+                  >
+                    <CloseIcon sx={{ fontSize: 24 }} />
+                  </IconButton>
+                  <AnalyticsIcon
+                    sx={{ fontSize: 54, color: "#ff9500", mb: 2 }}
+                  />
+                  <Box sx={{ fontWeight: 700, fontSize: "1.35rem", mb: 1 }}>
+                    ClamAV Running in Standalone Mode
+                  </Box>
+                  <Box sx={{ fontSize: "1.05rem", mb: 2 }}>
+                    {status?.clamav_status?.message ||
+                      "ClamAV is working but daemon is not running."}
+                  </Box>
+                  <Box
+                    sx={{
+                      color: "#ffd600",
+                      fontWeight: 500,
+                      fontSize: "1.05rem",
+                      mb: 2,
+                    }}
+                  >
+                    <em>Scanning will be slower without the daemon.</em>
+                  </Box>
+                  <Box sx={{ fontSize: "0.97rem", color: "#bdbdbd", mb: 1 }}>
+                    For better performance, start the ClamAV daemon:
+                  </Box>
+                  <Box sx={{ fontSize: "0.97rem", color: "#bdbdbd", mb: 1 }}>
+                    <code style={{ color: "#ff9500", fontWeight: 700 }}>
+                      sudo systemctl start clamav-daemon
+                    </code>
+                  </Box>
+                  <Box sx={{ fontSize: "0.97rem", color: "#bdbdbd", mb: 1 }}>
+                    To enable it permanently:
+                  </Box>
+                  <Box sx={{ fontSize: "0.97rem", color: "#bdbdbd" }}>
+                    <code style={{ color: "#ff9500", fontWeight: 700 }}>
+                      sudo systemctl enable clamav-daemon
+                    </code>
+                  </Box>
+                </Box>
+              </motion.div>
+            </Box>
+          )}
+      </AnimatePresence>
+
       {status?.clamav_status?.available &&
         status?.clamav_status?.mode === "daemon" && (
           <Box
